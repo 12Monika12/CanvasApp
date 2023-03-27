@@ -1,0 +1,10 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_logicflows",
+    "FlowNameId": "97cf22e0-5a10-4f3c-88a8-fe3191eac956",
+    "Name": "Export",
+    "ServiceKind": "ConnectedWadl",
+    "Type": "ServiceInfo",
+    "WorkflowEntityId": "03752ddb-ecbc-ed11-83ff-000d3a34ed12"
+  }
+]

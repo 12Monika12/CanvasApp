@@ -1,0 +1,730 @@
+"EmployeeDetailScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |-
+        =ClearCollect(
+            EmployeeData,
+            ShowColumns(Filter([@contact],Email = _myProfile.UserPrincipalName),
+                "dt_employee_code",
+                "firstname",
+                "lastname",
+                "birthdate",
+                "dt_employment_status",
+                "dt_manager",
+                "dt_position",
+                "emailaddress1",
+                "dt_date_of_joining"
+            )
+        );
+
+    EDS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =1
+
+        EDS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            EDS_icon_Back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.1,
+                       Parent.Height
+                    )
+                Icon: =Icon.ChevronLeft
+                OnSelect: =Back()
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            EDS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =11
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="My Profile"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                Wrap: =false
+                ZIndex: =2
+
+        EDS_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        EDS_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            ZIndex: =3
+
+            EDS_ImageContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                Height: =Parent.Height/4
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/2,
+                       Parent.Width/1.5
+                    )
+                ZIndex: =1
+
+                EDS_img_UserProfile As image:
+                    Height: =Parent.Height
+                    Image: =User().Image
+                    PaddingBottom: =10
+                    PaddingLeft: =10
+                    PaddingTop: =10
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+            EDS_EmployeeDataContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2,
+                       Parent.Height/1
+                    )
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutOverflowX: =LayoutOverflow.Scroll
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width/1.6
+                    )
+                ZIndex: =2
+
+                EDS_EmployeeCodeContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =1
+
+                    EDS_lbl_EmployeeCode As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Employee Code :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_EmployeeCode As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).dt_employee_code),"N/A",First(EmployeeData).dt_employee_code)
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                EDS_EmployeeNameContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    EDS_lbl_EmployeeName As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Employee Name :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_EmployeeName As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).firstname & " " & First(EmployeeData).lastname),"N/A",First(EmployeeData).firstname & " " & First(EmployeeData).lastname)
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EDS_EmployeeEmailContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =3
+
+                    EDS_lbl_EmployeeEmail As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Email :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_EmployeeEmail As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).emailaddress1),"N/A",First(EmployeeData).emailaddress1)
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EDS_EmployeeDOBContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    EDS_lbl_EmployeeDOB As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Date of Birth :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_EmployeeDOB As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).birthdate),"N/A",Text(DateValue(First(EmployeeData).birthdate),"dd/mmm/yyyy"))
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EDS_EmployeeDOJContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    EDS_lbl_EmployeeDOJ As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Date of Joining :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_EmployeeDOJ As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).dt_date_of_joining),"N/A",Text(DateValue(First(EmployeeData).dt_date_of_joining),"dd/mmm/yyyy"))
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EDS_EmployeeStatusContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    EDS_lbl_EmployeeStatus As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Employee Status :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_EmployeeStatus As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).dt_employment_status),"N/A",First(EmployeeData).dt_employment_status)
+                        DisplayMode: =DisplayMode.View
+                        PaddingLeft: =5
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                EDS_EmployeeDesignationContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    EDS_lbl_EmployeeDesignation As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Designation :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_EmployeeDesignation As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).dt_position.Name),"N/A",First(EmployeeData).dt_position.Name)
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EDS_EmployeeReportingManagerContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =8
+
+                    EDS_lbl_ReportingManager As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Reporting Manager :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                        ZIndex: =1
+
+                    EDS_txt_ReportingManager As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsBlank(First(EmployeeData).dt_manager.'Full Name'),"N/A",First(EmployeeData).dt_manager.'Full Name')
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+

@@ -1,0 +1,773 @@
+"LeaveRequestDetailsScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+
+    LRDS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Width: =Parent.Width
+        ZIndex: =1
+
+        LRDS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            Width: =Parent.Width
+            ZIndex: =2
+
+            LRDS_icon_back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.1,
+                       Parent.Height
+                    )
+                Icon: =Icon.ChevronLeft
+                OnSelect: =Navigate(LeaveRequestScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            LRDS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                PaddingRight: =100
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Leave Request"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                ZIndex: =2
+
+        LRDS_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            BorderColor: =AppColor.PrimaryColor
+            BorderThickness: =2
+            FillPortions: =0
+            Height: =Parent.Height/1.3
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutMinHeight: =100
+            LayoutMinWidth: =150
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            ZIndex: =3
+
+            LRDS_RequestDataContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                BorderColor: =AppColor.PrimaryColor
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2,
+                       Parent.Height/1.5
+                    )
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutOverflowX: =LayoutOverflow.Scroll
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width/1.6
+                    )
+                ZIndex: =1
+
+                LRDS_RequestNumberContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    LRDS_lbl_RequestNumber As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Number :"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    LRDS_txt_RequestNumber As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =LRS_gallery_FilterRequest.Selected.dt_application_request_number
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                LRDS_LeaveTypeContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =3
+
+                    LRDS_lbl_LeaveType As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Leave Type:"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    LRDS_txt_LeaveType As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =LRS_gallery_FilterRequest.Selected.'Leave Type'.'Leave Type Name'
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                LRDS_FromDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    LRDS_lbl_FromDate As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="From Date:"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    LRDS_txt_FromDate As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Text(DateValue(LRS_gallery_FilterRequest.Selected.dt_start_date),"dd/mmm/yyyy")
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                LRDS_ToDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    LRDS_lbl_ToDate As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="To Date:"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    LRDS_txt_ToDate As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Text(DateValue(LRS_gallery_FilterRequest.Selected.dt_end_date),"dd/mmm/yyyy")
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                LRDS_TotalDayContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    LRDS_lbl_TotalDay As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: ="Total Days Requested"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    LRDS_txt_TotalDay As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =LRS_gallery_FilterRequest.Selected.dt_day
+                        DisplayMode: =DisplayMode.View
+                        PaddingLeft: =5
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                LRDS_DecriptionContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    LRDS_lbl_Description As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description :"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    LRDS_txt_Description As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =LRS_gallery_FilterRequest.Selected.dt_description
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+            LRDS_ManagerContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                BorderColor: =AppColor.PrimaryColor
+                Height: =Parent.Height/2
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/2,
+                       Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+                LRDS_ReportingContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/4.5
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |
+                        =Parent.Width
+                    Y: =1
+                    ZIndex: =1
+
+                    LRDS_lbl_Reporting As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Reporting Manager :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    LRDS_lbl_ReportingValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =LRS_gallery_FilterRequest.Selected.'Request Approver'.'Full Name'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                LRDS_DelegateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/4.5
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |
+                        =Parent.Width
+                    Y: =2
+                    ZIndex: =2
+
+                    LRDS_lbl_Delegate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Delegate Approver :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    LRDS_lbl_DelegateValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =LRS_gallery_FilterRequest.Selected.'Request Approver'.'Full Name'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                LRDS_RequesterContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/4.5
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |
+                        =Parent.Width
+                    Y: |
+                        =0
+                    ZIndex: =3
+
+                    LRDS_lbl_Requester As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Sent By :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    LRDS_lbl_RequesterValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =LRS_gallery_FilterRequest.Selected.'Requested Employee'.'Full Name'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+        LRDS_ApproveContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =75
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =4
+
+            LRDS_btn_Declined As button:
+                Fill: =AppColor.DeclineColor
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |-
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = LRS_gallery_FilterRequest.Selected.dt_application_request_number
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Cancelled}
+                    );
+                    Notify(
+                        "Request Rejected",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Back();
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Decline"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            LRDS_btn_Approved As button:
+                Fill: =AppColor.ApproveColor
+                HoverFill: =ColorFade(RGBA(54, 176, 75, 1), -20%)
+                OnSelect: |
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = LRS_gallery_FilterRequest.Selected.dt_application_request_number
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Approved}
+                    );
+                    Notify(
+                        "Request Approved",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Back();
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Approve"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+

@@ -1,0 +1,770 @@
+EWDRequestDetailScreen As screen:
+
+    EWDS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        Width: =Parent.Width
+        ZIndex: =1
+
+        EWDS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            Width: =Parent.Width
+            ZIndex: =2
+
+            EWDS_icon_back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                OnSelect: =Navigate(ExtraWorkingManagerScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |-
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            EWDS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                PaddingRight: =100
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Extra Working Request"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                ZIndex: =2
+
+        EWDS_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            BorderColor: =AppColor.PrimaryColor
+            BorderThickness: =2
+            FillPortions: =0
+            Height: =Parent.Height/1.3
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutMinHeight: =100
+            LayoutMinWidth: =150
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            ZIndex: =3
+
+            EWDS_RequestDataContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                BorderColor: =AppColor.PrimaryColor
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2,
+                       Parent.Height/1.5
+                    )
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutOverflowX: =LayoutOverflow.Scroll
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width/1.6
+                    )
+                ZIndex: =1
+
+                EWDS_RequestNumberContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    EWDS_lbl_RequestNumber As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Number :"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    EWDS_txt_RequestNumber As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =EWDM_gallery_FilterRequest.Selected.'Application Request Number'
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EWDS_FromDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    EWDS_lbl_FromDate As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="From Date:"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    EWDS_txt_FromDate As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Text(DateValue(EWDM_gallery_FilterRequest.Selected.Startdate),"dd/mmm/yyyy")
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EWDS_ToDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    EWDS_lbl_ToDate As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="To Date:"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    EWDS_txt_ToDate As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Text(DateValue(EWDM_gallery_FilterRequest.Selected.Enddate),"dd/mmm/yyyy")
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EWDS_TotalDayContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    EWDS_lbl_TotalDay As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: ="Total Days Requested"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    EWDS_txt_TotalDay As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =EWDM_gallery_FilterRequest.Selected.Day
+                        DisplayMode: =DisplayMode.View
+                        PaddingLeft: =5
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                EWDS_DecriptionContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    EWDS_lbl_Description As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description :"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    EWDS_txt_Description As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =EWDM_gallery_FilterRequest.Selected.Description
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EWDS_ReasonContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =8
+
+                    EWDS_lbl_Reason As label:
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Reason :"
+                        Width: =Parent.Width/2
+                        ZIndex: =1
+
+                    EWDS_txt_Reason As text:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =EWDM_gallery_FilterRequest.Selected.Reason
+                        DisplayMode: =DisplayMode.View
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.8,
+                                Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+            EWDS_ManagerContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                BorderColor: =AppColor.PrimaryColor
+                Height: =Parent.Height/2
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/2,
+                       Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+                EWDS_ReportingContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/4.5
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |
+                        =Parent.Width
+                    Y: =1
+                    ZIndex: =1
+
+                    EWDS_lbl_Reporting As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Reporting Manager :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    EWDS_lbl_ReportingValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =EWDM_gallery_FilterRequest.Selected.'Request Approver'.'Full Name'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EWDS_DelegateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/4.5
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |
+                        =Parent.Width
+                    Y: =2
+                    ZIndex: =2
+
+                    EWDS_lbl_Delegate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Delegate Approver :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    EWDS_lbl_DelegateValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =EWDM_gallery_FilterRequest.Selected.'Request Approver'.'Full Name'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =3
+
+                EWDS_RequesterContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/4.5
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |
+                        =Parent.Width
+                    Y: |
+                        =0
+                    ZIndex: =3
+
+                    EWDS_lbl_Requester As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Sent By :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    EWDS_lbl_RequesterValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =EWDM_gallery_FilterRequest.Selected.'Requested Employee'.'Full Name'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+        EWDS_ApproveContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =75
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =4
+
+            EWDS_btn_Declined As button:
+                Fill: =AppColor.DeclineColor
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = EWDM_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Declined}
+                    );
+                    Notify(
+                        "Request Rejected",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Back()
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Decline"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            EWDS_btn_Approved As button:
+                Fill: =AppColor.ApproveColor
+                HoverFill: =ColorFade(RGBA(54, 176, 75, 1), -20%)
+                OnSelect: |-
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = EWDM_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Approved}
+                    );
+                    
+                    Notify(
+                        "Request Approved",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Back()
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Approve"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+

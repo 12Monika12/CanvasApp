@@ -1,0 +1,121 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "dt_applicationa_request_types",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "dt_applicationa_request_type",
+    "MaxGetRowsCount": 500,
+    "Name": "Application Request Types",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "dt_action_to_be_performed": "Action to be performed",
+      "dt_application_request_type_name": "Application Request Type Name",
+      "dt_applicationa_request_type_AsyncOperations": "System Jobs",
+      "dt_applicationa_request_type_BulkDeleteFailures": "Bulk Delete Failures",
+      "dt_applicationa_request_type_DuplicateBaseRecord": "Duplicate Records (dt_applicationa_request_type_DuplicateBaseRecord)",
+      "dt_applicationa_request_type_DuplicateMatchingRecord": "Duplicate Records (dt_applicationa_request_type_DuplicateMatchingRecord)",
+      "dt_applicationa_request_type_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "dt_applicationa_request_type_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "dt_applicationa_request_type_ProcessSession": "Process Sessions",
+      "dt_applicationa_request_type_SyncErrors": "Sync Errors",
+      "dt_applicationa_request_typeid": "Application Request Type",
+      "dt_dt_application_request_application_reques": "Application Requests",
+      "dt_dt_application_transaction_application_tr": "Application Transactions",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Application Request Types",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Application Request Types (Views)",
+    "Name": "_dt_applicationa_request_type_views",
+    "RelatedEntityName": "Application Request Types",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "05fa0dc8-8c68-4e5e-be29-54088eac2394": "Active Application Request Types",
+      "21519fcf-cc8a-4e94-b968-7ec6d2d95e5f": "Inactive Application Request Types",
+      "50b643c2-bcb1-4635-ac5f-034a61c07770": "Application Request Type Associated View",
+      "71d9bd15-c625-41c1-9014-e4d9d002e6b0": "Application Request Type Lookup View",
+      "be8ae4ee-9313-47b1-8c04-ab3b855ce2e8": "Application Request Type Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Action to be performed",
+    "Name": "dt_action_to_be_performed",
+    "OptionSetInfoNameMapping": {
+      "206500000": " Add Leave",
+      "206500001": "Substract Leave",
+      "206500002": "Do Nothing"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "dt_action_to_be_performed",
+        "OptionSetReferenceEntityName": "Application Request Types"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "dt_action_to_be_performed",
+    "RelatedEntityName": "Application Request Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Application Request Types)",
+    "Name": "dt_applicationa_request_type_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Application Request Types"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Application Request Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Application Request Types)",
+    "Name": "dt_applicationa_request_type_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Application Request Types"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Application Request Types",
+    "Type": "OptionSetInfo"
+  }
+]

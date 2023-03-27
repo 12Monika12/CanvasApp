@@ -1,0 +1,2159 @@
+"CreateLeaveRequestScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |+
+        =Reset(CLRS_dd_LeaveType);
+        Reset(CLRS_dp_FromDate);
+        Reset(CLRS_dp_ToDate);
+        Reset(CLRS_txt_Description);
+        Set(
+            SumOfPendingRequestPL,
+            Sum(
+                Filter(
+                    [@'Application Requests'],
+                    'Requested Employee'.Email = _myProfile.UserPrincipalName && 'Application Request Status' = [@'Application Request Status'].Submitted && 'Application Request Type'.'Application Request Type Name' = "Leave Request",
+                    'Leave Type'.'Leave Type Name' = "Paid Leave"
+                ),
+                Day
+            )
+        );
+        Set(
+            AvailableDayForPL,
+            Value(_requesterBalanceRecord.'Available Paid Leave') - SumOfPendingRequestPL
+        );
+        Set(
+            SumOfPendingRequestSL,
+            Sum(
+                Filter(
+                    [@'Application Requests'],
+                    'Requested Employee'.Email = _myProfile.UserPrincipalName && 'Application Request Status' = [@'Application Request Status'].Submitted && 'Application Request Type'.'Application Request Type Name' = "Leave Request",
+                    'Leave Type'.'Leave Type Name' = "Sick Leave"
+                ),
+                Day
+            )
+        );
+        Set(
+            AvailableDayForSL,
+            Value(_requesterBalanceRecord.' Available Sick Leave') - SumOfPendingRequestSL
+        );
+        
+        Set(
+            SumOfPendingRequestHL,
+            Sum(
+                Filter(
+                    [@'Application Requests'],
+                    'Requested Employee'.Email = _myProfile.UserPrincipalName && 'Application Request Status' = [@'Application Request Status'].Submitted && 'Application Request Type'.'Application Request Type Name' = "Leave Request",
+                    'Leave Type'.'Leave Type Name' = "Holiday Leave"
+                ),
+                Day
+            )
+        );
+        Set(
+            AvailableDayForHL,
+            Value(_requesterBalanceRecord.'Available Holiday Leave') - SumOfPendingRequestHL
+        );
+        
+        
+        
+
+    CLRS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        LayoutWrap: |-
+            =If(
+                App.ActiveScreen.Size = ScreenSize.Small,
+                true,
+                false
+            )
+        Width: =Parent.Width
+        ZIndex: =4
+
+        CLRS_HeaderContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            BorderColor: =AppColor.PrimaryColor
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            Width: =Parent.Width
+            ZIndex: =1
+
+            CLRS_icon_Back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    Parent.Height
+                Icon: =Icon.ChevronLeft
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        60,
+                        ScreenSize.Medium,
+                        70,
+                        80
+                        
+                    )
+                OnSelect: |
+                    =Navigate(LeaveApplicationScreen);
+                    Set(IsLeaveEdit,false);
+                PaddingLeft: =15
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            CLRS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =10
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height,
+                        Parent.Height
+                    )
+                LayoutMinWidth: =300
+                PaddingRight: =100
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: =If(IsLeaveEdit=true,"Leave Request","Create Leave Request")
+                Width: |
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+        CLRS_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        CLRS_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            Height: =Parent.Height
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    350,
+                    ScreenSize.Medium,
+                    480,
+                    500
+                    
+                )
+            LayoutMinWidth: =150
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            Width: =Parent.Width
+            Y: =CLRS_HeaderContainer.Height
+            ZIndex: =3
+
+            CLRS_DataRequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                FillPortions: =2
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.5,
+                       Parent.Height
+                    )
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =500
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        300,
+                        ScreenSize.Medium,
+                        400,
+                        500
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width/1.6
+                    )
+                ZIndex: =1
+
+                CLRS_RequestNumberContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                        Parent.Height/8)
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =If(IsLeaveEdit=true,true,false)
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =1
+
+                    CLRS_lbl_RequestNumber As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Number:"
+                        Width: |-
+                            =If(CLRS_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    CLRS_lbl_RequestNumberValue As label:
+                        Color: =AppColor.PrimaryColor
+                        DisplayMode: =If(IsLeaveEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =LAS_gallery_FilterRequest.Selected.'Application Request Number'
+                        Width: =Parent.Width/2.5
+                        ZIndex: =3
+
+                CLRS_LeaveTypeContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =3
+
+                    CLRS_lbl_LeaveType As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Leave Type:"
+                        Width: |-
+                            =If(CLRS_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    CLRS_dd_LeaveType As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        ChevronBackground: =RGBA(39, 113, 194, 1)
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsLeaveEdit=true,LAS_gallery_FilterRequest.Selected.'Leave Type'.'Leave Type Name')
+                        DisplayMode: =If(IsLeaveEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        Items: |
+                            =Filter(
+                               'Leave Types',
+                               Status = [@'Status (Leave Types)'].Active 
+                            )
+                        OnChange: =
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        SelectionFill: =RGBA(39, 113, 194, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =3
+
+                CLRS_FormDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    CLRS_lbl_FromDate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="From Date:"
+                        Width: |-
+                            =If(CLRS_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    CLRS_dp_FromDate As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsLeaveEdit = true,LAS_gallery_FilterRequest.Selected.Startdate,Today())
+                        DisplayMode: |-
+                            =If(
+                               CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(  
+                                    
+                                 !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Paid Leave') > 0 ,
+                              DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                 CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                   
+                                 !IsLeaveEdit &&  Value(_requesterBalanceRecord.' Available Sick Leave') > 0 ,
+                                     DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                                If(
+                                  
+                                 !IsLeaveEdit &&   Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 ,
+                                      DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                If(
+                                    
+                                 !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Birthday Leave') > 0 ,
+                                     DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                )
+                            )
+                        Format: ="dd/mmm/yyyy"
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnChange: |-
+                            =ClearCollect(
+                                HolidayListDate,
+                                Filter(
+                                    'Holiday Lists',
+                                    DateValue(Date)=CLRS_dp_FromDate.SelectedDate
+                                )
+                            );
+                            Set(
+                                HL_Date,
+                                CountRows(HolidayListDate)
+                            );
+                            
+                            Set(
+                                  SelectedStartDate,
+                                  CLRS_dp_FromDate.SelectedDate
+                            );
+                        OnSelect: |-
+                            =If(
+                                    !IsBlank(
+                                        LookUp(
+                                            'Holiday Lists',
+                                            Date = Text(
+                                                CLRS_dp_FromDate.SelectedDate,
+                                                DateTimeFormat.UTC
+                                            )
+                                        )
+                                    ),
+                                  Notify(  "This is already holiday for " & LookUp(
+                                        'Holiday Lists',
+                                        Text(
+                                            CLRS_dp_FromDate.SelectedDate,
+                                            DateTimeFormat.UTC
+                                        ) = Date
+                                    ).'Holiday Name'
+                                )
+                                
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                CLRS_ToDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    CLRS_lbl_ToDate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="To Date:"
+                        Width: |-
+                            =If(CLRS_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    CLRS_dp_ToDate As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: |-
+                            =If(IsLeaveEdit = true,LAS_gallery_FilterRequest.Selected.Enddate,If(
+                            CLRS_dd_LeaveType.Selected.'Leave Type Name'="Holiday Leave" || CLRS_dd_LeaveType.Selected.'Leave Type Name'="Birthday Leave",CLRS_dp_FromDate.SelectedDate,
+                            Today()))
+                        DisplayMode: |-
+                            =If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(
+                                   
+                                 !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Paid Leave') > 0 || Month(CLRS_dp_FromDate.SelectedDate) > Month(Today())  ,
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                    
+                                 !IsLeaveEdit &&  Value(_requesterBalanceRecord.' Available Sick Leave') > 0 || Month(CLRS_dp_FromDate.SelectedDate) > Month(Today()) ,
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave"|| CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave"|| Month(CLRS_dp_FromDate.SelectedDate) < Month(Today()) && IsLeaveEdit,
+                                DisplayMode.Disabled,
+                                DisplayMode.Edit
+                            )
+                        Format: ="dd/mmm/yyyy"
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnChange: |+
+                            =Set(AlreadyDateInDataBase,
+                            Filter(
+                               'Application Requests',
+                               'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                               'Application Request Type'.'Application Request Type Name' = "Leave Request",
+                                  (Startdate >= CLRS_dp_FromDate.SelectedDate && Startdate <= CLRS_dp_ToDate.SelectedDate) || (Enddate >= CLRS_dp_FromDate.SelectedDate && Enddate <= CLRS_dp_ToDate.SelectedDate)
+                                )
+                            );
+                            Set(
+                                AllListCount,
+                                CountRows(AlreadyDateInDataBase)
+                            );
+                            Set(
+                                checkStartDateAlreadyExists1,
+                                Filter(
+                                    'Application Requests',
+                                    'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                    Startdate >= CLRS_dp_FromDate.SelectedDate,
+                                    Enddate <= CLRS_dp_ToDate.SelectedDate,
+                                    'Application Request Type'.'Application Request Type Name' = "Leave Request",
+                                    'Application Request Status' = [@'Application Request Status'].Submitted
+                                    
+                                )
+                            );
+                            Set(
+                                pendingListCount,
+                                CountRows(checkStartDateAlreadyExists1)
+                            );
+                            Set(
+                                checkStartDateAlreadyExists,
+                                Filter(
+                                    'Application Requests',
+                                    'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                    Startdate >= CLRS_dp_FromDate.SelectedDate,
+                                    Enddate <= CLRS_dp_ToDate.SelectedDate,
+                                    'Application Request Type'.'Application Request Type Name' = "Leave Request",
+                                    'Application Request Status' = [@'Application Request Status'].Approved
+                                    
+                                )
+                            );
+                            Set(
+                                approveListCount,
+                                CountRows(checkStartDateAlreadyExists)
+                            );
+                            
+                            ClearCollect(
+                                HolidayListDate1,
+                                Filter(
+                                    'Holiday Lists',
+                                       DateValue(Date) >= CLRS_dp_FromDate.SelectedDate,
+                                    DateValue(Date) <= CLRS_dp_ToDate.SelectedDate
+                                )
+                            );
+                            Set(
+                                HL_Date1,
+                                CountRows(HolidayListDate1)
+                            );
+                            
+                        OnSelect: =
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                CLRS_LeaveDayContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    CLRS_lbl_LeaveDay As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Leave Days:"
+                        Width: |-
+                            =If(CLRS_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    CLRS_txt_DayCount As text:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: |-
+                            =If( CLRS_dp_FromDate.SelectedDate = CLRS_dp_ToDate.SelectedDate,
+                                    Text(
+                                        If(
+                                            [@CLRS_dd_DaysView].SelectedText.Value = "Half Day",
+                                            "0.5",
+                                            1 + ((DateDiff(
+                                                CLRS_dp_FromDate.SelectedDate,
+                                                CLRS_dp_ToDate.SelectedDate,
+                                                TimeUnit.Days
+                                            )) * 5 - ((Weekday(CLRS_dp_FromDate.SelectedDate) - Weekday(CLRS_dp_ToDate.SelectedDate))*2)) / 7 - Switch(
+                                                Weekday(CLRS_dp_ToDate.SelectedDate),
+                                                7,
+                                                1,
+                                                0
+                                            ) - Switch(
+                                                Weekday(CLRS_dp_FromDate.SelectedDate),
+                                                1,
+                                                1,
+                                                0
+                                            ) + If(
+                                                (With(
+                                                    {
+                                                        NextMonth: DateAdd(
+                                                            Date(
+                                                                Year(Now()),
+                                                                Month(Now()),
+                                                                1),
+                                                            1,
+                                                            TimeUnit.Months
+                                                        )
+                                                    },
+                                                    DateAdd(
+                                                        NextMonth,
+                                                        -1 * Weekday(
+                                                            DateAdd(
+                                                                NextMonth,
+                                                                -7
+                                                            )
+                                                        )
+                                                    )
+                                                ) > CLRS_dp_FromDate.SelectedDate - 1) && (With(
+                                                    {
+                                                        NextMonth: DateAdd(
+                                                            Date(
+                                                                Year(Now()),
+                                                                Month(Now()),
+                                                                1
+                                                            ),
+                                                            1,
+                                                            TimeUnit.Months
+                                                        )
+                                                    },
+                                                    DateAdd(
+                                                        NextMonth,
+                                                        -1 * Weekday(
+                                                            DateAdd(
+                                                                NextMonth,
+                                                                -7
+                                                            )
+                                                        )
+                                                    )
+                                                ) < CLRS_dp_ToDate.SelectedDate + 1),
+                                                1,
+                                                0
+                                            )
+                                        )
+                                    ),
+                            
+                                    CLRS_dp_FromDate.SelectedDate > CLRS_dp_ToDate.SelectedDate,
+                                    "0",
+                                    Text(
+                                        1 + ((DateDiff(
+                                            CLRS_dp_FromDate.SelectedDate,
+                                            CLRS_dp_ToDate.SelectedDate,
+                                            TimeUnit.Days
+                                        )) * 5 - ((Weekday(CLRS_dp_FromDate.SelectedDate) - Weekday(CLRS_dp_ToDate.SelectedDate))*2)) / 7 - Switch(
+                                            Weekday(CLRS_dp_ToDate.SelectedDate),
+                                            7,
+                                            1,
+                                            0
+                                        ) - Switch(
+                                            Weekday(CLRS_dp_FromDate.SelectedDate),
+                                            1,
+                                            1,
+                                            0
+                                        ) + If(
+                                            (With(
+                                                {
+                                                    NextMonth: DateAdd(
+                                                        Date(
+                                                            Year(Now()),
+                                                            Month(Now()),
+                                                            1
+                                                        ),
+                                                        1,
+                                                        TimeUnit.Months
+                                                    )
+                                                },
+                                                DateAdd(
+                                                    NextMonth,
+                                                    -1 * Weekday(
+                                                        DateAdd(
+                                                            NextMonth,
+                                                            -7
+                                                        )
+                                                    )
+                                                )
+                                            ) > CLRS_dp_FromDate.SelectedDate - 1) && (With(
+                                                {
+                                                    NextMonth: DateAdd(
+                                                        Date(
+                                                            Year(Now()),
+                                                            Month(Now()),
+                                                            1
+                                                        ),
+                                                        1,
+                                                        TimeUnit.Months
+                                                    )
+                                                },
+                                                DateAdd(
+                                                    NextMonth,
+                                                    -1 * Weekday(
+                                                        DateAdd(
+                                                            NextMonth,
+                                                            -7
+                                                        )
+                                                    )
+                                                )
+                                            ) < CLRS_dp_ToDate.SelectedDate + 1),
+                                            1,
+                                            0
+                                        )
+                                    )
+                                )
+                        DisplayMode: |-
+                            =If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Paid Leave') > 0 && AvailableDayForPL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Paid Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 &&AllListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.' Available Sick Leave') > 0 && AvailableDayForSL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.' Available Sick Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0&& AllListCount<=0&& Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 && AvailableDayForHL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Holiday Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 &&AllListCount<=0&& Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Birthday Leave') > 0 && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 &&AllListCount<=0&&  approveListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                   
+                                    DisplayMode.Disabled
+                                ),
+                                If(
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                     DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                )
+                                
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                35
+                                
+                            )
+                        OnChange: =If(Value(CLRS_lbl_DayCount.Text)>AvailableDayForPL,Notify("You have insuficient balance to apply leave"))
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Visible: =false
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/14,
+                                ScreenSize.Medium,
+                                Parent.Width/14,
+                                ScreenSize.Large,
+                                Parent.Width/15,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/14
+                            )
+                        ZIndex: =2
+
+                    CLRS_lbl_DayCount As label:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        BorderThickness: =2
+                        Color: =RGBA(39, 113, 194, 1)
+                        DisabledBorderColor: =RGBA(153, 153, 153, 1)
+                        DisplayMode: |-
+                            =If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Paid Leave') > 0 && AvailableDayForPL > 0 && Value(CLRS_lbl_DayCount.Text) < Value(_requesterBalanceRecord.'Available Paid Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0&& Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                  !IsLeaveEdit &&  Value(_requesterBalanceRecord.' Available Sick Leave') > 0 && AvailableDayForSL > 0 && Value(CLRS_lbl_DayCount.Text) < Value(_requesterBalanceRecord.' Available Sick Leave') && HL_Date <=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0&&Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 && AvailableDayForHL > 0 && Value(CLRS_lbl_DayCount.Text) < Value(_requesterBalanceRecord.'Available Holiday Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 &&AllListCount<=0&& Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Birthday Leave') > 0 && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0&&Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                   
+                                    DisplayMode.Disabled
+                                ),
+                                If(
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                     DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                )
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                7,
+                                ScreenSize.Medium,
+                                7,
+                                13
+                                
+                            )
+                        Text: =Text(CLRS_txt_DayCount) //If(Day_input - Text(HL_Date + HL_Date1)<0,0,Day_input - Text(HL_Date + HL_Date1))
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/12,
+                                ScreenSize.Medium,
+                                Parent.Width/12,
+                                ScreenSize.Large,
+                                Parent.Width/16,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/16
+                            )
+                        ZIndex: =4
+
+                    CLRS_dd_DaysView As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =
+                        DisplayMode: |-
+                            =If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(
+                                    !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Paid Leave') > 0 && AvailableDayForPL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Paid Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0&& Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                    !IsLeaveEdit && Value(_requesterBalanceRecord.' Available Sick Leave') > 0 && AvailableDayForSL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.' Available Sick Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0&&Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 && AvailableDayForHL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Holiday Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && AllListCount<=0&&approveListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Birthday Leave') > 0 && HL_Date<=0 && HL_Date1<=0 &&AllListCount<=0&& pendingListCount <= 0 && approveListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                   
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Leave without Pay",
+                                If(
+                                   !IsLeaveEdit && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0&& AllListCount<=0&&Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                If(
+                                    !IsLeaveEdit && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()) ,
+                                     DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                )
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        Items: |
+                            =If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                ["Half Day"],
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave" && AvailableDayForHL < 1 && !IsLeaveEdit,
+                                ["Half Day"],
+                                [
+                                    "Half Day",
+                                    "Full Day"
+                                ]
+                            )
+                        OnChange: =true
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Visible: =If(Value(CLRS_lbl_DayCount.Text)>1,false,true)
+                        Width: |-
+                            =
+                            If(CLRS_dd_HalfDaysView.Visible,
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/4,
+                                ScreenSize.Medium,
+                                Parent.Width/4.2,
+                                ScreenSize.Large,
+                                Parent.Width/4.2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4.2
+                            ),Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                            )
+                        ZIndex: =5
+
+                    CLRS_dd_HalfDaysView As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsLeaveEdit = true,LAS_gallery_FilterRequest.Selected.'Half Day')
+                        DisplayMode: |-
+                            =If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Paid Leave') > 0 && AvailableDayForPL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Paid Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                    !IsLeaveEdit && Value(_requesterBalanceRecord.' Available Sick Leave') > 0 && AvailableDayForSL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.' Available Sick Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0&&Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 && AvailableDayForHL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Holiday Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today())&&Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                If(
+                                   !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Birthday Leave') > 0 && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 && AllListCount<=0&& Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                   
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Leave without Pay",
+                                If(
+                                   !IsLeaveEdit && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 &&AllListCount<=0&& Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                   
+                                    DisplayMode.Disabled
+                                ),
+                                If(
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()),
+                                     DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                )
+                                
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        Items: =Choices([@'Application Requests'].'Half Day')
+                        OnSelect: =true
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Visible: =If(CLRS_dd_DaysView.SelectedText.Value="Half Day"&& Value(CLRS_lbl_DayCount.Text)<1,true,false)
+                        Width: |-
+                            =If(CLRS_dd_HalfDaysView.Visible,
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/4,
+                                ScreenSize.Medium,
+                                Parent.Width/4.2,
+                                ScreenSize.Large,
+                                Parent.Width/4.2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4.2
+                            ),Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                            )
+                        ZIndex: =6
+
+                CLRS_DescriptionContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6.5,
+                           Parent.Height/6
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    CLRS_lbl_Description As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description:"
+                        Width: |-
+                            =If(CLRS_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    CLRS_txt_Description As text:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsLeaveEdit = true,LAS_gallery_FilterRequest.Selected.Description,"")
+                        DisplayMode: |-
+                            =If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(
+                                    !IsLeaveEdit && Value(_requesterBalanceRecord.'Available Paid Leave') > 0 &&
+                                     AvailableDayForPL > 0 && 
+                                     Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Paid Leave') && 
+                                     HL_Date <= 0 && HL_Date1 <= 0 && 
+                                     pendingListCount <= 0 && 
+                                     approveListCount <= 0 && 
+                                     AllListCount<=0 &&
+                                     Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && 
+                                     Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.' Available Sick Leave') > 0 && 
+                                    AvailableDayForSL > 0 && 
+                                    Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.' Available Sick Leave') && 
+                                    HL_Date <= 0 && HL_Date1 <= 0 && 
+                                    pendingListCount <= 0 && 
+                                    approveListCount <= 0 && 
+                                    AllListCount<=0 &&
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && 
+                                    Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 && 
+                                    AvailableDayForHL > 0 && 
+                                    Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Holiday Leave') && 
+                                    HL_Date <= 0 && HL_Date1 <= 0 && 
+                                    pendingListCount <= 0 && 
+                                    approveListCount <= 0 && 
+                                    AllListCount<=0 &&
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && 
+                                    Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Birthday Leave') > 0 && 
+                                    HL_Date <= 0 && HL_Date1 <= 0 && 
+                                    pendingListCount <= 0 && 
+                                    approveListCount <= 0 && 
+                                    AllListCount<=0 &&
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && 
+                                    Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Leave without Pay",
+                                If(
+                                    HL_Date <= 0 && HL_Date1 <= 0 && 
+                                    pendingListCount <= 0 && 
+                                    approveListCount <= 0 && 
+                                    AllListCount<=0 &&
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && 
+                                    Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                If(
+                                    Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                )
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                40,
+                                ScreenSize.Medium,
+                                50,
+                                80
+                                
+                            )
+                        MaxLength: =50
+                        Mode: =TextMode.MultiLine
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                CLRS_MsgContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/4,
+                           Parent.Height/4
+                        )
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    PaddingTop: =5
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =8
+
+                    CLRS_lbl_AvailbleBal As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =
+                            If(
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Paid Leave') > 0 && AvailableDayForPL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Paid Leave'),
+                                    "",
+                                    "You dont have suficient balance to take leave"
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.' Available Sick Leave') > 0 && AvailableDayForSL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.' Available Sick Leave'),
+                                    "",
+                                    "You dont have suficient balance to take leave"
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 && AvailableDayForHL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Holiday Leave'),
+                                    "",
+                                    "You dont have suficient balance to take leave"
+                                ),
+                                CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                                If(
+                                    Value(_requesterBalanceRecord.'Available Birthday Leave') > 0,
+                                    "",
+                                    "You dont have suficient balance to take leave"
+                                )
+                                
+                            )
+                        Visible: |-
+                            =
+                            true
+                        Width: =Parent.Width/1.5
+                        ZIndex: =2
+
+                    CLRS_lbl_Holiday_msg As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |
+                            =
+                                If(HL_Date1>0|| HL_Date>0,"This is already holiday")
+                              
+                        Visible: |-
+                            =
+                            true
+                        Width: =Parent.Width/1.5
+                        ZIndex: =3
+
+                    CLRS_lbl_PastMonth_msg As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =
+                                If(
+                                    Month(CLRS_dp_FromDate.SelectedDate) = Month(Today()) || CLRS_dp_FromDate.SelectedDate > Today(),
+                                    " ",
+                                    "The date should be in the current month or future month."
+                                    
+                                )
+                        Visible: |-
+                            =
+                            true
+                        Width: =Parent.Width/1.5
+                        ZIndex: =4
+
+                    CLRS_lbl_SameDate_msg As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =If(!IsLeaveEdit,If(pendingListCount > 0 || approveListCount>0 ||AllListCount>0,"You have already taken a leave on this day"))
+                        Visible: |
+                            =
+                            If(pendingListCount > 0 || approveListCount>0 ||AllListCount>0 ,true,false)
+                        Width: =Parent.Width/1.5
+                        ZIndex: =5
+
+            CLRS_ManagerContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/4,
+                        Parent.Height
+                    )
+                LayoutMinHeight: =250
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        200,
+                        350
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.5,
+                       Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+                CLRS_ReportingContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =1
+                    ZIndex: =1
+
+                    CLRS_lbl_Reporting As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Reporting Manager :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.3,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    CLRS_lblReportingValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                35,
+                                35
+                                
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =//Office365Users.Manager(User().Email).DisplayName
+                            _myProfile.DisplayName
+                        Width: =Parent.Width/2.2
+                        ZIndex: =4
+
+                CLRS_DelegateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =2
+                    ZIndex: =2
+
+                    CLRS_lbl_Delegate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Delegate Approver :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.3,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    CLRS_dd_DelegateValue As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Office365Users.Manager(User().Email).DisplayName
+                        DisplayMode: |-
+                            =If(
+                                   IsLeaveEdit,DisplayMode.View,DisplayMode.Edit)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                35,
+                                35
+                                
+                            )
+                        Items: =Filter([@contact],'Is Manager' = [@'Is Manager (contact)'].Yes)
+                        OnChange: =true
+                        OnSelect: =true
+                        Reset: =true
+                        Width: =Parent.Width/2.2
+                        ZIndex: =2
+
+                    CLRS_lbl_DelegateValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                35,
+                                35
+                                
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                        Visible: =false
+                        Width: =Parent.Width/2.2
+                        ZIndex: =3
+
+                CLRS_StatusContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =If(IsLeaveEdit=true,true,false)
+                    Width: =Parent.Width
+                    Y: |
+                        =0
+                    ZIndex: =3
+
+                    CLRS_lbl_Status As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Status :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.3,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    CLRS_lblStatusValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                35,
+                                35
+                                
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =LAS_gallery_FilterRequest.Selected.'Application Request Status'
+                        Width: =Parent.Width/2.2
+                        ZIndex: =2
+
+        CLRS_SubmitContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =Parent.Height/10
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    200,
+                    ScreenSize.Medium,
+                    250,
+                    350
+                    
+                )
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            Y: =462
+            ZIndex: =4
+
+            CLRS_btn_Cancelled As button:
+                BorderColor: =RGBA(255, 0, 0, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |-
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = LAS_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Cancelled}
+                    );
+                    Reset(CLRS_dp_FromDate);Reset(CLRS_dp_ToDate);Reset(CLRS_txt_Description);
+                    Notify(
+                        "Request Cancelled",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Set(
+                        IsLeaveEdit,
+                        false
+                    );
+                    Navigate(LeaveApplicationScreen,BorderStyle.None)
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Cancelled"
+                Visible: =If(IsLeaveEdit =true && _requestTypeFilter="Pending",true,false)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            CLRS_btn_Submited As button:
+                DisplayMode: |-
+                    =If(!IsLeaveEdit,If(
+                        CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Paid Leave",
+                        If(
+                            Value(_requesterBalanceRecord.'Available Paid Leave') > 0 && AvailableDayForPL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Paid Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 &&AllListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        ),
+                        CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Sick Leave",
+                        If(
+                            Value(_requesterBalanceRecord.' Available Sick Leave') > 0 && AvailableDayForSL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.' Available Sick Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 &&AllListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        ),
+                        CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Holiday Leave",
+                        If(
+                            Value(_requesterBalanceRecord.'Available Holiday Leave') > 0 && AvailableDayForHL > 0 && Value(CLRS_lbl_DayCount.Text) <= Value(_requesterBalanceRecord.'Available Holiday Leave') && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && approveListCount<=0 &&AllListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                            DisplayMode.Edit,
+                            
+                            DisplayMode.Disabled
+                        ),
+                        CLRS_dd_LeaveType.SelectedText.'Leave Type Name' = "Birthday Leave",
+                        If(
+                            Value(_requesterBalanceRecord.'Available Birthday Leave') > 0 && HL_Date<=0 && HL_Date1<=0 && pendingListCount <= 0 && AllListCount<=0 &&approveListCount<=0 && Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                            DisplayMode.Edit,
+                           
+                            DisplayMode.Disabled
+                        ),
+                        If(
+                            Month(CLRS_dp_FromDate.SelectedDate) >= Month(Today()) && Month(CLRS_dp_ToDate.SelectedDate) >= Month(Today()),
+                             DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        )
+                    ))
+                Fill: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        300,
+                        350
+                        
+                    )
+                OnSelect: |-
+                    =If(
+                        !IsBlank(CLRS_txt_Description.Text),
+                        If(
+                        //Edit Request
+                            IsLeaveEdit = true,
+                            Patch(
+                                'Application Requests',
+                                First(
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Number' = LAS_gallery_FilterRequest.Selected.'Application Request Number'
+                                    )
+                                ),
+                                {
+                                    'Leave Type': CLRS_dd_LeaveType.SelectedText,
+                                    Startdate: CLRS_dp_FromDate.SelectedDate,
+                                    Enddate: CLRS_dp_ToDate.SelectedDate,
+                                    Description: CLRS_txt_Description.Text,
+                                    'Application Request Status': [@'Application Request Status'].Submitted,
+                                    'Request Approver': LookUp(
+                                        contact,
+                                        Email = _myProfile.UserPrincipalName//_myManager.UserPrincipalName
+                                    ),
+                                    'Request Delegate Approver ': LookUp(contact,'Full Name' = CLRS_dd_DelegateValue.SelectedText.Value),
+                                    'Application Request Type': LookUp(
+                                        'Application Request Types',
+                                        'Application Request Type Name' = "Leave Request"
+                                    ),
+                                    Day: Value(CLRS_lbl_DayCount.Text),
+                                    'Half Day': CLRS_dd_HalfDaysView.Selected.Value,
+                                    'Requested Employee': LookUp(
+                                        contact,
+                                        Email = _myProfile.UserPrincipalName
+                                    ),
+                                    'Leave Balance': LookUp(
+                                        'Leave Balances',
+                                        Employee.Email = _myProfile.UserPrincipalName && Employee.'Full Name' = _myProfile.DisplayName
+                                    )
+                                }
+                            ),
+                        //Create a new requets
+                            Patch(
+                                'Application Requests',
+                                Defaults('Application Requests'),
+                                {
+                                    'Leave Type': CLRS_dd_LeaveType.SelectedText,
+                                    Startdate: CLRS_dp_FromDate.SelectedDate,
+                                    Enddate: CLRS_dp_ToDate.SelectedDate,
+                                    Description: CLRS_txt_Description.Text,
+                                    'Application Request Status': [@'Application Request Status'].Submitted,
+                                    'Request Approver': LookUp(
+                                        contact,
+                                        Email = _myProfile.UserPrincipalName//_myManager.UserPrincipalName
+                                    ),
+                                    'Request Delegate Approver ': LookUp(contact,'Full Name' = CLRS_dd_DelegateValue.SelectedText.Value),
+                                    'Application Request Type': LookUp(
+                                        'Application Request Types',
+                                        'Application Request Type Name' = "Leave Request"
+                                    ),
+                                    Day: Value(CLRS_lbl_DayCount.Text),
+                                    'Half Day': CLRS_dd_HalfDaysView.Selected.Value,
+                                    'Requested Employee': LookUp(
+                                        contact,
+                                        Email = _myProfile.UserPrincipalName
+                                    ),
+                                    'Leave Balance': LookUp(
+                                        'Leave Balances',
+                                        Employee.Email = _myProfile.UserPrincipalName && Employee.'Full Name' = _myProfile.DisplayName
+                                    )
+                                }
+                            )
+                        );
+                        Navigate(LeaveApplicationScreen);
+                        Reset(CLRS_dp_FromDate);
+                        Reset(CLRS_dp_ToDate);
+                        Reset(CLRS_txt_Description);
+                        Notify(
+                            "Request Submitted",
+                            NotificationType.Success
+                        );
+                        Refresh('Application Requests');
+                        Set(
+                            IsLeaveEdit,
+                            false
+                        );
+                        ,
+                        Notify(
+                            "Description Required",
+                            NotificationType.Error
+                        );
+                        
+                    )
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: =If(IsLeaveEdit=true,"Save","Submit")
+                Visible: =If(IsLeaveEdit=true,false,true)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+

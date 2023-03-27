@@ -1,0 +1,802 @@
+"ExpenseApproverScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |-
+        =Reset(EAS_dd_Login);
+        
+        Clear(colSelected);
+        Reset(EAS_cb_SelectAll);
+        
+        Set(
+            RequestSelect,
+            "Approved by Reviewer"
+        );
+        
+        ClearCollect(colRequestdata,Sort(
+            If(RequestSelect = "Approved by Reviewer",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].'Approved Reviewer',
+            'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value),
+            If(RequestSelect = "Approved by Manager",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].Approved,'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value))),
+            'Created On',SortOrder.Descending));
+
+    EAS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =1
+
+        EAS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingRight: =10
+            Width: =Parent.Width
+            ZIndex: =1
+
+            EAS_icon_back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                OnSelect: =Navigate(LoginScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |-
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            EAS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =7
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Expense Approver"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                ZIndex: =2
+
+            EAS_dd_Login As dropdown:
+                AlignInContainer: =AlignInContainer.Center
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(39, 113, 194, 1)
+                Color: =RGBA(39, 113, 194, 1)
+                Default: ="Approver"
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2.5,
+                        Parent.Height/2
+                    )
+                HoverColor: =RGBA(39, 113, 194, 1)
+                Items: |-
+                    =Table(
+                        {
+                            Text: "Reviewer",
+                            screen: ExpenseReviewerScreen
+                        },
+                        {
+                            Text: "Employee",
+                            screen: ExpenseManagementScreen
+                        },
+                         {
+                            Text: "Approver",
+                            screen: ExpenseApproverScreen
+                         }
+                        
+                    )
+                OnChange: |+
+                    = Navigate(
+                            EAS_dd_Login.Selected.screen,
+                            ScreenTransition.Fade
+                        )
+                    
+                PaddingBottom: =5
+                PaddingLeft: =5
+                PaddingRight: =5
+                PaddingTop: =5
+                PressedFill: =RGBA(39, 113, 194, 1)
+                Reset: =true
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        6,
+                       12
+                    )
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        100,
+                        ScreenSize.Medium,
+                        200,
+                        250
+                        
+                    )
+                ZIndex: =4
+
+        EAS_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        EAS_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            LayoutMinHeight: =600
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =3
+
+            EAS_FilterViewContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/9.5,
+                       Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Medium,
+                        Parent.Height/9.5,
+                        Parent.Height/10
+                    )
+                    )
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: =Parent.Width
+                ZIndex: =1
+
+                EAS_FilterContainer As groupContainer.horizontalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width/1.5
+                    ZIndex: =2
+
+                    EAS_gallery_RequestFilter As gallery.galleryHorizontal:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        Height: =Parent.Height
+                        Items: |-
+                            =Table(
+                                {Filter: "Approved by Reviewer"},
+                                {Filter: "Approved by Manager"}
+                            )
+                        LayoutMinHeight: =Parent.Height
+                        LayoutMinWidth: =Parent.Width
+                        ShowScrollbar: =false
+                        TemplateSize: =Parent.Width/CountRows(Self.AllItems)-10
+                        Width: =Parent.Width
+                        X: =
+                        Y: =
+                        ZIndex: =7
+
+                        ERS_button_Filter_1 As button:
+                            BorderColor: =RGBA(10, 106, 204, 1)
+                            BorderThickness: =If(RequestSelect=ThisItem.Filter,0,1)
+                            Color: =If(RequestSelect=ThisItem.Filter,RGBA(255, 255, 255, 1),RGBA(10, 106, 204, 1))
+                            DisabledBorderColor: =ColorFade(ERS_button_Filter_1.BorderColor, 70%)
+                            DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                            DisabledFill: =ColorFade(RGBA(159, 167, 165, 1), 50%)
+                            Fill: =If(RequestSelect = ThisItem.Filter,RGBA(0, 134, 208, 1),RGBA(255, 255, 255, 1))
+                            FocusedBorderColor: =ERS_button_Filter_1.BorderColor
+                            FontWeight: =FontWeight.Normal
+                            HoverBorderColor: =ColorFade(ERS_button_Filter_1.BorderColor, 20%)
+                            HoverColor: =ERS_button_Filter_1.Color
+                            HoverFill: =ColorFade(ERS_button_Filter_1.Fill, 20%)
+                            OnSelect: |-
+                                =Set(RequestSelect,ThisItem.Filter);
+                                Clear(colSelected);
+                                Reset(EAS_cb_SelectAll);
+                                
+                                ClearCollect(colRequestdata,Sort(
+                                    If(RequestSelect = "Approved by Reviewer",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].'Approved Reviewer',
+                                    'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value),
+                                    If(RequestSelect = "Approved by Manager",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].Approved,'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value))),
+                                    'Created On',SortOrder.Descending));
+                            PressedBorderColor: =ERS_button_Filter_1.Fill
+                            PressedColor: =ERS_button_Filter_1.Fill
+                            PressedFill: =ERS_button_Filter_1.Color
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                   9,
+                                   12
+                                )
+                            Text: =ThisItem.Filter
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/2.5,
+                                   Parent.Width/3
+                                )
+                            Y: =6
+                            ZIndex: =1
+
+                EAS_ViewContainer As groupContainer.horizontalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.End
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    PaddingRight: =10
+                    Width: =Parent.Width/3
+                    ZIndex: =3
+
+                    EAS_dd_View As dropdown:
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        ChevronBackground: =RGBA(39, 113, 194, 1)
+                        Color: =RGBA(39, 113, 194, 1)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/2.5,
+                                Parent.Height/2
+                            )
+                        HoverColor: =RGBA(39, 113, 194, 1)
+                        Items: |-
+                            =Filter(
+                                Choices('Expense Requests (Views)'),
+                                Value = 'Expense Requests (Views)'.'All Expense' || Value = 'Expense Requests (Views)'.'Last Month Expense' || Value = 'Expense Requests (Views)'.'This Month Expense' || Value = 'Expense Requests (Views)'.'This Year Expense'
+                            ).Value
+                        OnChange: |-
+                            =Clear(colSelected);
+                            Reset(EAS_cb_SelectAll);
+                            ClearCollect(colRequestdata,Sort(
+                                If(RequestSelect = "Approved by Reviewer",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].'Approved Reviewer',
+                                'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value),
+                                If(RequestSelect = "Approved by Manager",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].Approved,'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value))),
+                                'Created On',SortOrder.Descending));
+                        PressedFill: =RGBA(39, 113, 194, 1)
+                        SelectionFill: =RGBA(39, 113, 194, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.2,
+                                ScreenSize.Medium,
+                                Parent.Width/1.2,
+                                Parent.Width/1.22
+                                
+                            )
+                        ZIndex: =7
+
+            EAS_SelectAllContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =1
+                FillPortions: =0
+                Height: =75
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Visible: =If(RequestSelect = "Approved by Manager",false,true) && EAS_gallery_FilterRequest.Visible
+                Width: =Parent.Width
+                ZIndex: =2
+
+                EAS_cb_SelectAll As checkbox:
+                    AlignInContainer: =AlignInContainer.Center
+                    BorderColor: =RGBA(39, 113, 194, 1)
+                    BorderStyle: =BorderStyle.None
+                    CheckboxBorderColor: =RGBA(39, 113, 194, 1)
+                    CheckboxSize: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                           25,
+                           40
+                        )
+                    CheckmarkFill: =RGBA(39, 113, 194, 1)
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Bold
+                    HoverColor: =RGBA(39, 113, 194, 1)
+                    OnCheck: =Collect(colSelected,colRequestdata)
+                    OnUncheck: =Remove(colSelected,colRequestdata)
+                    PaddingLeft: =17
+                    PressedColor: =RGBA(39, 113, 194, 1)
+                    Reset: =ResetCheckbox2
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            9,
+                            ScreenSize.Medium,
+                            10,
+                            12
+                            
+                        )
+                    Text: ="Select All"
+                    Visible: =If(RequestSelect = "Approved by Manager",false,true) && EAS_gallery_FilterRequest.Visible
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                           Parent.Width/3
+                        )
+                    ZIndex: =1
+
+            EAS_RequestContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: =Parent.Height/1.3
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: =Parent.Width
+                ZIndex: =3
+
+                "EAS_gallery_FilterRequest As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height
+                    Items: =colRequestdata
+                    Layout: =Layout.Vertical
+                    LayoutMinHeight: =260
+                    LayoutMinWidth: =Parent.LayoutMinWidth
+                    TemplatePadding: =0
+                    TemplateSize: =100
+                    Visible: =CountRows(EAS_gallery_FilterRequest.AllItems) > 0
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+                    EAS_lbl_ExpenseNumber As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Bold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                27,
+                                30
+                            )
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =If(Len(Text(ThisItem.'Expense Request Number' & " | " & ThisItem.'Expense Requester'.'Full Name'))>23,Left(Text(ThisItem.'Expense Request Number' & " | " & ThisItem.'Expense Requester'.'Full Name'),23),Text(ThisItem.'Expense Request Number' & " | " & ThisItem.'Expense Requester'.'Full Name'))
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.1,
+                                Parent.Width/3
+                            )
+                        X: =60
+                        Y: =7
+                        ZIndex: =2
+
+                    EAS_rect_Separator As rectangle:
+                        Fill: =AppColor.PrimaryColor
+                        Height: =1
+                        OnSelect: =Select(Parent)
+                        Width: =Parent.TemplateWidth
+                        Y: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Y+100,
+                                 Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Large,
+                                Parent.Y+100,
+                                Parent.Y+95
+                            )
+                            )
+                        ZIndex: =5
+
+                    EAS_lbl_Description As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                27,
+                                30
+                            )
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                              10,13
+                            )
+                        Text: |-
+                            ="Description :" & ThisItem.Description
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2.5
+                            )
+                        X: =60
+                        Y: =37
+                        ZIndex: =7
+
+                    EAS_lbl_ExpenseDate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                27,
+                                30
+                            )
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                              10,13
+                            )
+                        Text: =Text(DateValue(ThisItem.'Expense Date'),"dd/mmm/yyyy") & " - " & Text(DateValue(ThisItem.'End Date'),"dd/mmm/yyyy")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2.5
+                            )
+                        X: =60
+                        Y: =63
+                        ZIndex: =8
+
+                    EAS_icon_Next As icon.ChevronRight:
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/6,
+                               Parent.Height/8
+                            )
+                        Icon: =Icon.ChevronRight
+                        OnSelect: =Select(Parent)
+                        Visible: =false
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                               40
+                            )
+                        X: =Parent.TemplateWidth-Self.Width-25
+                        Y: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                5,
+                               12
+                            )
+                        ZIndex: =9
+
+                    EAS_cb_Select As checkbox:
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        BorderStyle: =BorderStyle.None
+                        CheckboxBorderColor: =RGBA(39, 113, 194, 1)
+                        CheckboxSize: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                               25,
+                               40
+                            )
+                        CheckmarkFill: =RGBA(39, 113, 194, 1)
+                        Color: =RGBA(39, 113, 194, 1)
+                        Default: =ThisItem in colSelected
+                        Height: =45
+                        HoverColor: =RGBA(39, 113, 194, 1)
+                        OnCheck: =Collect(colSelected,ThisItem)
+                        OnSelect: =Select(Parent)
+                        OnUncheck: =Remove(colSelected,ThisItem)
+                        PressedColor: =RGBA(39, 113, 194, 1)
+                        Size: =0
+                        Text: =""
+                        Visible: =If(RequestSelect = "Approved by Manager",false,true)
+                        Width: =40
+                        X: =17
+                        Y: =25
+                        ZIndex: =10
+
+                    EAS_lbl_Amount As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Normal
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                27,
+                                30
+                            )
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                               10,
+                               13
+                            )
+                        Text: ="$10000.00"
+                        Visible: =false
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                Parent.Width/8
+                            )
+                        X: |-
+                            =
+                            
+                            
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.TemplateWidth-Self.Width-10,
+                                Parent.TemplateWidth-Self.Width-100
+                            )
+                        Y: =30
+                        ZIndex: =11
+
+                EAS_lbl_NoRequests As label:
+                    Align: =Align.Center
+                    BorderColor: =RGBA(101, 128, 187, 1)
+                    Color: =RGBA(47,41,43,1)
+                    DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                    FocusedBorderColor: =EAS_lbl_NoRequests.BorderColor
+                    Font: =Font.Lato
+                    Height: =Parent.Height
+                    HoverBorderColor: =EAS_lbl_NoRequests.BorderColor
+                    HoverColor: =EAS_lbl_NoRequests.Color
+                    HoverFill: =EAS_lbl_NoRequests.Fill
+                    LayoutMinHeight: =Parent.Height-500
+                    PressedBorderColor: =EAS_lbl_NoRequests.BorderColor
+                    PressedColor: =EAS_lbl_NoRequests.Color
+                    PressedFill: =EAS_lbl_NoRequests.Fill
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            12,
+                            ScreenSize.Medium,
+                           16,
+                           18
+                        )
+                    Text: ="No " &(RequestSelect)& " Requests"
+                    Visible: =!EAS_gallery_FilterRequest.Visible
+                    Width: =Parent.Width
+                    X: =250
+                    Y: =438
+                    ZIndex: =2
+
+        EAS_FooterContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =75
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =4
+
+            EAS_btn_Decline As button:
+                Fill: =AppColor.DeclineColor
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf(
+                        colSelected,
+                        true, // If any tasks selected by checkbox as we have created this collection on Oncheck of Check box//
+                        { // Below the bold letter are the SharePoint Column name which we want to update. //
+                            'Expense Request Status': [@'Expense Request Status'].Rejected
+                        }
+                    );
+                    
+                    ClearCollect(
+                        coldatatoPatch1, // Created a temporary collection //
+                        ShowColumns(  // The column names which need to be patch are listed //
+                            colSelected,
+                            "dt_expense_requestid",
+                            "dt_expense_request_status",
+                            "dt_expense_request_number"
+                        )
+                    );
+                    
+                    Patch('Expense Requests',  // Sharepoint List//
+                        coldatatoPatch1 // Temporary collection//
+                    );
+                    
+                    ClearCollect(updateLinedata, Filter('Expense Request Lines','Expense Request Number'.'Expense Request Number' in colSelected.'Expense Request Number'));
+                    
+                    UpdateIf(updateLinedata,true, 
+                    { 
+                        'Expense Request Line Status': [@'Expense Request Line Status'].Rejected
+                    }
+                    );
+                    
+                    ClearCollect(
+                        coldatatoPatch2, // Created a temporary collection //
+                        ShowColumns(  // The column names which need to be patch are listed //
+                            updateLinedata,
+                            "dt_expense_request_lineid",
+                            "dt_expense_request_line_status",
+                            "dt_expense_request_number"
+                        )
+                      );
+                    
+                    Patch('Expense Request Lines',  // Sharepoint List//
+                        coldatatoPatch2 // Temporary collection//
+                    );
+                    
+                    Clear(colSelected);  //Clear the collection of tasks selected b checkbox//
+                    
+                    ClearCollect(colRequestdata,Sort(
+                        If(RequestSelect = "Approved by Reviewer",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].'Approved Reviewer',
+                        'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value),
+                        If(RequestSelect = "Approved by Manager",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].Approved,'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value))),
+                        'Created On',SortOrder.Descending));
+                    
+                    Set(ResetCheckbox2,true); // Reset the checkbox value in Select All set the Reset property ResetCheckbox2
+                    
+                    Notify("Expense Rejected",NotificationType.Success);
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        10,
+                       13
+                    )
+                Text: ="Decline"
+                Visible: =CountRows(colSelected)>0
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            EAS_btn_Approve As button:
+                Fill: =AppColor.ApproveColor
+                HoverFill: =ColorFade(RGBA(54, 176, 75, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        colSelected,
+                        true, // If any tasks selected by checkbox as we have created this collection on Oncheck of Check box//
+                        { // Below the bold letter are the SharePoint Column name which we want to update. //
+                            'Expense Request Status': [@'Expense Request Status'].Approved
+                        }
+                    );
+                    
+                    ClearCollect(
+                        coldatatoPatch1, // Created a temporary collection //
+                        ShowColumns(  // The column names which need to be patch are listed //
+                            colSelected,
+                            "dt_expense_requestid",
+                            "dt_expense_request_status"
+                        )
+                    );
+                    Patch('Expense Requests',  // Sharepoint List//
+                        coldatatoPatch1 // Temporary collection//
+                    );
+                    
+                    ClearCollect(updateLinedata, Filter('Expense Request Lines', 'Expense Request Number'.'Expense Request Number' in colSelected.'Expense Request Number'));
+                    
+                    UpdateIf(updateLinedata,true, 
+                    { 
+                        'Expense Request Line Status': [@'Expense Request Line Status'].Approved
+                    }
+                    );
+                    
+                    ClearCollect(
+                        coldatatoPatch2, // Created a temporary collection //
+                        ShowColumns(  // The column names which need to be patch are listed //
+                            updateLinedata,
+                            "dt_expense_request_lineid",
+                            "dt_expense_request_line_status",
+                            "dt_expense_request_number"
+                        )
+                      );
+                    
+                    Patch('Expense Request Lines',  // Sharepoint List//
+                        coldatatoPatch2 // Temporary collection//
+                    );
+                    
+                    Clear(colSelected);  //Clear the collection of tasks selected b checkbox//
+                    
+                    ClearCollect(colRequestdata,Sort(
+                        If(RequestSelect = "Approved by Reviewer",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].'Approved Reviewer',
+                        'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value),
+                        If(RequestSelect = "Approved by Manager",Filter('Expense Requests','Expense Request Status' = [@'Expense Request Status'].Approved,'Expense Approver'.Email= _myProfile.UserPrincipalName,EAS_dd_View.Selected.Value))),
+                        'Created On',SortOrder.Descending));
+                    Set(
+                        ResetCheckbox2,
+                        true
+                    ); // Reset the checkbox value in Select All set the Reset property ResetCheckbox2
+                    
+                    Notify("Expense Approved",NotificationType.Success);
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        10,
+                       13
+                    )
+                Text: ="Approve"
+                Visible: =CountRows(colSelected)>0
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+

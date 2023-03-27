@@ -1,0 +1,117 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "dt_leave_balances",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "dt_leave_balance",
+    "MaxGetRowsCount": 500,
+    "Name": "Leave Balances",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "dt_available_birthday_leave": "Available Birthday Leave",
+      "dt_available_holiday_leave": "Available Holiday Leave",
+      "dt_available_leave_balance": "Available Leave Balance",
+      "dt_available_paid_leave": "Available Paid Leave",
+      "dt_available_sick_leave": " Available Sick Leave",
+      "dt_birthday_leave": "Birthday Leave",
+      "dt_dt_application_request_leave_balance_dt_l": "Application Requests",
+      "dt_dt_application_transaction_leave_balance_": "Application Transactions",
+      "dt_employee": "Employee",
+      "dt_extra_working_day": "Extra Working Day",
+      "dt_holiday_leave": "Holiday Leave",
+      "dt_leave_balance_AsyncOperations": "System Jobs",
+      "dt_leave_balance_BulkDeleteFailures": "Bulk Delete Failures",
+      "dt_leave_balance_DuplicateBaseRecord": "Duplicate Records (dt_leave_balance_DuplicateBaseRecord)",
+      "dt_leave_balance_DuplicateMatchingRecord": "Duplicate Records (dt_leave_balance_DuplicateMatchingRecord)",
+      "dt_leave_balance_id": "Leave Balance ID",
+      "dt_leave_balance_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "dt_leave_balance_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "dt_leave_balance_ProcessSession": "Process Sessions",
+      "dt_leave_balance_SyncErrors": "Sync Errors",
+      "dt_leave_balanceid": "Leave Balance",
+      "dt_leave_without_pay": "Leave Without Pay",
+      "dt_paid_leave": "Paid Leave",
+      "dt_sick_leave": "Sick Leave",
+      "dt_total_leave_balance": " Total Leave Balance",
+      "dt_total_used_leave": "Total Used Leave",
+      "dt_used_birthday_leave": "Used Birthday Leave",
+      "dt_used_holiday_leave": "Used Holiday Leave",
+      "dt_used_paid_leave": "Used Paid Leave",
+      "dt_used_sick_leave": "Used Sick Leave",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Leave Balances",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Leave Balances (Views)",
+    "Name": "_dt_leave_balance_views",
+    "RelatedEntityName": "Leave Balances",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "1261f5ac-0869-4a4e-96d2-e62b6c9a5177": "Leave Balance Associated View",
+      "36eddfe9-8caa-434b-b1d0-df57938c9319": "Active Leave Balances",
+      "56c429f1-71d1-4110-8a38-ae1a6fb8a28e": "Leave Balance Lookup View",
+      "b4f287bb-3c58-4b10-b60c-62be18062b9c": "Leave Balance Advanced Find View",
+      "dfeb0757-f696-4834-84f1-74a145a2f4dc": "Inactive Leave Balances"
+    }
+  },
+  {
+    "DisplayName": "Status (Leave Balances)",
+    "Name": "dt_leave_balance_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Leave Balances"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Leave Balances",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Leave Balances)",
+    "Name": "dt_leave_balance_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Leave Balances"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Leave Balances",
+    "Type": "OptionSetInfo"
+  }
+]

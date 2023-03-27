@@ -1,0 +1,1691 @@
+ExtraWorkingRequestScreen As screen:
+    OnVisible: |-
+        =Reset(EWDR_dp_FromDate);Reset(EWDR_dp_ToDate);Reset(EWDR_txt_Description);Reset(EWDR_txt_Reason);
+        With({startDate:DateValue(EWDR_dp_FromDate.SelectedDate),
+              sequenceDays: Sequence(DateDiff(DateValue(EWDR_dp_FromDate.SelectedDate),
+                                              DateValue(EWDR_dp_ToDate.SelectedDate)) + 1)
+              },
+              ClearCollect(GetDatesList, 
+                           AddColumns(sequenceDays,
+                                      "Date",
+                                       DateAdd(startDate, Value - 1, TimeUnit.Days),
+                                      "Day Num",
+                                      "Day " & (Value),
+                                      "Day Name",                              
+                                      Text(DateAdd(startDate, Value - 1, TimeUnit.Days),
+                                           "dddd"
+                                      )
+                           )
+              )
+        );
+        ClearCollect(colMatch,Filter(GetDatesList,Not(Date in 'Holiday Lists'.Date)));
+
+    EWDR_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        LayoutWrap: |-
+            =If(
+                App.ActiveScreen.Size = ScreenSize.Small,
+                true,
+                false
+            )
+        Width: =Parent.Width
+        ZIndex: =1
+
+        EWDR_HeaderContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            BorderColor: =AppColor.PrimaryColor
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            Width: =Parent.Width
+            ZIndex: =1
+
+            EWDR_icon_Back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        60,
+                        ScreenSize.Medium,
+                        70,
+                        80
+                        
+                    )
+                OnSelect: |-
+                    =Navigate(ExtraWorkingScreen);
+                    Set(IsEWDEdit,false);
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            EWDR_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =10
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height,
+                        Parent.Height
+                    )
+                LayoutMinWidth: =300
+                PaddingRight: =100
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: =If(IsEWDEdit = true,"Request Extra Working","Request Extra Working")
+                Width: |
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+        EWDR_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        EWDR_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.Center
+            Height: =Parent.Height
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    350,
+                    ScreenSize.Medium,
+                    480,
+                    500
+                    
+                )
+            LayoutMinWidth: =150
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            Width: =Parent.Width
+            Y: =EWDR_HeaderContainer.Height
+            ZIndex: =3
+
+            EWDR_DataRequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Start
+                BorderColor: =AppColor.PrimaryColor
+                BorderStyle: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        BorderStyle.None,
+                       BorderStyle.Solid
+                    )
+                FillPortions: =2
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.5,
+                       Parent.Height
+                    )
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =500
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        300,
+                        ScreenSize.Medium,
+                        400,
+                        500
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width/1.6
+                    )
+                ZIndex: =1
+
+                EWDR_RequestNumberContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =IsEWDEdit
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =1
+
+                    EWDR_lbl_RequestNumber As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Number:"
+                        Width: =Parent.Width/2.5
+                        ZIndex: =1
+
+                    EWDR_lbl_RequestNumberValue As label:
+                        Color: =AppColor.PrimaryColor
+                        DisplayMode: =If(IsEWDEdit,DisplayMode.Disabled)
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =EWD_gallery_FilterRequest.Selected.'Application Request Number'
+                        Width: =Parent.Width/2.5
+                        ZIndex: =3
+
+                EWDR_FormDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    EWDR_lbl_FromDate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="From Date:"
+                        Width: |-
+                            =If(EWDR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    EWDR_dp_FromDate As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsEWDEdit = true,EWD_gallery_FilterRequest.Selected.Startdate,Today())
+                        DisplayMode: =If(IsEWDEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                        Format: ="dd/mmm/yyyy"
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnSelect: |-
+                            =With({NextMonth:
+                                     DateAdd(
+                                             Date(Year(Now()),Month(Now()),1),1,TimeUnit.Months
+                                     )
+                                  },Set(StartLastSaturday,DateAdd(NextMonth, -1 * Weekday(DateAdd(NextMonth, - 7)))
+                            ));
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                EWDR_ToDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =3
+
+                    EWDR_lbl_ToDate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="To Date:"
+                        Width: |-
+                            =If(EWDR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    EWDR_dp_ToDate As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsEWDEdit = true,EWD_gallery_FilterRequest.Selected.Enddate,Today())
+                        DisplayMode: =If(IsEWDEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                        Format: ="dd/mmm/yyyy"
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnSelect: |-
+                            =With({NextMonth:
+                                     DateAdd(
+                                             Date(Year(Now()),Month(Now()),1),1,TimeUnit.Months
+                                     )
+                                  },Set(EndLastSaturday,DateAdd(NextMonth, -1 * Weekday(DateAdd(NextMonth, - 7)))
+                            ));
+                            With({startDate:DateValue(EWDR_dp_FromDate.SelectedDate),
+                                  sequenceDays: Sequence(DateDiff(DateValue(EWDR_dp_FromDate.SelectedDate),
+                                                                  DateValue(EWDR_dp_ToDate.SelectedDate)) + 1)
+                                  },
+                                  ClearCollect(GetDatesList, 
+                                               AddColumns(sequenceDays,
+                                                          "Date",
+                                                           DateAdd(startDate, Value - 1, TimeUnit.Days),
+                                                          "Day Num",
+                                                          "Day " & (Value),
+                                                          "Day Name",                              
+                                                          Text(DateAdd(startDate, Value - 1, TimeUnit.Days),
+                                                               "dddd"
+                                                          )
+                                               )
+                                  )
+                            );
+                            ClearCollect(colMatch,Filter(GetDatesList,Not(Date in 'Holiday Lists'.Date)));
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                EWDR_LeaveDayContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    EWDR_lbl_LeaveDay As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Days:"
+                        Width: |-
+                            =If(EWDR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    EWDR_txt_DayCount As text:
+                        Align: =Align.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: |-
+                            =If( EWDR_dp_FromDate.SelectedDate = EWDR_dp_ToDate.SelectedDate,
+                                    Text(
+                                        If(
+                                            [@EWDR_dd_DaysView].SelectedText.Value = "Half Day",
+                                            "0.5",
+                                            1 + (DateDiff(
+                                                EWDR_dp_FromDate.SelectedDate,
+                                                EWDR_dp_ToDate.SelectedDate,
+                                                TimeUnit.Days
+                                            )))
+                                    ),
+                            
+                                EWDR_dp_FromDate.SelectedDate > EWDR_dp_ToDate.SelectedDate,
+                                    "0",
+                                    Text(
+                                        1 + (DateDiff(
+                                            EWDR_dp_FromDate.SelectedDate,
+                                            EWDR_dp_ToDate.SelectedDate,
+                                            TimeUnit.Days
+                                        ))  
+                                    )
+                                )
+                        DisplayMode: |-
+                            =If(
+                                (Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                                DisplayMode.Edit,
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Visible: =false
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/14,
+                                ScreenSize.Medium,
+                                Parent.Width/14,
+                                ScreenSize.Large,
+                                Parent.Width/15,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/14
+                            )
+                        ZIndex: =2
+
+                    EWDR_lbl_DayCount As label:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        BorderThickness: =2
+                        Color: =RGBA(0, 121, 187, 1)
+                        DisabledBorderColor: =RGBA(153, 153, 153, 1)
+                        DisplayMode: |-
+                            =If(
+                                !IsEWDEdit &&(Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                                If(
+                                    IsEmpty(colMatch),
+                                    DisplayMode.Edit,
+                                    If(
+                            // Check if weekend is selected
+                                        Weekday(
+                                            First(colMatch).Date,
+                                            StartOfWeek.Monday
+                                        ) > 5,
+                                        If(
+                                            StartLastSaturday = EWDR_dp_FromDate.SelectedDate || EndLastSaturday = EWDR_dp_ToDate.SelectedDate,
+                                            DisplayMode.Disabled,
+                                            DisplayMode.Edit
+                                        ),
+                                        DisplayMode.Disabled
+                                    )
+                                ),
+                                DisplayMode.Disabled
+                            )
+                        FocusedBorderThickness: =5
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                7,
+                               13
+                            )
+                        Text: |-
+                            =If(IsEWDEdit = true,EWD_gallery_FilterRequest.Selected.Day,
+                            If( EWDR_dp_FromDate.SelectedDate = EWDR_dp_ToDate.SelectedDate,
+                                    Text(
+                                        If(
+                                            [@EWDR_dd_DaysView].SelectedText.Value = "Half Day",
+                                            "0.5",
+                                            1 + (DateDiff(
+                                                EWDR_dp_FromDate.SelectedDate,
+                                                EWDR_dp_ToDate.SelectedDate,
+                                                TimeUnit.Days
+                                            )))
+                                    ),
+                            
+                                EWDR_dp_FromDate.SelectedDate > EWDR_dp_ToDate.SelectedDate,
+                                    "0",
+                                    Text(
+                                        1 + (DateDiff(
+                                            EWDR_dp_FromDate.SelectedDate,
+                                            EWDR_dp_ToDate.SelectedDate,
+                                            TimeUnit.Days
+                                        ))  
+                                    )
+                                )
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/12,
+                                ScreenSize.Medium,
+                                Parent.Width/12,
+                                ScreenSize.Large,
+                                Parent.Width/16,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/16
+                            )
+                        Wrap: =false
+                        ZIndex: =3
+
+                    EWDR_dd_DaysView As dropdown:
+                        BorderColor: =RGBA(0, 134, 208, 1)
+                        ChevronBackground: =RGBA(0, 134, 208, 1)
+                        ChevronHoverBackground: =ColorFade(RGBA(0, 134, 208, 1), -20%)
+                        Color: =RGBA(10, 106, 204, 1)
+                        Default: =If(IsEWDEdit = true && EWD_gallery_FilterRequest.Selected.Day = 0.5,"Half Day","Full Day")
+                        DisplayMode: |-
+                            =If(
+                               !IsEWDEdit&& (Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                                    If(IsEmpty(colMatch),DisplayMode.Edit,If(
+                            // Check if weekend is selected
+                                Weekday(
+                                    First(colMatch).Date,
+                                    StartOfWeek.Monday
+                                ) > 5,
+                                If(
+                                    StartLastSaturday = EWDR_dp_FromDate.SelectedDate || EndLastSaturday = EWDR_dp_ToDate.SelectedDate,
+                                    DisplayMode.Disabled,
+                                    DisplayMode.Edit
+                                ),
+                                DisplayMode.Disabled
+                            )),
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        Items: =["Full Day","Half Day"]
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        PressedFill: =RGBA(0, 134, 208, 1)
+                        SelectionFill: =RGBA(0, 134, 208, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Visible: =If(Value(EWDR_txt_DayCount.Text) > 1 , false, true)
+                        Width: |-
+                            =
+                            If(EWDR_dd_HalfDaysView.Visible,
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/4,
+                                ScreenSize.Medium,
+                                Parent.Width/4.2,
+                                ScreenSize.Large,
+                                Parent.Width/4.2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4.2
+                            ),Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                            )
+                        ZIndex: =4
+
+                    EWDR_dd_HalfDaysView As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        ChevronBackground: =RGBA(39, 113, 194, 1)
+                        Color: =AppColor.PrimaryColor
+                        DisplayMode: |-
+                            =If(
+                              !IsEWDEdit &&  (Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                                    If(IsEmpty(colMatch),DisplayMode.Edit,If(
+                            // Check if weekend is selected
+                                Weekday(
+                                    First(colMatch).Date,
+                                    StartOfWeek.Monday
+                                ) > 5,
+                                If(
+                                    StartLastSaturday = EWDR_dp_FromDate.SelectedDate || EndLastSaturday = EWDR_dp_ToDate.SelectedDate,
+                                    DisplayMode.Disabled,
+                                    DisplayMode.Edit
+                                ),
+                                DisplayMode.Disabled
+                            )),
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        Items: =Choices([@'Application Requests'].'Half Day')
+                        OnSelect: =true
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        SelectionFill: =RGBA(39, 113, 194, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Visible: =If(EWDR_dd_DaysView.SelectedText.Value="Half Day" && Value(EWDR_lbl_DayCount.Text)<1,true,false)
+                        Width: |-
+                            =If(EWDR_dd_DaysView.SelectedText.Value="Half Day" && Value(EWDR_lbl_DayCount.Text),
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/4,
+                                ScreenSize.Medium,
+                                Parent.Width/4.2,
+                                ScreenSize.Large,
+                                Parent.Width/4.2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4.2
+                            ),Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                            )
+                        ZIndex: =5
+
+                EWDR_DescriptionContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    EWDR_lbl_Description As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description :"
+                        Width: |-
+                            =If(EWDR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    EWDR_txt_Description As text:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsEWDEdit = true,EWD_gallery_FilterRequest.Selected.Description,"")
+                        DisplayMode: |-
+                            =If(
+                               !IsEWDEdit &&  (Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                                If(
+                                    IsEmpty(colMatch),
+                                    DisplayMode.Edit,
+                                    If(
+                            // Check if weekend is selected
+                                        Weekday(
+                                            First(colMatch).Date,
+                                            StartOfWeek.Monday
+                                        ) > 5,
+                                        If(
+                                            StartLastSaturday = EWDR_dp_FromDate.SelectedDate || EndLastSaturday = EWDR_dp_ToDate.SelectedDate,
+                                            DisplayMode.Disabled,
+                                            DisplayMode.Edit
+                                        ),
+                                        DisplayMode.Disabled
+                                    )
+                                ),
+                                DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                40,
+                                ScreenSize.Medium,
+                                50,
+                                80
+                                
+                            )
+                        MaxLength: =50
+                        Mode: =TextMode.MultiLine
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                EWDR_ReasonContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    EWDR_lbl_Reason As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Reason :"
+                        Width: |-
+                            =If(EWDR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    EWDR_txt_Reason As text:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsEWDEdit = true,EWD_gallery_FilterRequest.Selected.Reason,"")
+                        DisplayMode: |-
+                            =If(
+                               !IsEWDEdit &&  (Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                                    If(IsEmpty(colMatch),DisplayMode.Edit,If(
+                            // Check if weekend is selected
+                                Weekday(
+                                    First(colMatch).Date,
+                                    StartOfWeek.Monday
+                                ) > 5,
+                                If(
+                                    StartLastSaturday = EWDR_dp_FromDate.SelectedDate || EndLastSaturday = EWDR_dp_ToDate.SelectedDate,
+                                    DisplayMode.Disabled,
+                                    DisplayMode.Edit
+                                ),
+                                DisplayMode.Disabled
+                            )),
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                40,
+                                ScreenSize.Medium,
+                                50,
+                                80
+                                
+                            )
+                        MaxLength: =50
+                        Mode: =TextMode.MultiLine
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                EWDR_MsgContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    EWDR_lbl_PastMonth_Msg As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =If(
+                                (Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                                " ",
+                                "The date should be in the current month or future month."
+                            )
+                        Visible: |-
+                            =
+                            true
+                        Width: =Parent.Width/1.5
+                        ZIndex: =4
+
+                    EWDR_lbl_WorkingDay_Msg As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: ="Extra Working not apply on working day."
+                        Visible: |-
+                            =If(IsEmpty(colMatch),false,If(
+                            // Check if weekend is selected
+                                Weekday(
+                                    First(colMatch).Date,
+                                    StartOfWeek.Monday
+                                ) > 5,
+                                If(
+                                    StartLastSaturday = EWDR_dp_FromDate.SelectedDate || EndLastSaturday = EWDR_dp_ToDate.SelectedDate,
+                                    true,
+                                    false
+                                ),
+                                true
+                            ))
+                        Width: =Parent.Width/1.5
+                        ZIndex: =5
+
+            EWDR_ManagerContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderStyle: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        BorderStyle.None,
+                       BorderStyle.Solid
+                    )
+                Height: |
+                    =
+                    Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/4,
+                        Parent.Height
+                    )
+                LayoutGap: =
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =250
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        200,
+                        350
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.5,
+                       Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+                EWDR_ReportingContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =1
+                    ZIndex: =1
+
+                    EWDR_lbl_Reporting As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Reporting Manager :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    EWDR_lblReportingValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                EWDR_DelegateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =2
+                    ZIndex: =2
+
+                    EWDR_lbl_Delegate As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Delegate Approver :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    EWDR_lbl_DelegateValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                        Visible: =false
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                    EWDR_dd_DelegateValue As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Office365Users.Manager(User().Email).DisplayName
+                        DisplayMode: |-
+                            =If(
+                                   IsEWDEdit,DisplayMode.View,DisplayMode.Edit)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                35,
+                                35
+                                
+                            )
+                        Items: =Filter([@contact],'Is Manager' = [@'Is Manager (contact)'].Yes)
+                        OnChange: =true
+                        OnSelect: =true
+                        Reset: =true
+                        Width: =Parent.Width/2.2
+                        ZIndex: =3
+
+                EWDR_StatusContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =IsEWDEdit
+                    Width: =Parent.Width
+                    Y: =1
+                    ZIndex: =3
+
+                    EWDR_lbl_Status As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Request Status :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    EWDR_lblStatusValue As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =EWD_gallery_FilterRequest.Selected.'Application Request Status'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+        EWDR_SubmitContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =Parent.Height/10
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    200,
+                    ScreenSize.Medium,
+                    250,
+                    350
+                    
+                )
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            Y: =462
+            ZIndex: =4
+
+            EWDR_btn_Cancelled As button:
+                BorderColor: =RGBA(255, 0, 0, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = EWD_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Cancelled}
+                    );
+                    Reset(EWDR_dp_FromDate);Reset(EWDR_dp_ToDate);Reset(EWDR_txt_Description);
+                    Notify(
+                        "Request Cancelled",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Set(
+                        IsEWDEdit,
+                        false
+                    );
+                    Back()
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Cancelled"
+                Visible: |-
+                    =//IsEWDEdit
+                    If(IsEWDEdit=true && RequestSelect="Pending",true,false)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            EWDR_btn_Submited As button:
+                DisplayMode: |-
+                    =If(
+                        (Month(EWDR_dp_FromDate.SelectedDate) = Month(Today()) || EWDR_dp_FromDate.SelectedDate > Today()) && (Month(EWDR_dp_ToDate.SelectedDate) = Month(Today()) || EWDR_dp_ToDate.SelectedDate > Today()),
+                            If(IsEmpty(colMatch),DisplayMode.Edit,If(
+                    // Check if weekend is selected
+                        Weekday(
+                            First(colMatch).Date,
+                            StartOfWeek.Monday
+                        ) > 5,
+                        If(
+                            StartLastSaturday = EWDR_dp_FromDate.SelectedDate || EndLastSaturday = EWDR_dp_ToDate.SelectedDate,
+                            DisplayMode.Disabled,
+                            DisplayMode.Edit
+                        ),
+                        DisplayMode.Disabled
+                    )),
+                       DisplayMode.Disabled
+                    )
+                Fill: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        300,
+                        350
+                        
+                    )
+                OnSelect: |
+                    =If(
+                        !IsBlank(EWDR_txt_Description.Text)
+                        And !IsBlank(EWDR_txt_Reason.Text),
+                    If(IsEWDEdit = true,Patch('Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = EWD_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {
+                            Startdate: EWDR_dp_FromDate.SelectedDate,
+                            Enddate:EWDR_dp_ToDate.SelectedDate,
+                            Day:Value(EWDR_lbl_DayCount.Text),
+                            'Half Day':EWDR_dd_HalfDaysView.Selected.Value,
+                            Description: EWDR_txt_Description.Text,
+                            Reason:EWDR_txt_Reason.Text,
+                            'Request Delegate Approver ': LookUp(contact,'Full Name' = EWDR_dd_DelegateValue.SelectedText.Value),
+                            'Application Request Status': [@'Application Request Status'].Submitted
+                        }
+                    ),Patch('Application Requests',
+                        Defaults('Application Requests'),
+                        {
+                        'Application Request Type': LookUp('Application Request Types','Application Request Type Name' = "Extra Working Request"),
+                            Startdate: EWDR_dp_FromDate.SelectedDate,
+                            Enddate:EWDR_dp_ToDate.SelectedDate,
+                            Day:Value(EWDR_lbl_DayCount.Text),
+                            'Half Day':EWDR_dd_HalfDaysView.Selected.Value,
+                            Description: EWDR_txt_Description.Text,
+                            Reason:EWDR_txt_Reason.Text,
+                            'Requested Employee': LookUp(contact,'Full Name' = _myProfile.DisplayName),
+                            'Request Approver': LookUp(contact,'Full Name'= EWDR_lblReportingValue.Text),
+                            'Request Delegate Approver ': LookUp(contact,'Full Name' = EWDR_dd_DelegateValue.SelectedText.Value),
+                            'Leave Balance': LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName && Employee.'Full Name' = _myProfile.DisplayName
+                            ),
+                            'Application Request Status': [@'Application Request Status'].Submitted
+                        }
+                    ));
+                    Reset(EWDR_dp_FromDate);Reset(EWDR_dp_ToDate);Reset(EWDR_txt_Description);Reset(EWDR_txt_Reason);
+                    Notify("Request Submitted",NotificationType.Success);
+                    Refresh('Application Requests');
+                    Set(IsEWDEdit,false);
+                    Back(),Notify(
+                            "Description and Reason Required",
+                            NotificationType.Error
+                        );)
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: =If(IsEWDEdit = true ,"Save","Submit")
+                Visible: =If(IsEWDEdit=true,false,true)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+

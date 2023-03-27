@@ -1,0 +1,97 @@
+"UserGuideScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+
+    UGS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =1
+
+        UGS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =2
+
+            UGS_icon_Back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.1,
+                       Parent.Height
+                    )
+                Icon: =Icon.ChevronLeft
+                OnSelect: =Back()
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            UGS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =11
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="User Guide"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                Wrap: =false
+                ZIndex: =2
+
+            UGS_icon_Download As icon.Download:
+                BorderColor: =RGBA(39, 113, 194, 1)
+                Color: =RGBA(39, 113, 194, 1)
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.1,
+                       Parent.Height
+                    )
+                Icon: =Icon.Download
+                OnSelect: |-
+                    =Download("https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf")
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                X: =40
+                Y: =40
+                ZIndex: =3
+
+    UGS_PdfViewer As pdfViewer:
+        BorderColor: =RGBA(0, 0, 0, 1)
+        DisplayMode: =DisplayMode.View
+        Document: |-
+            ="https://blog.mozilla.org/security/files/2015/05/HTTPS-FAQ.pdf"
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =Parent.Height - UGS_MainContainer.Height
+        ShowControls: =true
+        Width: =Parent.Width
+        Y: =75
+        ZIndex: =2
+

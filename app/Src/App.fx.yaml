@@ -1,0 +1,69 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |-
+        =Set(
+            AppColor,
+            {
+                PrimaryColor: ColorValue("#0070c0"),
+                ApproveColor: ColorValue("#006600"),
+                DeclineColor: ColorValue("#ff0000")
+            }
+        );
+        ClearCollect(
+            RequestCollection,
+            {
+                type: "Leave Application",
+                icon: LeaveRequest
+            },
+            {
+                type: "Extra Working Day",
+                icon: ExtraWorking
+            },
+            {
+                type: "Night Shift Allowance",
+                icon: NightShift
+            },
+            {
+                type: "Work From Home",
+                icon: WorkFromHome
+            },
+            {
+                type: "Holiday List",
+                icon: HolidayList
+            },
+            {
+                type: "Employee Details",
+                icon: EmployeeDetail
+            },
+            {
+                type: "Expense Report",
+                icon: Expense
+            },
+            {
+                type: "User Guide",
+                icon: UserGuide
+            }
+        );
+        Set(
+            _myProfile,
+            Office365Users.MyProfile()
+        );
+        Set(
+            _myManager,
+            Office365Users.Manager(_myProfile.Id)
+        );
+        ClearCollect(
+            LeaveBalanceGalleryCollection,
+            {type: "Pending"},
+            {type: "Approved"},
+            {type: "Rejected"},
+            {type: "Cancelled"}
+        );
+        ClearCollect(
+            UserRoles,
+            (LookUp(
+                Users,
+                domainname = User().Email
+            ).'Security Roles (systemuserroles_association)').Name
+        )
+

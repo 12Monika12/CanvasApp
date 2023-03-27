@@ -1,0 +1,109 @@
+{
+  "180c1ae1-cb82-408a-97ce-92f75cd963e3": {
+    "connectionParameters": {
+      "sku": "Enterprise"
+    },
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Office 365 Users",
+      "iconUri": "https://connectoricons-prod.azureedge.net/u/laborbol/releases/ase-v3/1.0.1622.3202/office365users/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_office365users",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [
+      "Office365Users"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "180c1ae1-cb82-408a-97ce-92f75cd963e3"
+  },
+  "42c471eb-5525-4174-9f70-1f2d5b824ae7": {
+    "connectionParameters": {
+      "logicAppHostType": "ARM",
+      "workFlowCallbackUri": "https://prod-93.westus.logic.azure.com:443/workflows/c2720773cf2846d28ea23b3b84af2b28/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NM4Pw9Y9InR6sQkHe6YpvvNLr-KFCfWPJIgOlRgBLMk",
+      "workflowEndpoint": "/subscriptions/9f3a0e5f-8058-487f-9d45-d3ff51164c54/resourceGroups/d39f97dadbb240a09651829e92444131-8250a9bfeb76ef4cba38b14a0bb0110c-env/providers/Microsoft.Logic/workflows/e5405e4d-0a3c-ec26-b46c-5556bb10a7ec",
+      "workflowEntityId": "03752ddb-ecbc-ed11-83ff-000d3a34ed12",
+      "workflowName": "e5405e4d-0a3c-ec26-b46c-5556bb10a7ec",
+      "workflowPath": "/subscriptions/9f3a0e5f-8058-487f-9d45-d3ff51164c54/resourceGroups/d39f97dadbb240a09651829e92444131-8250a9bfeb76ef4cba38b14a0bb0110c-env/providers/Microsoft.Logic/workflows/e5405e4d-0a3c-ec26-b46c-5556bb10a7ec"
+    },
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Logic flows",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1615/1.0.1615.3163/logicflows/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
+      "parameterHints": {
+        "53c485f5-7a23-499b-b760-491a105033a2": {
+          "value": "shared_onedriveforbusiness"
+        },
+        "workflowEntityId": {
+          "value": "03752ddb-ecbc-ed11-83ff-000d3a34ed12"
+        },
+        "workflowName": {
+          "value": "a710a007-befb-4ce7-89db-9021c48875a5"
+        }
+      },
+      "parameterHintsV2": {
+        "shared_onedriveforbusiness": {
+          "value": "53c485f5-7a23-499b-b760-491a105033a2"
+        },
+        "workflowEntityId": {
+          "value": "03752ddb-ecbc-ed11-83ff-000d3a34ed12"
+        },
+        "workflowName": {
+          "value": "a710a007-befb-4ce7-89db-9021c48875a5"
+        }
+      }
+    },
+    "datasets": {},
+    "dataSources": [
+      "Export"
+    ],
+    "dependencies": {
+      "shared_onedriveforbusiness": "53c485f5-7a23-499b-b760-491a105033a2"
+    },
+    "dependents": [],
+    "id": "42c471eb-5525-4174-9f70-1f2d5b824ae7"
+  },
+  "53c485f5-7a23-499b-b760-491a105033a2": {
+    "connectionParameters": {
+      "sku": "Enterprise"
+    },
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "OneDrive for Business",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1546/1.0.1546.2665/onedriveforbusiness/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_onedriveforbusiness",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [],
+    "dependencies": {},
+    "dependents": [
+      "42c471eb-5525-4174-9f70-1f2d5b824ae7"
+    ],
+    "id": "53c485f5-7a23-499b-b760-491a105033a2"
+  },
+  "62f14051-3194-4a0a-9e2e-caa13653e40d": {
+    "connectionParameters": {
+      "sku": "Enterprise"
+    },
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Office 365 Outlook",
+      "iconUri": "https://connectoricons-prod.azureedge.net/u/laborbol/releases/ase-v3/1.0.1622.3202/office365/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_office365",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [
+      "Office365Outlook"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "62f14051-3194-4a0a-9e2e-caa13653e40d"
+  }
+}

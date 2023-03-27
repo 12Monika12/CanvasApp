@@ -1,0 +1,1505 @@
+NightShiftRequestScreen_1 As screen:
+    OnVisible: =Reset(NSAR_dp_FromDate_1);Reset(NSAR_dp_ToDate_1);Reset(NSAR_txt_Description_1);
+
+    NSAR_MainContainer_1 As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        LayoutWrap: |-
+            =If(
+                App.ActiveScreen.Size = ScreenSize.Small,
+                true,
+                false
+            )
+        Width: =Parent.Width
+        ZIndex: =1
+
+        NSAR_HeaderContainer_1 As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            BorderColor: =AppColor.PrimaryColor
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            Width: =Parent.Width
+            ZIndex: =1
+
+            NSAR_icon_Back_1 As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        60,
+                        ScreenSize.Medium,
+                        70,
+                        80
+                        
+                    )
+                OnSelect: |-
+                    =Navigate(NightShiftScreen);
+                    Set(IsNSAEdit,false);
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            NSAR_lbl_AppTitle_1 As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =10
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height,
+                        Parent.Height
+                    )
+                LayoutMinWidth: =300
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: =If(IsNSAEdit = true,"Request Night Shift Allowance","Request Night Shift Allowance")
+                Width: |
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+        NSAR_rect_Divider_1 As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        NSAR_DataContainer_1 As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            Height: =Parent.Height
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    350,
+                    ScreenSize.Medium,
+                    480,
+                    500
+                    
+                )
+            LayoutMinWidth: =150
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            Width: =Parent.Width
+            Y: =NSAR_HeaderContainer_1.Height
+            ZIndex: =3
+
+            NSAR_DataRequestContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderStyle: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        BorderStyle.None,
+                       BorderStyle.Solid
+                    )
+                FillPortions: =2
+                Height: |
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.5,
+                       Parent.Height
+                    )
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =500
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        300,
+                        ScreenSize.Medium,
+                        400,
+                        500
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width/1.6
+                    )
+                ZIndex: =1
+
+                NSAR_RequestNumberContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =IsNSAEdit
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =1
+
+                    NSAR_lbl_RequestNumber_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Number:"
+                        Width: =Parent.Width/2.5
+                        ZIndex: =1
+
+                    NSAR_lbl_RequestNumberValue_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        DisplayMode: =If(IsNSAEdit,DisplayMode.Disabled)
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =NSA_gallery_FilterRequest.Selected.'Application Request Number'
+                        Width: =Parent.Width/2.5
+                        ZIndex: =3
+
+                NSAR_FormDateContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.Start
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    NSAR_lbl_FromDate_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="From Date:"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/3.5-10,
+                                Parent.Width/2.5-10
+                            )
+                        ZIndex: =1
+
+                    NSAR_dp_FromDate_1 As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsNSAEdit = true,NSA_gallery_FilterRequest.Selected.Startdate,Today())
+                        DisplayMode: =If(IsNSAEdit,DisplayMode.Disabled)
+                        Format: =Text(DateValue(Self.SelectedDate, "en-US"),"dd/mmm/yyyy")
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnSelect: =
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                NSAR_ToDateContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =3
+
+                    NSAR_lbl_ToDate_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="To Date:"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/3.5-10,
+                                Parent.Width/2.5-10
+                            )
+                        ZIndex: =1
+
+                    NSAR_dp_ToDate_1 As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsNSAEdit = true,NSA_gallery_FilterRequest.Selected.Startdate,Today())
+                        DisabledColor: =RGBA(39, 113, 194, 1)
+                        Format: =Text(DateValue(Self.SelectedDate, "en-US"),"dd/mmm/yyyy")
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnChange: |-
+                            =/*Set(NSAAlreadyDateInDataBase,
+                            Filter(
+                               'Application Requests',
+                               'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                               'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request",
+                                  (Startdate >= NSAR_dp_FromDate_1.SelectedDate && Startdate <= NSAR_dp_ToDate_1.SelectedDate)
+                                   || (Enddate >= NSAR_dp_FromDate_1.SelectedDate && Enddate <= NSAR_dp_ToDate_1.SelectedDate)
+                                )
+                            );
+                            Set(
+                                NSAAllListCount,
+                                CountRows(NSAAlreadyDateInDataBase)
+                            );
+                            Set(
+                                NSAcheckStartDateAlreadyExists1,
+                                Filter(
+                                    'Application Requests',
+                                    'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                    Startdate >= NSAR_dp_FromDate_1.SelectedDate,
+                                    Enddate <= NSAR_dp_ToDate_1.SelectedDate,
+                                    'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request",
+                                    'Application Request Status' = [@'Application Request Status'].Submitted
+                                )
+                            );
+                            Set(
+                                NSApendingListCount,
+                                CountRows(NSAcheckStartDateAlreadyExists1)
+                            );
+                            Set(
+                                NSAcheckStartDateAlreadyExists,
+                                Filter(
+                                    'Application Requests',
+                                    'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                    Startdate >= NSAR_dp_FromDate_1.SelectedDate,
+                                    Enddate <= NSAR_dp_ToDate_1.SelectedDate,
+                                    'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request",
+                                    'Application Request Status' = [@'Application Request Status'].Approved
+                                )
+                            );
+                            Set(
+                                NSAapproveListCount,
+                                CountRows(NSAcheckStartDateAlreadyExists)
+                            );*/
+                        OnSelect: =
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                NSAR_LeaveDayContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    NSAR_lbl_LeaveDay_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="NSA Type :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/3.5-10,
+                                Parent.Width/2.5-10
+                            )
+                        ZIndex: =1
+
+                    NSAR_dd_DaysView_1 As dropdown:
+                        BorderColor: =RGBA(0, 134, 208, 1)
+                        ChevronBackground: =RGBA(0, 134, 208, 1)
+                        ChevronHoverBackground: =ColorFade(RGBA(0, 134, 208, 1), -20%)
+                        Color: =RGBA(10, 106, 204, 1)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        Items: =Choices([@'Application Requests'].'NSA Type')
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        PressedFill: =RGBA(0, 134, 208, 1)
+                        SelectionFill: =RGBA(0, 134, 208, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =4
+
+                NSAR_LeaveDayContainer_2 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    NSAR_lbl_LeaveDay_2 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Total Days:"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/3.5-10,
+                                Parent.Width/2.5-10
+                            )
+                        ZIndex: =1
+
+                    NSAR_lbl_DayCount_2 As label:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        BorderThickness: =2
+                        Color: =RGBA(0, 121, 187, 1)
+                        DisabledBorderColor: =RGBA(153, 153, 153, 1)
+                        DisplayMode: |-
+                            =If(
+                                (!IsNSAEdit && Month(NSAR_dp_FromDate_1.SelectedDate) = Month(Today()) || NSAR_dp_FromDate_1.SelectedDate > Today()) && (Month(NSAR_dp_ToDate_1.SelectedDate) = Month(Today()) || NSAR_dp_ToDate_1.SelectedDate > Today()),
+                                If(!IsNSAEdit,If(NSApendingListCount > 0 || NSAapproveListCount>0 || NSAallListCount>0,DisplayMode.Disabled,DisplayMode.Edit),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                DisplayMode.Disabled
+                            )
+                        FocusedBorderThickness: =5
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                7,
+                               13
+                            )
+                        Text: |-
+                            =If(
+                                NSAR_dp_FromDate_1.SelectedDate = NSAR_dp_ToDate_1.SelectedDate,
+                                Text(
+                                    1 + ((DateDiff(
+                                        NSAR_dp_FromDate_1.SelectedDate,
+                                        NSAR_dp_ToDate_1.SelectedDate,
+                                        TimeUnit.Days
+                                    )) * 5 - ((Weekday(NSAR_dp_FromDate_1.SelectedDate) - Weekday(NSAR_dp_ToDate_1.SelectedDate))*2)) / 7 - Switch(
+                                        Weekday(NSAR_dp_ToDate_1.SelectedDate),
+                                        7,
+                                        1,
+                                        0
+                                    ) - Switch(
+                                        Weekday(NSAR_dp_FromDate_1.SelectedDate),
+                                        1,
+                                        1,
+                                        0
+                                    ) + If(
+                                        (With(
+                                            {
+                                                NextMonth: DateAdd(
+                                                    Date(
+                                                        Year(Now()),
+                                                        Month(Now()),
+                                                        1
+                                                    ),
+                                                    1,
+                                                    TimeUnit.Months
+                                                )
+                                            },
+                                            DateAdd(
+                                                NextMonth,
+                                                -1 * Weekday(
+                                                    DateAdd(
+                                                        NextMonth,
+                                                        -7
+                                                    )
+                                                )
+                                            )
+                                        ) > NSAR_dp_FromDate_1.SelectedDate - 1) && (With(
+                                            {
+                                                NextMonth: DateAdd(
+                                                    Date(
+                                                        Year(Now()),
+                                                        Month(Now()),
+                                                        1
+                                                    ),
+                                                    1,
+                                                    TimeUnit.Months
+                                                )
+                                            },
+                                            DateAdd(
+                                                NextMonth,
+                                                -1 * Weekday(
+                                                    DateAdd(
+                                                        NextMonth,
+                                                        -7
+                                                    )
+                                                )
+                                            )
+                                        ) < NSAR_dp_ToDate_1.SelectedDate + 1),
+                                        1,
+                                        0
+                                    )
+                                ),
+                                NSAR_dp_FromDate_1.SelectedDate > NSAR_dp_ToDate_1.SelectedDate,
+                                "0",
+                                Text(
+                                    1 + ((DateDiff(
+                                        NSAR_dp_FromDate_1.SelectedDate,
+                                        NSAR_dp_ToDate_1.SelectedDate,
+                                        TimeUnit.Days
+                                    )) * 5 - ((Weekday(NSAR_dp_FromDate_1.SelectedDate) - Weekday(NSAR_dp_ToDate_1.SelectedDate))*2)) / 7 - Switch(
+                                        Weekday(NSAR_dp_ToDate_1.SelectedDate),
+                                        7,
+                                        1,
+                                        0
+                                    ) - Switch(
+                                        Weekday(NSAR_dp_FromDate_1.SelectedDate),
+                                        1,
+                                        1,
+                                        0
+                                    ) + If(
+                                        (With(
+                                            {
+                                                NextMonth: DateAdd(
+                                                    Date(
+                                                        Year(Now()),
+                                                        Month(Now()),
+                                                        1
+                                                    ),
+                                                    1,
+                                                    TimeUnit.Months
+                                                )
+                                            },
+                                            DateAdd(
+                                                NextMonth,
+                                                -1 * Weekday(
+                                                    DateAdd(
+                                                        NextMonth,
+                                                        -7
+                                                    )
+                                                )
+                                            )
+                                        ) > NSAR_dp_FromDate_1.SelectedDate - 1) && (With(
+                                            {
+                                                NextMonth: DateAdd(
+                                                    Date(
+                                                        Year(Now()),
+                                                        Month(Now()),
+                                                        1
+                                                    ),
+                                                    1,
+                                                    TimeUnit.Months
+                                                )
+                                            },
+                                            DateAdd(
+                                                NextMonth,
+                                                -1 * Weekday(
+                                                    DateAdd(
+                                                        NextMonth,
+                                                        -7
+                                                    )
+                                                )
+                                            )
+                                        ) < NSAR_dp_ToDate_1.SelectedDate + 1),
+                                        1,
+                                        0
+                                    )
+                                )
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/12,
+                                ScreenSize.Medium,
+                                Parent.Width/12,
+                                ScreenSize.Large,
+                                Parent.Width/16,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/16
+                            )
+                        Wrap: =false
+                        ZIndex: =2
+
+                NSAR_DescriptionContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    NSAR_lbl_Description_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/3.5-10,
+                                Parent.Width/2.5-10
+                            )
+                        ZIndex: =1
+
+                    NSAR_txt_Description_1 As text:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsNSAEdit = true,NSA_gallery_FilterRequest.Selected.Description,"")
+                        DisplayMode: |-
+                            =If(
+                                (!IsNSAEdit && Month(NSAR_dp_FromDate_1.SelectedDate) = Month(Today()) || NSAR_dp_FromDate_1.SelectedDate > Today()) && (Month(NSAR_dp_ToDate_1.SelectedDate) = Month(Today()) || NSAR_dp_ToDate_1.SelectedDate > Today()),
+                                If(!IsNSAEdit,If(NSApendingListCount > 0 || NSAapproveListCount>0 || NSAallListCount>0,DisplayMode.Disabled,DisplayMode.Edit),
+                                    DisplayMode.Edit,
+                                    DisplayMode.Disabled
+                                ),
+                                DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                40,
+                                ScreenSize.Medium,
+                                50,
+                                80
+                                
+                            )
+                        MaxLength: =50
+                        Mode: =TextMode.MultiLine
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                NSAR_MsgContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/5.5,
+                           Parent.Height/5.5
+                        )
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    NSAR_lbl_NotApplay_Msg_1 As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =If(!IsNSAEdit,If(NSApendingListCount > 0 || NSAapproveListCount>0 || NSAallListCount>0,"You have already taken a night shift allowance on this day"))//"You are not eligible for night shift allowance, Minimum 4 hours required"
+                        Visible: |-
+                            =//If(Value(NSAR_lbl_DayCount_2.Text) > 0,false,true)
+                            true
+                        Width: =Parent.Width/1.5
+                        ZIndex: =4
+
+                    WFHR_lbl_PastMonth_Msg_1 As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =If(
+                                (Month(NSAR_dp_FromDate_1.SelectedDate) = Month(Today()) || NSAR_dp_FromDate_1.SelectedDate > Today()) && (Month(NSAR_dp_ToDate_1.SelectedDate) = Month(Today()) || NSAR_dp_ToDate_1.SelectedDate > Today()),
+                                " ",
+                                "The date should be in the current month or future month."
+                            )
+                        Visible: |-
+                            =
+                            true
+                        Width: =Parent.Width/1.5
+                        ZIndex: =5
+
+            NSAR_ManagerContainer_1 As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderStyle: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        BorderStyle.None,
+                       BorderStyle.Solid
+                    )
+                Height: |-
+                    =
+                    Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/4,
+                        Parent.Height
+                    )
+                LayoutGap: =
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =250
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        200,
+                        350
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.5,
+                       Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+                NSAR_ReportingContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =1
+                    ZIndex: =1
+
+                    NSAR_lbl_Reporting_1 As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Reporting Manager :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    NSAR_lblReportingValue_1 As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =_myProfile.DisplayName //Office365Users.Manager(User().Email).DisplayName
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                NSAR_DelegateContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =2
+                    ZIndex: =2
+
+                    NSAR_lbl_Delegate_1 As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Delegate Approver :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    NSAR_lbl_DelegateValue_1 As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                        Visible: =false
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                    NSAR_dd_DelegateValue_1 As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Office365Users.Manager(User().Email).DisplayName
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                35,
+                                35
+                                
+                            )
+                        Items: =contact
+                        OnChange: =true
+                        OnSelect: =true
+                        Reset: =true
+                        Width: =Parent.Width/2.2
+                        ZIndex: =3
+
+                NSAR_StatusContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =IsNSAEdit
+                    Width: =Parent.Width
+                    Y: =1
+                    ZIndex: =3
+
+                    NSAR_lbl_Status_1 As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Request Status :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    NSAR_lblStatusValue_1 As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =NSA_gallery_FilterRequest.Selected.'Application Request Status'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+        NSAR_SubmitContainer_1 As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =Parent.Height/10
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    200,
+                    ScreenSize.Medium,
+                    250,
+                    350
+                    
+                )
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            Y: =462
+            ZIndex: =4
+
+            NSAR_btn_Cancelled_1 As button:
+                BorderColor: =RGBA(255, 0, 0, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = NSA_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Cancelled}
+                    );
+                    Reset(NSAR_dp_FromDate_1);Reset(NSAR_dp_ToDate_1);Reset(NSAR_txt_Description_1);
+                    Notify(
+                        "Request Cancelled",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Set(
+                        IsNSAEdit,
+                        false
+                    );
+                    Back()
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Cancelled"
+                Visible: =IsNSAEdit
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            NSAR_btn_Submited_1 As button:
+                DisplayMode: |-
+                    =If(
+                        (!IsNSAEdit && Month(NSAR_dp_FromDate_1.SelectedDate) = Month(Today()) || NSAR_dp_FromDate_1.SelectedDate > Today()) && (Month(NSAR_dp_ToDate_1.SelectedDate) = Month(Today()) || NSAR_dp_ToDate_1.SelectedDate > Today()),
+                        If(!IsNSAEdit,If(NSApendingListCount > 0 || NSAapproveListCount>0 || NSAallListCount>0,DisplayMode.Disabled,DisplayMode.Edit),
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        ),
+                        DisplayMode.Disabled
+                    )
+                Fill: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        300,
+                        350
+                        
+                    )
+                OnSelect: |
+                    =If(
+                        !IsBlank(NSAR_txt_Description_1.Text),
+                    If(IsNSAEdit = true,Patch('Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = NSA_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {
+                            Startdate: NSAR_dp_FromDate_1.SelectedDate,
+                            Enddate:NSAR_dp_ToDate_1.SelectedDate,
+                            Day:Value(NSAR_lbl_DayCount_2.Text),
+                            'NSA Type': NSAR_dd_DaysView_1.Selected.Value,
+                            Description: NSAR_txt_Description_1.Text,
+                            'Application Request Status': [@'Application Request Status'].Submitted
+                        }
+                    ),Patch('Application Requests',
+                        Defaults('Application Requests'),
+                        {
+                        'Application Request Type': LookUp('Application Request Types','Application Request Type Name' = "Night Shift Allowance Request"),
+                            Startdate: NSAR_dp_FromDate_1.SelectedDate,
+                            Enddate:NSAR_dp_ToDate_1.SelectedDate,
+                            Day:Value(NSAR_lbl_DayCount_2.Text),
+                            'NSA Type': NSAR_dd_DaysView_1.Selected.Value,
+                            Description: NSAR_txt_Description_1.Text,
+                            'Requested Employee': LookUp(contact,'Full Name' = _myProfile.DisplayName),
+                            'Request Approver': LookUp(contact,'Full Name'= NSAR_lblReportingValue_1.Text),
+                            'Leave Balance': LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName && Employee.'Full Name' = _myProfile.DisplayName
+                            ),
+                            'Application Request Status': [@'Application Request Status'].Submitted
+                        }
+                    ));
+                    Reset(NSAR_dp_FromDate_1);Reset(NSAR_dp_ToDate_1);Reset(NSAR_txt_Description_1);
+                    Notify("Request Submitted",NotificationType.Success);
+                    Refresh('Application Requests');
+                    Set(IsNSAEdit,false);
+                    Back(), Notify(
+                            "Description Required",
+                            NotificationType.Error
+                        );)
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: =If(IsNSAEdit = true ,"Save","Submit")
+                Visible: =If(IsNSAEdit=true,false,true)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+

@@ -1,0 +1,1064 @@
+"LeaveApplicationScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |+
+        =Reset(LAS_dd_Login);
+        Set(
+            _requestTypeFilter,
+            "Pending"
+        );
+        Refresh('Application Requests');
+        Refresh('Leave Balances');
+        Set(
+            IsManager,
+            CountRows(
+                Filter(
+                    [@contact],
+                    Email = _myProfile.UserPrincipalName,
+                   'Is Manager' = [@'Is Manager (contact)'].Yes
+                )
+            )
+        );
+        
+
+    LAS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowX: =LayoutOverflow.Scroll
+        Width: =Parent.Width
+        ZIndex: =1
+
+        LAS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    Parent.Width/2,
+                    Parent.Width
+                )
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =1
+
+            LAS_icon_back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: =Parent.Height
+                Icon: =Icon.ChevronLeft
+                LayoutMinWidth: =50
+                OnSelect: =Navigate(LoginScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            LAS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =7
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =
+                    Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Leave Application"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.5,
+                        Parent.Width/1.5
+                    )
+                Wrap: =false
+                ZIndex: =2
+
+            LAS_dd_Login As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(39, 113, 194, 1)
+                Color: =RGBA(39, 113, 194, 1)
+                Default: ="Employee"
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2.5,
+                        Parent.Height/2
+                    )
+                HoverColor: =RGBA(39, 113, 194, 1)
+                Items: =["Manager","Employee","HR"]
+                LayoutMinHeight: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        100,
+                        ScreenSize.Medium,
+                        200,
+                        250
+                        
+                    )
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        100,
+                        ScreenSize.Medium,
+                        200,
+                        250
+                        
+                    )
+                OnChange: |-
+                    =If(
+                        LAS_dd_Login.Selected.Value = "Employee",
+                        Navigate(
+                            LeaveApplicationScreen,
+                            ScreenTransition.Fade
+                        ),
+                        LAS_dd_Login.Selected.Value = "Manager",
+                        If(
+                             IsManager > 0,
+                            Navigate(
+                                LeaveRequestScreen,
+                                ScreenTransition.Fade
+                            ),
+                            Notify("Not Manager")
+                        ),
+                        LAS_dd_Login.Selected.Value = "HR",
+                        Navigate(
+                            HRScreen,
+                            ScreenTransition.Fade
+                        )
+                    )
+                OnSelect: =
+                PaddingBottom: =5
+                PaddingLeft: =5
+                PaddingRight: =5
+                PaddingTop: =5
+                PressedFill: =RGBA(39, 113, 194, 1)
+                Reset: =true 
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        6,
+                       12
+                    )
+                Visible: =If(IsManager>0,true,false)
+                Width: |-
+                    =
+                    Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        100,
+                        ScreenSize.Medium,
+                        200,
+                        250
+                        
+                    )
+                ZIndex: =4
+
+            LAS_icon_add As image:
+                Height: =Parent.Height
+                Image: =AddNew
+                LayoutMinWidth: =50
+                OnSelect: |-
+                    =Navigate(CreateLeaveRequestScreen);
+                    Set(IsLeaveEdit,false)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,50,ScreenSize.Medium,50,65)
+                ZIndex: =5
+
+        LAS_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        LAS_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            Width: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    Parent.Width/2,
+                    Parent.Width
+                )
+            ZIndex: =3
+
+            LAS_RequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =2
+                FillPortions: =3
+                Height: =Parent.Height
+                LayoutMinHeight: =600
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        350,
+                        ScreenSize.Medium,
+                        480,
+                        500
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutOverflowY: =LayoutOverflow.Scroll
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.4
+                    )
+                ZIndex: =1
+
+                LAS_FilterContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderThickness: =2
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/9.5,
+                           Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Medium,
+                            Parent.Height/9.5,
+                            Parent.Height/10
+                        )
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =5
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            200,
+                            ScreenSize.Medium,
+                            250,
+                            450
+                            
+                        )
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    LAS_gallery_RequestFilter As gallery.galleryHorizontal:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        Height: =Parent.Height
+                        Items: |-
+                            =Table(
+                                {Filter: "Pending"},
+                                {Filter: "Approved"},
+                                {Filter: "Rejected"},
+                                {Filter: "Cancelled"}
+                            )
+                        LayoutMinHeight: =Parent.Height
+                        LayoutMinWidth: =Parent.Width
+                        ShowScrollbar: =false
+                        TemplateSize: =Parent.Width/CountRows(Self.AllItems)-10
+                        Width: =Parent.Width
+                        X: =
+                        Y: =
+                        ZIndex: =9
+
+                        LAS_FilterButton As button:
+                            BorderColor: =RGBA(10, 106, 204, 1)
+                            BorderThickness: =If(_requestTypeFilter=ThisItem.Filter,0,1)
+                            Color: =If(_requestTypeFilter=ThisItem.Filter,RGBA(255, 255, 255, 1),RGBA(10, 106, 204, 1))
+                            DisabledBorderColor: =ColorFade(LAS_FilterButton.BorderColor, 70%)
+                            DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                            DisabledFill: =ColorFade(RGBA(159, 167, 165, 1), 50%)
+                            Fill: =If(_requestTypeFilter = ThisItem.Filter,RGBA(0, 134, 208, 1),RGBA(255, 255, 255, 1))
+                            FocusedBorderColor: =LAS_FilterButton.BorderColor
+                            FontWeight: =FontWeight.Normal
+                            HoverBorderColor: =ColorFade(LAS_FilterButton.BorderColor, 20%)
+                            HoverColor: =LAS_FilterButton.Color
+                            HoverFill: =ColorFade(LAS_FilterButton.Fill, 20%)
+                            OnSelect: =Set(_requestTypeFilter,ThisItem.Filter);
+                            PressedBorderColor: =LAS_FilterButton.Fill
+                            PressedColor: =LAS_FilterButton.Fill
+                            PressedFill: =LAS_FilterButton.Color
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    9,
+                                   12
+                                )
+                            Text: =ThisItem.Filter
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/4.5,
+                                    Parent.Width/4.5
+                                )
+                            Y: =8
+                            ZIndex: =1
+
+                LAS_ViewContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =70
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =5
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    PaddingLeft: =20
+                    Width: =Parent.Width
+                    ZIndex: =3
+
+                    LAS_dd_View As dropdown:
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        ChevronBackground: =RGBA(39, 113, 194, 1)
+                        Color: =RGBA(39, 113, 194, 1)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/2.5,
+                                Parent.Height/2
+                            )
+                        HoverColor: =RGBA(39, 113, 194, 1)
+                        Items: |-
+                            =Filter(
+                                Choices('Application Requests (Views)'),
+                                Value = 'Application Requests (Views)'.'All Application' || Value = 'Application Requests (Views)'.'Last Month Application' || Value = 'Application Requests (Views)'.'This Month Application' || Value = 'Application Requests (Views)'.'This Year Application'
+                            ).Value
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        PressedFill: =RGBA(39, 113, 194, 1)
+                        SelectionFill: =RGBA(39, 113, 194, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                6,
+                               12
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/3,
+                                Parent.Width/3.5
+                                
+                            )
+                        ZIndex: =1
+
+                LAS_FilterDataContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height-140
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    LayoutOverflowY: =LayoutOverflow.Scroll
+                    Width: =Parent.Width
+                    ZIndex: =4
+
+                    "LAS_gallery_FilterRequest As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        FillPortions: =0
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height,
+                                Parent.Height
+                            )
+                        Items: |-
+                            =//'Application Requests'
+                            Sort (
+                                If(
+                                    _requestTypeFilter = "Pending",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status' = [@'Application Request Status'].Submitted,
+                                        'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                        LAS_dd_View.Selected.Value,
+                                        'Application Request Type'.'Application Request Type Name' = "Leave Request"
+                                    ),
+                                    _requestTypeFilter = "Approved",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status' = [@'Application Request Status'].Approved,
+                                        'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                        LAS_dd_View.Selected.Value,
+                                        'Application Request Type'.'Application Request Type Name' = "Leave Request"
+                                    ),
+                                    _requestTypeFilter = "Cancelled",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status' = [@'Application Request Status'].Cancelled,
+                                        'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                        LAS_dd_View.Selected.Value,
+                                        'Application Request Type'.'Application Request Type Name' = "Leave Request"
+                                    ),
+                                    _requestTypeFilter = "Rejected",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status' = [@'Application Request Status'].Declined,
+                                        'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                        LAS_dd_View.Selected.Value,
+                                        'Application Request Type'.'Application Request Type Name' = "Leave Request"
+                                    )
+                                ),
+                                'Created On',
+                                SortOrder.Descending
+                            )
+                        Layout: =Layout.Vertical
+                        LayoutMinHeight: =287
+                        LayoutMinWidth: =320
+                        TemplatePadding: =0
+                        TemplateSize: =Min(100, Self.Height - 60)
+                        Visible: =CountRows(LAS_gallery_FilterRequest.AllItems) > 0
+                        Width: =Parent.Width
+                        ZIndex: =1
+
+                        LAS_lbl_RequestNumber As label:
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Bold
+                            Height: =22
+                            OnSelect: =Select(Parent)
+                            PaddingBottom: =0
+                            PaddingLeft: =0
+                            PaddingRight: =0
+                            PaddingTop: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   13
+                                )
+                            Text: =ThisItem.'Application Request Number'
+                            VerticalAlign: =VerticalAlign.Top
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/1.2
+                                )
+                            X: =25
+                            Y: =10
+                            ZIndex: =2
+
+                        LAS_rect_Separator As rectangle:
+                            Fill: =AppColor.PrimaryColor
+                            Height: =1
+                            OnSelect: =Select(Parent)
+                            Width: =Parent.TemplateWidth
+                            Y: =100
+                            ZIndex: =5
+
+                        LAS_img_Edit As image:
+                            Height: =35
+                            Image: =EditData
+                            OnSelect: |-
+                                =Navigate(CreateLeaveRequestScreen);
+                                Set(IsLeaveEdit,true);
+                            Visible: |-
+                                =//If(_requestTypeFilter="Pending",true,false)
+                                false
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/12,
+                                    ScreenSize.Medium,
+                                    Parent.Width/16,
+                                    Parent.Width/20
+                                    
+                                )
+                            X: =Parent.TemplateWidth-Self.Width-25
+                            Y: =12
+                            ZIndex: =6
+
+                        LAS_lbl_Description As label:
+                            AutoHeight: =true
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Semibold
+                            Height: =22
+                            OnSelect: =Select(Parent)
+                            PaddingLeft: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   13
+                                )
+                            Text: |-
+                                ="Description :" & ThisItem.Description
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/1.2
+                                )
+                            X: =25
+                            Y: =35
+                            ZIndex: =7
+
+                        LAS_lbl_StartDate As label:
+                            AutoHeight: =true
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Semibold
+                            Height: =22
+                            OnSelect: =Select(Parent)
+                            PaddingLeft: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   13
+                                )
+                            Text: =Text(DateValue(ThisItem.Startdate),"dd/mmm/yyyy") & " - " & Text(DateValue(ThisItem.Enddate),"dd/mmm/yyyy")
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/1.2
+                                )
+                            X: =25
+                            Y: =65
+                            ZIndex: =8
+
+                        LAS_icon_Next As icon.ChevronRight:
+                            Color: =AppColor.PrimaryColor
+                            Height: =40
+                            Icon: =Icon.ChevronRight
+                            OnSelect: |-
+                                =Navigate(CreateLeaveRequestScreen,BorderStyle.None);
+                                Set(IsLeaveEdit,true);
+                            Visible: |-
+                                =//If(_requestTypeFilter="Pending",true,false)
+                                true
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/12,
+                                    ScreenSize.Medium,
+                                    Parent.Width/16,
+                                    Parent.Width/20
+                                    
+                                )
+                            X: =Parent.TemplateWidth-Self.Width-25
+                            Y: =9
+                            ZIndex: =9
+
+                    LAS_lbl_NoRequests As label:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(101, 128, 187, 1)
+                        Color: =RGBA(47,41,43,1)
+                        DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                        FocusedBorderColor: =LAS_lbl_NoRequests.BorderColor
+                        Font: =Font.Lato
+                        Height: =70
+                        HoverBorderColor: =LAS_lbl_NoRequests.BorderColor
+                        HoverColor: =LAS_lbl_NoRequests.Color
+                        HoverFill: =LAS_lbl_NoRequests.Fill
+                        LayoutMinHeight: =Parent.Height-500
+                        PressedBorderColor: =LAS_lbl_NoRequests.BorderColor
+                        PressedColor: =LAS_lbl_NoRequests.Color
+                        PressedFill: =LAS_lbl_NoRequests.Fill
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                12,
+                                ScreenSize.Medium,
+                               16,
+                               18
+                            )
+                        Text: ="No " &(_requestTypeFilter)& " Requests"
+                        Visible: =!LAS_gallery_FilterRequest.Visible
+                        Width: =Parent.Width
+                        X: =250
+                        Y: =438
+                        ZIndex: =2
+
+            LAS_TotalRequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =2
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height,
+                        Parent.Height
+                    )
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =400
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        300,
+                        350
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.1,
+                        Parent.Width
+                    )
+                ZIndex: =2
+
+                LAS_PaidContainer_1 As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderThickness: =1
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.End
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =1
+
+                    LAS_lbl_Title As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        FillPortions: =1
+                        FontWeight: =FontWeight.Bold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/9,
+                               Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Medium,
+                                Parent.Height/10,
+                                Parent.Height/11
+                            )
+                            )
+                        LayoutMinHeight: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/9,
+                               Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Medium,
+                                Parent.Height/10,
+                                Parent.Height/11
+                            )
+                            )
+                        PaddingLeft: =35
+                        Text: ="Leave Balance"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width
+                            )
+                        ZIndex: =1
+
+                    Icon1 As icon.Reload:
+                        Color: =AppColor.PrimaryColor
+                        Icon: =Icon.Reload
+                        OnSelect: =Refresh([@'Leave Balances'])
+                        PaddingBottom: =20
+                        PaddingLeft: =20
+                        PaddingRight: =20
+                        PaddingTop: =20
+                        ZIndex: =2
+
+                LAS_PaidContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    LAS_lbl_Paid As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            ="Paid Leave :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.5,
+                                Parent.Width/1.7
+                            )
+                        ZIndex: =1
+
+                    LAS_lbl_PaidValue As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Height/1.1
+                            )
+                        PaddingLeft: =15
+                        Text: |-
+                            =//Value(_requesterBalanceRecord.'Available Paid Leave')
+                            Value(LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName,'Available Paid Leave'))
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2.5
+                            )
+                        ZIndex: =2
+
+                LAS_SickContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =false
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    LAS_lbl_Sick As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            ="Sick Leave :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.5,
+                                Parent.Width/1.7
+                            )
+                        ZIndex: =1
+
+                    LAS_lbl_SickValue As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        PaddingLeft: =15
+                        Text: |-
+                            =//Value(_requesterBalanceRecord.' Available Sick Leave')
+                            Value(LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName,' Available Sick Leave'))
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.1,
+                                Parent.Width/2.5
+                            )
+                        ZIndex: =2
+
+                LAS_HolidayContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    LAS_lbl_Holiday As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            ="Holiday Leave :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.5,
+                                Parent.Width/1.7
+                            )
+                        ZIndex: =1
+
+                    LAS_lbl_HolidayValue As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        PaddingLeft: =15
+                        Text: |-
+                            =///Value(_requesterBalanceRecord.'Available Holiday Leave')
+                            Value(LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName,'Available Holiday Leave'))
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.1,
+                                Parent.Width/2.5
+                            )
+                        ZIndex: =2
+
+                LAS_BirthdayContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    LAS_lbl_Birthday As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            ="Birthday Leave :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.5,
+                                Parent.Width/1.7
+                            )
+                        ZIndex: =1
+
+                    LAS_lbl_BirthdayValue As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        PaddingLeft: =15
+                        Text: |-
+                            =//Value(_requesterBalanceRecord.'Available Birthday Leave')
+                            Value(LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName,'Available Holiday Leave'))
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.1,
+                                Parent.Width/2.5
+                            )
+                        ZIndex: =2
+
+                LAS_LWPContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =8
+
+                    LAS_lbl_LWP As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            ="Total LWP :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.5,
+                                Parent.Width/1.7
+                            )
+                        ZIndex: =1
+
+                    LAS_lbl_LWPValue As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        PaddingLeft: =15
+                        Text: |-
+                            =//Value(_requesterBalanceRecord.'Leave Without Pay')
+                            Value(LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName,'Leave Without Pay'))
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.1,
+                                Parent.Width/2.5
+                            )
+                        ZIndex: =2
+
+                LAS_TransactionContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                            ScreenSize.Medium,
+                            Parent.Height/9,
+                            Parent.Height/11
+                            
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width
+                        )
+                    ZIndex: =9
+
+                    LAS_btn_TransactionReport As button:
+                        Fill: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                40,
+                                45
+                                
+                            )
+                        OnSelect: |-
+                            =Navigate(TransactionReport,BorderStyle.None);
+                            Set(RequestType,"Leave Request");
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Text: ="Transaction Report"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/1.1
+                            )
+                        ZIndex: =1
+

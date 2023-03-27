@@ -1,0 +1,102 @@
+"HomeScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |-
+        =Set(
+            _requestTypeFilter,
+            "Pending"
+        );
+        Set(
+                _requesterBalanceRecord,
+                LookUp(
+                    'Leave Balances',
+                    Employee.Email = _myProfile.UserPrincipalName
+                )
+            );
+             ClearCollect(
+                RequesterLeaveTypeBalance,
+                {
+                    type: "Paid Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Available Paid Leave') > 0,
+                        Value(_requesterBalanceRecord.'Available Paid Leave'),
+                        "0"
+                    )
+                },
+                 {
+                    type: "Sick Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.' Available Sick Leave') > 0,
+                        Value(_requesterBalanceRecord.' Available Sick Leave'),
+                        "0"
+                    )
+                },
+                 {
+                    type: "Holiday Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Available Holiday Leave') > 0,
+                        Value(_requesterBalanceRecord.'Available Holiday Leave'),
+                        "0"
+                    )
+                },
+                {
+                    type: "Birthday Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Available Birthday Leave') > 0,
+                        Value(_requesterBalanceRecord.'Available Birthday Leave'),
+                        "0"
+                    )
+                },
+                {
+                    type: "LWP",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Leave Without Pay') > 0,
+                        Value(_requesterBalanceRecord.'Leave Without Pay'),
+                        "0"
+                    )
+                }
+            
+        );
+
+    SS_MainBg As image:
+        Height: =Parent.Height
+        Image: =bg
+        ImagePosition: =ImagePosition.Fill
+        Width: =Parent.Width
+        ZIndex: =1
+
+    SS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =2
+
+        SS_MainSectionContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =3
+
+            SS_MainLogo As image:
+                Image: =Mainlogo
+                PaddingBottom: =10
+                PaddingLeft: =10
+                PaddingRight: =10
+                PaddingTop: =10
+                Width: =Parent.Width
+                ZIndex: =1
+
+            SS_NextScreen As image:
+                DisabledFill: =RGBA(0, 0, 0, 0)
+                Image: =NextArrow
+                OnSelect: =Navigate(LoginScreen,ScreenTransition.Fade)
+                PaddingBottom: =10
+                PaddingLeft: =10
+                PaddingRight: =10
+                PaddingTop: =10
+                ZIndex: =2
+

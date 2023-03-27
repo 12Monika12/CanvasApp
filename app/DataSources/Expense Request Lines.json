@@ -1,0 +1,135 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "dt_expense_request_lines",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "dt_expense_request_line",
+    "MaxGetRowsCount": 500,
+    "Name": "Expense Request Lines",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "{Attachments}": "Attachments",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "dt_attachment": "Attachment",
+      "dt_comments": "Comments",
+      "dt_description": "Description",
+      "dt_expense_amount": "Expense Amount",
+      "dt_expense_amount_base": "Expense Amount (Base)",
+      "dt_expense_date": "Expense Date",
+      "dt_expense_request_line_Annotations": "Notes",
+      "dt_expense_request_line_AsyncOperations": "System Jobs",
+      "dt_expense_request_line_BulkDeleteFailures": "Bulk Delete Failures",
+      "dt_expense_request_line_DuplicateBaseRecord": "Duplicate Records (dt_expense_request_line_DuplicateBaseRecord)",
+      "dt_expense_request_line_DuplicateMatchingRecord": "Duplicate Records (dt_expense_request_line_DuplicateMatchingRecord)",
+      "dt_expense_request_line_FileAttachments": "FileAttachments",
+      "dt_expense_request_line_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "dt_expense_request_line_number": "Expense Request Line Number",
+      "dt_expense_request_line_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "dt_expense_request_line_ProcessSession": "Process Sessions",
+      "dt_expense_request_line_status": "Expense Request Line Status",
+      "dt_expense_request_line_SyncErrors": "Sync Errors",
+      "dt_expense_request_lineid": "Expense Request Line",
+      "dt_expense_request_number": "Expense Request Number",
+      "dt_expense_type": "Expense Type",
+      "dt_invoice_date": "Invoice Date",
+      "dt_invoice_number": "Invoice Number",
+      "exchangerate": "Exchange Rate",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "transactioncurrencyid": "Currency",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Expense Request Lines",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Expense Request Lines (Views)",
+    "Name": "_dt_expense_request_line_views",
+    "RelatedEntityName": "Expense Request Lines",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "ba093537-acdc-41a5-bcad-0de45bee8b1e": "Expense Request Line Associated View",
+      "c0e89baf-9ff8-41b2-bf3a-aa4873080379": "Active Expense Request Lines",
+      "c2485ba0-37fc-4885-9dc3-92f92c84cebd": "Expense Request Line Lookup View",
+      "d56451fa-c9f1-4481-bda5-7fa7ce1ef6e1": "Expense Request Line Advanced Find View",
+      "f22e8e9e-580e-4dcc-a631-cd354383a36a": "Inactive Expense Request Lines"
+    }
+  },
+  {
+    "DisplayName": "Status (Expense Request Lines)",
+    "Name": "dt_expense_request_line_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Expense Request Lines"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Expense Request Lines",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Expense Request Lines)",
+    "Name": "dt_expense_request_line_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Expense Request Lines"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Expense Request Lines",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Expense Request Line Status",
+    "Name": "dt_expenserequestlinestatus",
+    "OptionSetInfoNameMapping": {
+      "206500000": "Pending",
+      "206500001": "Approved",
+      "206500002": "Rejected",
+      "206500003": "Reimbursed"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "dt_expense_request_line_status",
+        "OptionSetReferenceEntityName": "Expense Request Lines"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "dt_expense_request_line_status",
+    "RelatedEntityName": "Expense Request Lines",
+    "Type": "OptionSetInfo"
+  }
+]

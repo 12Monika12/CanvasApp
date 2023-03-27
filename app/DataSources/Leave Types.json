@@ -1,0 +1,153 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "dt_leave_types",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "dt_leave_type",
+    "MaxGetRowsCount": 500,
+    "Name": "Leave Types",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "dt_dt_application_request_leave_type_dt_leav": "Application Requests",
+      "dt_dt_application_transaction_leave_type_dt_": "Application Transactions",
+      "dt_leave_addition_frequency": "Leave addition frequency",
+      "dt_leave_days": "Leave Days",
+      "dt_leave_type_AsyncOperations": "System Jobs",
+      "dt_leave_type_BulkDeleteFailures": "Bulk Delete Failures",
+      "dt_leave_type_code": "Leave Type Code",
+      "dt_leave_type_DuplicateBaseRecord": "Duplicate Records (dt_leave_type_DuplicateBaseRecord)",
+      "dt_leave_type_DuplicateMatchingRecord": "Duplicate Records (dt_leave_type_DuplicateMatchingRecord)",
+      "dt_leave_type_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "dt_leave_type_name": "Leave Type Name",
+      "dt_leave_type_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "dt_leave_type_ProcessSession": "Process Sessions",
+      "dt_leave_type_SyncErrors": "Sync Errors",
+      "dt_leave_typeid": "Leave Type",
+      "dt_year_starting_month": "Year starting Month",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Leave Types",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Leave Types (Views)",
+    "Name": "_dt_leave_type_views",
+    "RelatedEntityName": "Leave Types",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "1b9cf8f8-e588-4d5a-9902-fbb86e2c2676": "Leave Type Advanced Find View",
+      "23af1852-5a49-4f6c-bc97-e9c21072e8ad": "Inactive Leave Types",
+      "550a1aa3-953f-4e93-b999-5340c7f4aff5": "Leave Type Associated View",
+      "57d7f410-7188-46fc-a1f1-6a4e41696f9f": "Leave Type Lookup View",
+      "f4b09f74-3f1b-4372-860a-8ae07c2065f0": "Active Leave Types"
+    }
+  },
+  {
+    "DisplayName": "Leave addition frequency",
+    "Name": "dt_leave_addition_frequency",
+    "OptionSetInfoNameMapping": {
+      "206500000": "Yearly",
+      "206500001": "Monthly"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "dt_leave_addition_frequency",
+        "OptionSetReferenceEntityName": "Leave Types"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "dt_leave_addition_frequency",
+    "RelatedEntityName": "Leave Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Leave Types)",
+    "Name": "dt_leave_type_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Leave Types"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Leave Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Leave Types)",
+    "Name": "dt_leave_type_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Leave Types"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Leave Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Year starting Month",
+    "Name": "dt_year_starting_month",
+    "OptionSetInfoNameMapping": {
+      "1": "January",
+      "10": "October",
+      "11": "November",
+      "12": "December",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "dt_year_starting_month",
+        "OptionSetReferenceEntityName": "Leave Types"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "dt_year_starting_month",
+    "RelatedEntityName": "Leave Types",
+    "Type": "OptionSetInfo"
+  }
+]

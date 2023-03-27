@@ -1,0 +1,150 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "dt_application_transactions",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "dt_application_transaction",
+    "MaxGetRowsCount": 500,
+    "Name": "Application Transactions",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "dt_application_request": "Application Request",
+      "dt_application_transaction_AsyncOperations": "System Jobs",
+      "dt_application_transaction_BulkDeleteFailures": "Bulk Delete Failures",
+      "dt_application_transaction_DuplicateBaseRecord": "Duplicate Records (dt_application_transaction_DuplicateBaseRecord)",
+      "dt_application_transaction_DuplicateMatchingRecord": "Duplicate Records (dt_application_transaction_DuplicateMatchingRecord)",
+      "dt_application_transaction_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "dt_application_transaction_number": "Application Transaction Number",
+      "dt_application_transaction_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "dt_application_transaction_ProcessSession": "Process Sessions",
+      "dt_application_transaction_status": "Application Transaction Status",
+      "dt_application_transaction_SyncErrors": "Sync Errors",
+      "dt_application_transaction_type": "Application Transaction Type",
+      "dt_application_transactionid": "Application Transaction",
+      "dt_date": "Date",
+      "dt_day": "Day",
+      "dt_description": "Description",
+      "dt_halfday": "Half day",
+      "dt_leave_balance": "Leave Balance",
+      "dt_leave_type": "Leave Type",
+      "dt_request_approver": "Request Approver",
+      "dt_requested_employee": "Requested Employee",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Application Transactions",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Application Transactions (Views)",
+    "Name": "_dt_application_transaction_views",
+    "RelatedEntityName": "Application Transactions",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "00403362-9175-4d49-b53d-e9561b4ae55d": "Application Transaction Associated View",
+      "287d98b4-59de-4932-b431-a54f9399311f": "Active Application Transactions",
+      "2b99d259-8131-458a-95db-98bf6e739bcc": "Application Transaction Lookup View",
+      "c911d8ea-6d95-449a-a873-d10902584ef6": "Inactive Application Transactions",
+      "e483b055-7160-4759-9756-3d9d663e2e97": "Application Transaction Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Status (Application Transactions)",
+    "Name": "dt_application_transaction_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Application Transactions"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Application Transactions",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Application Transaction Status",
+    "Name": "dt_application_transaction_status",
+    "OptionSetInfoNameMapping": {
+      "121920000": "Submitted",
+      "121920001": "Approved",
+      "121920002": "Declined",
+      "121920003": "Cancelled"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "dt_application_transaction_status",
+        "OptionSetReferenceEntityName": "Application Transactions"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "dt_application_transaction_status",
+    "RelatedEntityName": "Application Transactions",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Application Transactions)",
+    "Name": "dt_application_transaction_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Application Transactions"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Application Transactions",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Half day",
+    "Name": "dt_halfday",
+    "OptionSetInfoNameMapping": {
+      "121920000": "First Half",
+      "121920001": "Second Half"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "dt_halfday",
+        "OptionSetReferenceEntityName": "Application Transactions"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "dt_halfday",
+    "RelatedEntityName": "Application Transactions",
+    "Type": "OptionSetInfo"
+  }
+]

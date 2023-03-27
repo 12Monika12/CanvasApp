@@ -1,0 +1,844 @@
+"WorkFromHomeScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |-
+        =Reset(WFH_dd_Login);
+        Set(
+            IsManager,
+            CountRows(
+                Filter(
+                    [@contact],
+                    Email = _myProfile.UserPrincipalName,
+                    'Is Manager' = [@'Is Manager (contact)'].Yes
+                )
+            )
+        );
+        Set(RequestSelect,"Pending");
+        Refresh('Application Requests');
+
+    WFH_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowX: =LayoutOverflow.Scroll
+        Width: =Parent.Width
+        ZIndex: =1
+
+        WFH_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    Parent.Width/2,
+                    Parent.Width
+                )
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            WFH_icon_back As icon.ChevronLeft:
+                AlignInContainer: =AlignInContainer.Start
+                Color: =AppColor.PrimaryColor
+                Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                LayoutMinWidth: |
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                OnSelect: =Navigate(LoginScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |+
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                    
+                ZIndex: =1
+
+            WFH_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =7
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Work From Home"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.5,
+                        Parent.Width/1.5
+                    )
+                Wrap: =false
+                ZIndex: =2
+
+            WFH_dd_Login As dropdown:
+                AlignInContainer: =AlignInContainer.Center
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(39, 113, 194, 1)
+                Color: =RGBA(39, 113, 194, 1)
+                Default: ="Employee"
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2.5,
+                        Parent.Height/2
+                    )
+                HoverColor: =RGBA(39, 113, 194, 1)
+                Items: =["Manager","Employee","HR"]
+                OnChange: |-
+                    =If(
+                        WFH_dd_Login.Selected.Value = "Employee",
+                        Set(RequestSelect,"Pending");
+                        Navigate(
+                            WorkFromHomeScreen,
+                            ScreenTransition.Fade
+                        ),
+                        WFH_dd_Login.Selected.Value = "Manager",
+                        Set(RequestSelect,"Pending");
+                        If(
+                             IsManager > 0,
+                            Navigate(
+                                WFHManagerScreen,
+                                ScreenTransition.Fade
+                            ),
+                            Notify("Not Manager")
+                        ),
+                        WFH_dd_Login.Selected.Value = "HR",
+                        Navigate(
+                            HRScreen,
+                            ScreenTransition.Fade
+                        )
+                    )
+                PaddingBottom: =5
+                PaddingLeft: =5
+                PaddingRight: =5
+                PaddingTop: =5
+                PressedFill: =RGBA(39, 113, 194, 1)
+                Reset: =true
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        6,
+                       12
+                    )
+                Visible: =If(IsManager>0,true,false)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        100,
+                        ScreenSize.Medium,
+                        200,
+                        250
+                        
+                    )
+                ZIndex: =4
+
+            WFH_icon_add As image:
+                Height: =If(LeaveRequestScreen.Size = 1|| LeaveRequestScreen.Size = 2 ,50,75)
+                Image: =AddNew
+                LayoutMinWidth: =50
+                OnSelect: =Navigate(WorkFromHomeRequestScreen)
+                PaddingBottom: =10
+                PaddingLeft: =10
+                PaddingRight: =10
+                PaddingTop: =10
+                Width: |+
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,50,ScreenSize.Medium,50,65)
+                    
+                ZIndex: =5
+
+        WFH_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        WFH_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            Width: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    Parent.Width/2,
+                    Parent.Width
+                )
+            ZIndex: =3
+
+            WFH_RequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =2
+                FillPortions: =3
+                Height: =Parent.Height
+                LayoutMinHeight: =600
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        300,
+                        ScreenSize.Medium,
+                        400,
+                        500
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutOverflowY: =LayoutOverflow.Scroll
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.4
+                    )
+                ZIndex: =1
+
+                WFH_FilterContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderThickness: =2
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/9.5,
+                           Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Medium,
+                            Parent.Height/9.5,
+                            Parent.Height/10
+                        )
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =5
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            200,
+                            ScreenSize.Medium,
+                            250,
+                            450
+                            
+                        )
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    WFH_gallery_RequestFilter As gallery.galleryHorizontal:
+                        AlignInContainer: =AlignInContainer.Center
+                        Height: =Parent.Height
+                        Items: |-
+                            =Table(
+                                {Filter: "Pending"},
+                                {Filter: "Approved"},
+                                {Filter: "Rejected"},
+                                {Filter: "Cancelled"}
+                            )
+                        LayoutMinHeight: =Parent.Height
+                        LayoutMinWidth: =Parent.Width
+                        ShowScrollbar: =false
+                        TemplateSize: =Parent.Width/CountRows(Self.AllItems)-10
+                        Width: =Parent.Width
+                        X: =
+                        Y: =
+                        ZIndex: =9
+
+                        WFH_FilterButton As button:
+                            BorderColor: =RGBA(10, 106, 204, 1)
+                            BorderThickness: =If(RequestSelect=ThisItem.Filter,0,1)
+                            Color: =If(RequestSelect=ThisItem.Filter,RGBA(255, 255, 255, 1),RGBA(10, 106, 204, 1))
+                            DisabledBorderColor: =ColorFade(WFH_FilterButton.BorderColor, 70%)
+                            DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                            DisabledFill: =ColorFade(RGBA(159, 167, 165, 1), 50%)
+                            Fill: =If(RequestSelect = ThisItem.Filter,RGBA(0, 134, 208, 1),RGBA(255, 255, 255, 1))
+                            FocusedBorderColor: =WFH_FilterButton.BorderColor
+                            FontWeight: =FontWeight.Normal
+                            HoverBorderColor: =ColorFade(WFH_FilterButton.BorderColor, 20%)
+                            HoverColor: =WFH_FilterButton.Color
+                            HoverFill: =ColorFade(WFH_FilterButton.Fill, 20%)
+                            OnSelect: =Set(RequestSelect,ThisItem.Filter);
+                            PressedBorderColor: =WFH_FilterButton.Fill
+                            PressedColor: =WFH_FilterButton.Fill
+                            PressedFill: =WFH_FilterButton.Color
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    9,
+                                   12
+                                )
+                            Text: =ThisItem.Filter
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/4.5,
+                                    Parent.Width/4.5
+                                )
+                            Y: =6
+                            ZIndex: =1
+
+                WFH_ViewContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =70
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    PaddingLeft: =20
+                    Width: =Parent.Width
+                    ZIndex: =3
+
+                    WFH_dd_View As dropdown:
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        ChevronBackground: =RGBA(39, 113, 194, 1)
+                        Color: =RGBA(39, 113, 194, 1)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/2.5,
+                                Parent.Height/2
+                            )
+                        HoverColor: =RGBA(39, 113, 194, 1)
+                        Items: |-
+                            =Filter(
+                                Choices('Application Requests (Views)'),
+                                Value = 'Application Requests (Views)'.'All Application' || Value = 'Application Requests (Views)'.'Last Month Application' || Value = 'Application Requests (Views)'.'This Month Application' || Value = 'Application Requests (Views)'.'This Year Application'
+                            ).Value
+                        PressedFill: =RGBA(39, 113, 194, 1)
+                        SelectionFill: =RGBA(39, 113, 194, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/3,
+                                Parent.Width/3.5
+                                
+                            )
+                        ZIndex: =2
+
+                WFH_FilterDataContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height-140
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    LayoutOverflowY: =LayoutOverflow.Scroll
+                    Width: =Parent.Width
+                    ZIndex: =4
+
+                    "WFH_gallery_FilterRequest As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        FillPortions: =0
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height,
+                                Parent.Height
+                            )
+                        Items: |-
+                            =Sort(
+                                If(
+                                    RequestSelect = "Pending",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status' = [@'Application Request Status'].Submitted,
+                                        'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                        WFH_dd_View.Selected.Value,
+                                        'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                                    ),
+                                    If(
+                                        RequestSelect = "Approved",
+                                        Filter(
+                                            'Application Requests',
+                                            'Application Request Status' = [@'Application Request Status'].Approved,
+                                            'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                            WFH_dd_View.Selected.Value,
+                                            'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                                        ),
+                                        If(
+                                            RequestSelect = "Rejected",
+                                            Filter(
+                                                'Application Requests',
+                                                'Application Request Status' = [@'Application Request Status'].Declined,
+                                                'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                                WFH_dd_View.Selected.Value,
+                                                'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                                            ),
+                                            If(
+                                                RequestSelect = "Cancelled",
+                                                Filter(
+                                                    'Application Requests',
+                                                    'Application Request Status' = [@'Application Request Status'].Cancelled,
+                                                    'Requested Employee'.Email = _myProfile.UserPrincipalName,
+                                                    WFH_dd_View.Selected.Value,
+                                                    'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                                'Created On',
+                                SortOrder.Descending
+                            )
+                        Layout: =Layout.Vertical
+                        LayoutMinHeight: =287
+                        LayoutMinWidth: =320
+                        ShowScrollbar: =false
+                        TemplatePadding: =0
+                        TemplateSize: =Min(110, Self.Height - 60)
+                        Visible: =CountRows(WFH_gallery_FilterRequest.AllItems) > 0
+                        Width: =Parent.Width
+                        ZIndex: =1
+
+                        WFH_lbl_RequestNumber As label:
+                            AutoHeight: =true
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Bold
+                            Height: =25
+                            OnSelect: =Select(Parent)
+                            PaddingBottom: =0
+                            PaddingLeft: =0
+                            PaddingRight: =0
+                            PaddingTop: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   13
+                                )
+                            Text: =ThisItem.'Application Request Number'
+                            VerticalAlign: =VerticalAlign.Top
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/1.2
+                                )
+                            X: =25
+                            Y: =10
+                            ZIndex: =2
+
+                        WFH_rect_Separator As rectangle:
+                            Fill: =AppColor.PrimaryColor
+                            Height: =1
+                            OnSelect: =Select(Parent)
+                            Width: =Parent.TemplateWidth
+                            Y: =100
+                            ZIndex: =5
+
+                        WFH_img_Edit As image:
+                            Height: =35
+                            Image: =EditData
+                            OnSelect: |-
+                                =Navigate(WorkFromHomeRequestScreen);
+                                Set(IsWFHEdit,true);
+                            Visible: |-
+                                =//If(RequestSelect = "Approved" || RequestSelect = "Rejected" || RequestSelect = "Cancelled",false,true)
+                                false
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/12,
+                                    ScreenSize.Medium,
+                                    Parent.Width/16,
+                                    Parent.Width/20
+                                    
+                                )
+                            X: =Parent.TemplateWidth-Self.Width-25
+                            Y: =12
+                            ZIndex: =6
+
+                        WFH_lbl_Description As label:
+                            AutoHeight: =true
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Semibold
+                            Height: =22
+                            OnSelect: =Select(Parent)
+                            PaddingLeft: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   13
+                                )
+                            Text: |-
+                                =Text("Description : ")&Text(ThisItem.Description)
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/1.2
+                                )
+                            X: =25
+                            Y: =35
+                            ZIndex: =7
+
+                        WFH_lbl_StartDate As label:
+                            AutoHeight: =true
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Semibold
+                            Height: =22
+                            OnSelect: =Select(Parent)
+                            PaddingLeft: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   13
+                                )
+                            Text: =Text(DateValue(ThisItem.Startdate),"dd/mmm/yyyy") & " - " & Text(DateValue(ThisItem.Enddate),"dd/mmm/yyyy")
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/1.2
+                                )
+                            X: =25
+                            Y: =65
+                            ZIndex: =8
+
+                        WFH_icon_Next As icon.ChevronRight:
+                            Color: =AppColor.PrimaryColor
+                            Height: =40
+                            Icon: =Icon.ChevronRight
+                            OnSelect: |-
+                                =Navigate(WorkFromHomeRequestScreen);
+                                Set(IsWFHEdit,true);
+                            Visible: |-
+                                =//If(RequestSelect = "Approved" || RequestSelect = "Rejected" || RequestSelect = "Cancelled",false,true)
+                                true
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/12,
+                                    ScreenSize.Medium,
+                                    Parent.Width/16,
+                                    Parent.Width/20
+                                    
+                                )
+                            X: =Parent.TemplateWidth-Self.Width-25
+                            Y: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   20
+                                )
+                            ZIndex: =9
+
+                    WFH_lbl_NoRequests As label:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(101, 128, 187, 1)
+                        Color: =RGBA(47,41,43,1)
+                        DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                        FocusedBorderColor: =WFH_lbl_NoRequests.BorderColor
+                        Font: =Font.Lato
+                        Height: =70
+                        HoverBorderColor: =WFH_lbl_NoRequests.BorderColor
+                        HoverColor: =WFH_lbl_NoRequests.Color
+                        HoverFill: =WFH_lbl_NoRequests.Fill
+                        LayoutMinHeight: =Parent.Height-500
+                        PressedBorderColor: =WFH_lbl_NoRequests.BorderColor
+                        PressedColor: =WFH_lbl_NoRequests.Color
+                        PressedFill: =WFH_lbl_NoRequests.Fill
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                12,
+                                ScreenSize.Medium,
+                               16,
+                               18
+                            )
+                        Text: ="No " &(RequestSelect)& " Requests"
+                        Visible: =!WFH_gallery_FilterRequest.Visible
+                        Width: =Parent.Width
+                        X: =250
+                        Y: =438
+                        ZIndex: =2
+
+            WFH_TotalRequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =2
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height,
+                        Parent.Height
+                    )
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =400
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        300,
+                        350
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.1,
+                        Parent.Width
+                    )
+                ZIndex: =2
+
+                WFH_lbl_Title As label:
+                    Align: =Align.Center
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderThickness: =2
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Bold
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/9,
+                           Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Medium,
+                            Parent.Height/10,
+                            Parent.Height/11
+                        )
+                        )
+                    Text: ="Work From Home"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =1
+
+                WFH_PendingContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.End
+                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    WFH_lbl_Pending As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            ="Pending :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.5,
+                                Parent.Width/1.7
+                            )
+                        ZIndex: =1
+
+                    WFH_lbl_PendingValue As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            =If((Sum(Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Submitted,'Application Request Type'.'Application Request Type Name' = "Work From Home Request" ,'Requested Employee'.Email= _myProfile.UserPrincipalName),Day))>0,
+                            Text(Sum(Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Submitted,'Application Request Type'.'Application Request Type Name' = "Work From Home Request",'Requested Employee'.Email= _myProfile.UserPrincipalName),Day)),"0.00")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2.5
+                            )
+                        ZIndex: =2
+
+                WFH_ApprovedContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.End
+                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =3
+
+                    WFH_lbl_Approved As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height/1.1
+                        PaddingLeft: =15
+                        Text: |-
+                            ="Approved :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.5,
+                                Parent.Width/1.7
+                            )
+                        ZIndex: =1
+
+                    WFH_lbl_ApprovedValue As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height
+                        PaddingLeft: =15
+                        Text: |-
+                            =If((Sum(Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Approved ,'Application Request Type'.'Application Request Type Name' = "Work From Home Request",'Requested Employee'.Email= _myProfile.UserPrincipalName),Day))>0,
+                            Text(Sum(Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Approved,'Application Request Type'.'Application Request Type Name' = "Work From Home Request",'Requested Employee'.Email= _myProfile.UserPrincipalName),Day)),"0.00")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/1.1,
+                                Parent.Width/2.5
+                            )
+                        ZIndex: =2
+
+                WFH_TransactionContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    BorderColor: =AppColor.PrimaryColor
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8.9,
+                            ScreenSize.Medium,
+                            Parent.Height/12,
+                            Parent.Height/11
+                            
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutJustifyContent: =LayoutJustifyContent.End
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width
+                        )
+                    ZIndex: =7
+
+                    WFH_btn_TransactionReport As button:
+                        Fill: =AppColor.PrimaryColor
+                        Height: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                40,
+                                45
+                                
+                            )
+                        OnSelect: |-
+                            =Navigate(TransactionReport,BorderStyle.None);
+                            Set(RequestType,"Work From Home Request");
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Text: ="Transaction Report"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/1.1
+                            )
+                        ZIndex: =1
+

@@ -1,0 +1,757 @@
+"AddEditExpenseLine As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: =NewForm(Form3)
+
+    AEL_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =1
+
+        AEL_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =1
+
+            AEL_icon_Back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                OnSelect: |-
+                    =Navigate(ExpenseLineScreen);
+                    Set(
+                        IsExpenseEdit,
+                        false
+                    );
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |-
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            AEL_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =1
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                PaddingRight: =50
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Expense"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                ZIndex: =2
+
+        AEL_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        AEL_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =3
+
+            Form3 As form:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                DataSource: ='Expense Request Lines'
+                DefaultMode: =FormMode.New
+                FillPortions: |
+                    =3
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.2,
+                        Parent.Height
+                    )
+                LayoutMinHeight: =250
+                LayoutMinWidth: =400
+                Width: =Parent.Width
+                ZIndex: =1
+
+                InvoiceNoDataCard As typedDataCard.blankCard:
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderStyle: =BorderStyle.Solid
+                    DisplayMode: =DisplayMode.Edit
+                    DisplayName: ="Invoice Number"
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: |
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                            Parent.Height/5
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width/3
+                        )
+                    X: =2
+                    Y: =0
+                    ZIndex: =1
+
+                    DataCardKey20_1 As label:
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3.5,
+                                Parent.Height/3
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue18_1 As text:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Default: =If(IsExpenseEdit = true,ELS_gallery_ExpenseLine.Selected.'Invoice Number')
+                        DelayOutput: =true
+                        DisplayMode: =Parent.DisplayMode
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3,
+                                Parent.Height/3
+                            )
+                        PaddingLeft: =5
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: |
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                               DataCardKey20_1.Y + DataCardKey20_1.Height,
+                               DataCardKey20_1.Y + DataCardKey20_1.Height + 5
+                            )
+                        ZIndex: =2
+
+                InvoiceDateDataCard As typedDataCard.blankCard:
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderStyle: =BorderStyle.Solid
+                    DisplayMode: =DisplayMode.Edit
+                    DisplayName: ="Invoice Date"
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                            Parent.Height/3.5
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width/3
+                        )
+                    X: =0
+                    Y: =1
+                    ZIndex: =1
+
+                    DataCardKey13_1 As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3,
+                                Parent.Height/3
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue11_1 As datepicker:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsExpenseEdit = true,ELS_gallery_ExpenseLine.Selected.'Invoice Date',Today())
+                        DisplayMode: =Parent.DisplayMode
+                        EndYear: =Year(Today())+100
+                        Format: ="dd/mmm/yyyy"
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3,
+                                Parent.Height/3
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        IsEditable: =true
+                        PaddingBottom: =0
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        StartYear: =1899
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey13_1.Y + DataCardKey13_1.Height + 5
+                        ZIndex: =2
+
+                ExpenseAmountDataCard As typedDataCard.blankCard:
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderStyle: =BorderStyle.Solid
+                    DisplayMode: =DisplayMode.Edit
+                    DisplayName: ="Expense Amount"
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                            Parent.Height/3.5
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width/3
+                        )
+                    X: =1
+                    Y: =1
+                    ZIndex: =1
+
+                    DataCardKey20_2 As label:
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3.5,
+                                Parent.Height/3
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: |
+                            =30
+                        Y: |
+                            =10
+                        ZIndex: =1
+
+                    DataCardValue18_2 As text:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Default: =If(IsExpenseEdit = true,ELS_gallery_ExpenseLine.Selected.'Expense Amount')
+                        DelayOutput: =true
+                        DisplayMode: =Parent.DisplayMode
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3,
+                                Parent.Height/3
+                            )
+                        PaddingLeft: =5
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: |
+                            =30
+                        Y: =DataCardKey20_2.Y + DataCardKey20_2.Height + 5
+                        ZIndex: =2
+
+                ExpenseType_DataCard As typedDataCard.comboBoxEditCard:
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="LeaveType"
+                    Default: =
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: ="Expense Type"
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: |
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                            Parent.Height/5
+                        )
+                    Required: =false
+                    Update: =DataCardValue10.Selected
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width/3
+                        )
+                    X: =0
+                    Y: =0
+                    ZIndex: =2
+
+                    DataCardKey12 As label:
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3,
+                                Parent.Height/3
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue10 As combobox:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        ChevronBackground: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultSelectedItems: =If(IsExpenseEdit = true,ELS_gallery_ExpenseLine.Selected.'Expense Type',Blank())
+                        DisplayFields: =["dt_expense_type"]
+                        DisplayMode: =Parent.DisplayMode
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3,
+                                Parent.Height/3
+                            )
+                        IsSearchable: =false
+                        Items: ='Expense Types'
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        SearchFields: =["dt_expense_type"]
+                        SearchItems: =[]
+                        SelectMultiple: =false
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey12.Y + DataCardKey12.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage10 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue10.Y + DataCardValue10.Height
+                        ZIndex: =3
+
+                    StarVisible10 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey12.Height
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey12.Y
+                        ZIndex: =4
+
+                Description_DataCard As typedDataCard.textualEditCard:
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="OtherLeaveTypeDetails"
+                    Default: =
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: ="Description"
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: |
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                            Parent.Height/5
+                        )
+                    MaxLength: =
+                    Required: =false
+                    Update: =DataCardValue18.Text
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width/3
+                        )
+                    X: =1
+                    Y: =0
+                    ZIndex: =2
+
+                    DataCardKey20 As label:
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3.5,
+                                Parent.Height/3
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue18 As text:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Default: =If(IsExpenseEdit = true,ELS_gallery_ExpenseLine.Selected.Description,Parent.Default)
+                        DelayOutput: =true
+                        DisplayMode: =Parent.DisplayMode
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/3,
+                                Parent.Height/3
+                            )
+                        MaxLength: =Parent.MaxLength
+                        PaddingLeft: =5
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey20.Y + DataCardKey20.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage18 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue18.Y + DataCardValue18.Height
+                        ZIndex: =3
+
+                    StarVisible18 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey20.Height
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey20.Y
+                        ZIndex: =4
+
+                Attachments_DataCard As typedDataCard.attachmentsEditCard:
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderStyle: =BorderStyle.Solid
+                    DataField: ="{Attachments}"
+                    Default: =
+                    DisplayMode: =Parent.DisplayMode
+                    DisplayName: ="Attachment"
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/4,
+                            Parent.Height/3.5
+                        )
+                    Required: =false
+                    Update: =DataCardValue21.Attachments
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width/3
+                        )
+                    WidthFit: =false
+                    X: =2
+                    Y: =1
+                    ZIndex: =2
+
+                    DataCardKey23 As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/6,
+                                Parent.Height/5
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        Wrap: =false
+                        X: =30
+                        Y: =10
+                        ZIndex: =1
+
+                    DataCardValue21 As attachments:
+                        BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsExpenseEdit = true,ELS_gallery_ExpenseLine.Selected.Attachment)
+                        DisplayMode: =Parent.DisplayMode
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/2,
+                                Parent.Height/1.5
+                            )
+                        IsInDataCard: =true
+                        Items: =If(IsExpenseEdit = true,ELS_gallery_ExpenseLine.Selected.Attachment)
+                        PaddingBottom: =5
+                        PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Tooltip: =Parent.DisplayName
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardKey23.Y + DataCardKey23.Height + 5
+                        ZIndex: =2
+
+                    ErrorMessage20 As label:
+                        AutoHeight: =true
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue21.Y + DataCardValue21.Height
+                        ZIndex: =3
+
+                    StarVisible20 As label:
+                        Align: =Align.Center
+                        Height: =DataCardKey23.Height
+                        Text: ="*"
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey23.Y
+                        ZIndex: =4
+
+        AEL_SubmitContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =Parent.Height/10
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingRight: =50
+            Width: =Parent.Width
+            ZIndex: =4
+
+            AEL_btn_Submit As button:
+                Fill: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        35,
+                        40
+                    )
+                OnSelect: |-
+                    =If(IsExpenseEdit = true,
+                    
+                    Patch('Expense Request Lines',
+                        First(
+                            Filter(
+                                'Expense Request Lines',
+                                'Expense Request Line' = ELS_gallery_ExpenseLine.Selected.'Expense Request Line'
+                            )),
+                            { 
+                            'Expense Request Number': LookUp('Expense Requests','Expense Request Number' = EMS_gallery_FilterRequest.Selected.'Expense Request Number'),
+                            'Expense Date': EMS_gallery_FilterRequest.Selected.'Expense Date',
+                            'Expense Type':DataCardValue10.Selected,
+                            'Expense Amount': Value(DataCardValue18_2.Text),
+                            'Expense Request Line Status' : ([@'Expense Request Line Status'].Pending),
+                            Description: DataCardValue18.Text,
+                            'Invoice Number' : DataCardValue18_1.Text,
+                            'Invoice Date': DataCardValue11_1.SelectedDate,
+                            Attachment:{
+                                FileName: First(DataCardValue21.Attachments).Name,
+                                Value:First(DataCardValue21.Attachments).Value
+                                }
+                        }),
+                    Patch('Expense Request Lines', Defaults('Expense Request Lines'), 
+                    { 
+                            'Expense Request Number': LookUp('Expense Requests','Expense Request Number' = EMS_gallery_FilterRequest.Selected.'Expense Request Number'),
+                            'Expense Date': EMS_gallery_FilterRequest.Selected.'Expense Date',
+                            'Expense Type':DataCardValue10.Selected,
+                            'Expense Amount': Value(DataCardValue18_2.Text),
+                            'Expense Request Line Status' : ([@'Expense Request Line Status'].Pending),
+                            Description: DataCardValue18.Text,
+                            'Invoice Number' : DataCardValue18_1.Text,
+                            'Invoice Date': DataCardValue11_1.SelectedDate,
+                            Attachment:{
+                                FileName: First(DataCardValue21.Attachments).Name,
+                                Value:First(DataCardValue21.Attachments).Value
+                                }
+                        }));
+                    
+                    Navigate(ExpenseLineScreen);
+                    ResetForm(Form3);
+                    Set(IsExpenseEdit,false);
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: =If(IsExpenseEdit = true ,"Save","Submit")
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/3.5,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+

@@ -1,0 +1,346 @@
+TransactionReport As screen:
+    OnVisible: |-
+        =Set(
+            _requestTypeFilter,
+            "Pending"
+        );
+
+    TR_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =1
+
+        TR_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingRight: =10
+            Width: =Parent.Width
+            ZIndex: =1
+
+            TR_BackIcon As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.1,
+                       Parent.Height
+                    )
+                Icon: =Icon.ChevronLeft
+                OnSelect: =Back()
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            TR_lblLeaveAppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =11
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="All Transaction"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                Wrap: =false
+                ZIndex: =2
+
+        TR_WFHM_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        TR_MainSectionContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =3
+
+            TR_FooterContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                Height: =Parent.Height/1.1
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: =Parent.Width
+                ZIndex: =4
+
+                "TR_RequestList_Gallery As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height
+                    Items: |-
+                        =Filter('Application Requests','Requested Employee'.Email=_myProfile.UserPrincipalName 
+                        && 'Application Request Type'.'Application Request Type Name' = RequestType)
+                    Layout: =Layout.Vertical
+                    LayoutMinHeight: =260
+                    LayoutMinWidth: =Parent.LayoutMinWidth
+                    ShowScrollbar: =false
+                    TemplatePadding: =0
+                    TemplateSize: =Min(120, Self.Height - 60)
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+                    TR_LBL_Title As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Bold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =If(Len(Text(ThisItem.'Application Request Number' & " | " & ThisItem.'Requested Employee'.'Full Name'))>30,Left(Text(ThisItem.'Application Request Number' & " | " & ThisItem.'Requested Employee'.'Full Name'),30),Text(ThisItem.'Application Request Number' & " | " & ThisItem.'Requested Employee'.'Full Name'))
+                        VerticalAlign: =VerticalAlign.Top
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =15
+                        Y: =10
+                        ZIndex: =2
+
+                    TR_Separator As rectangle:
+                        Fill: =AppColor.PrimaryColor
+                        Height: =1
+                        OnSelect: =Select(Parent)
+                        Width: =Parent.TemplateWidth
+                        Y: =TR_LBL_Detail.Y + TR_LBL_Detail.Height +10
+                        ZIndex: =5
+
+                    TR_LBL_Description As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description :" & ThisItem.Description
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =15
+                        Y: =35
+                        ZIndex: =7
+
+                    TR_Date As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Text(DateValue(ThisItem.Startdate),"dd/mmm/yyyy") & " - " & Text(DateValue(ThisItem.Enddate),"dd/mmm/yyyy")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =15
+                        Y: =65
+                        ZIndex: =8
+
+                    TR_btn_Status As button:
+                        BorderThickness: =0
+                        Color: =RGBA(0, 121, 187, 1)
+                        DisplayMode: =DisplayMode.View
+                        Fill: =RGBA(255, 255, 255, 1)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                40,
+                                45
+                                
+                            )
+                        OnSelect: =
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Text: =ThisItem.'Application Request Status'
+                        Visible: =If(RequestSelect = "Cancelled",false,true)
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                               Parent.Width/4,
+                               Parent.Width/6
+                            )
+                        X: =Parent.Width - TR_btn_Status.Width - 30
+                        Y: =23
+                        ZIndex: =9
+
+                    TR_LBL_Detail As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =ThisItem.'Application Request Type'.'Application Request Type Name' &"  " &
+                            ThisItem.Day&"   "&
+                            ThisItem.'Leave Type'.'Leave Type Name' &"    "&
+                            ThisItem.'Request Approver'.'Full Name'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =15
+                        Y: =85
+                        ZIndex: =10
+
+        TR_DownloadContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =75
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            ZIndex: =4
+
+            TR_btn_Download As button:
+                Fill: =AppColor.ApproveColor
+                HoverFill: =ColorFade(RGBA(54, 176, 75, 1), -20%)
+                OnSelect: |-
+                    =ClearCollect(
+                        colGalleryItem,   {
+                        //Manager_reqList_Gallery_2.AllItems
+                        RequestNum : TR_RequestList_Gallery.AllItems.'Application Request Number',
+                             Description : TR_RequestList_Gallery.AllItems.Description,
+                              StartDate : TR_RequestList_Gallery.AllItems.Startdate,
+                               EndDate : TR_RequestList_Gallery.AllItems.Enddate,
+                                DaysTotal : TR_RequestList_Gallery.AllItems.Day,
+                                 LeaveType : TR_RequestList_Gallery.AllItems.'Leave Type',
+                                  RequestType : TR_RequestList_Gallery.AllItems.'Application Request Type',
+                                   Approver : TR_RequestList_Gallery.AllItems.'Request Approver'}
+                    );
+                    //dt_application_requestid
+                    /*ForAll(Manager_reqList_Gallery_2.AllItems,
+                    Collect(
+                        colGalleryItem,
+                        {
+                            //CheckOrderLineId: Manager_reqList_Gallery_2.AllItems,
+                            RequestNum : Manager_reqList_Gallery_2.AllItems.'Application Request Number',
+                             Description : Manager_reqList_Gallery_2.AllItems.Description,
+                              StartDate : Manager_reqList_Gallery_2.AllItems.Startdate,
+                               EndDate : Manager_reqList_Gallery_2.AllItems.Enddate,
+                                DaysTotal : Manager_reqList_Gallery_2.AllItems.Day,
+                                 LeaveType : Manager_reqList_Gallery_2.AllItems.'Leave Type',
+                                  RequestType : Manager_reqList_Gallery_2.AllItems.'Application Request Type',
+                                   Approver : Manager_reqList_Gallery_2.AllItems.'Request Approver'
+                                    
+                        }
+                    )
+                    );*/
+                    
+                    Concurrent(
+                        Notify(
+                            "Downloading Transaction Report.... ",
+                            NotificationType.Information
+                        ),
+                        Set(
+                            fileURL,
+                            Export.Run(
+                                JSON(
+                                    colGalleryItem,
+                                    JSONFormat.IgnoreBinaryData & JSONFormat.IgnoreUnsupportedTypes
+                                )
+                            )
+                        )
+                    );
+                    Download(fileURL.filelink);
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Download"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+

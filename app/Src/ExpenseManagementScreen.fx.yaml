@@ -1,0 +1,970 @@
+"ExpenseManagementScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |
+        =Reset(EMS_dd_Login);
+        Set(
+            IsManager,
+            CountRows(
+                Filter(
+                    [@contact],
+                    Email = _myProfile.UserPrincipalName,
+                    'Is Manager' = [@'Is Manager (contact)'].Yes
+                )
+            )
+        );
+        Set(
+            RequestSelect,
+            "Draft"
+        );
+        ClearCollect(
+            OpenReports,
+            Filter(
+                'Expense Requests',
+                'Expense Request Status' = [@'Expense Request Status'].Draft,
+                'Expense Requester'.Email = _myProfile.UserPrincipalName
+            ).'Expense Request Number'
+        );
+        ClearCollect(
+            ApprovedReports,
+            Filter(
+                'Expense Requests',
+                'Expense Request Status' = [@'Expense Request Status'].Approved,
+                'Expense Requester'.Email = _myProfile.UserPrincipalName
+            ).'Expense Request Number'
+        );
+        ClearCollect(
+            PendingReports,
+            Filter(
+                'Expense Requests',
+                'Expense Request Status' = [@'Expense Request Status'].Pending,
+                'Expense Requester'.Email = _myProfile.UserPrincipalName
+            ).'Expense Request Number'
+        );
+        Refresh('Expense Requests');
+        Refresh('Expense Request Lines');
+
+    EMS_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =1
+
+        EMS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    Parent.Width/2,
+                    Parent.Width
+                )
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            EMS_icon_back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                LayoutMinWidth: =50
+                OnSelect: =Navigate(LoginScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            EMS_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =7
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Expense Management"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.5,
+                        Parent.Width/1.5
+                    )
+                Wrap: =false
+                ZIndex: =2
+
+            EMS_dd_Login As dropdown:
+                AlignInContainer: =AlignInContainer.Center
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(39, 113, 194, 1)
+                Color: =RGBA(39, 113, 194, 1)
+                Default: ="Employee"
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2.5,
+                        Parent.Height/2
+                    )
+                HoverColor: =RGBA(39, 113, 194, 1)
+                Items: =["Reviewer","Employee","Approver"]
+                OnChange: |
+                    =If(
+                        EMS_dd_Login.Selected.Value = "Employee",
+                        Set(RequestSelect,"Draft");
+                        Navigate(
+                            ExpenseManagementScreen,
+                            ScreenTransition.Fade
+                        ),
+                        EMS_dd_Login.Selected.Value = "Reviewer",
+                        Set(RequestSelect,"Submitted");
+                        If(
+                             IsManager > 0, 
+                             If(
+                             "priyesh.shah@dynatechconsultancy.com"=_myProfile.UserPrincipalName,Navigate(ExpenseReviewerScreen,ScreenTransition.Fade)||
+                             "khushi.shah@dynatechconsultancy.com"=_myProfile.UserPrincipalName,Navigate(ExpenseReviewerScreen,ScreenTransition.Fade)||
+                             "shail.prajapati@dynatechconsultancy.com"=_myProfile.UserPrincipalName,Navigate(ExpenseReviewerScreen,ScreenTransition.Fade),
+                             Notify("You dont have permisson")),
+                            Notify("Not Manager")
+                        ),
+                        EMS_dd_Login.Selected.Value = "Approver",
+                        If(
+                             IsManager > 0, If("jinesh@dynatechconsultancy.com"=_myProfile.UserPrincipalName,Navigate(ExpenseApproverScreen,ScreenTransition.Fade)||
+                             "khushi.shah@dynatechconsultancy.com"=_myProfile.UserPrincipalName,Navigate(ExpenseApproverScreen,ScreenTransition.Fade)||
+                             "shail.prajapati@dynatechconsultancy.com"=_myProfile.UserPrincipalName,Navigate(ExpenseApproverScreen,ScreenTransition.Fade),
+                             Notify("You dont have permisson")),
+                            Notify("Not Manager")
+                        )
+                    )
+                PaddingBottom: =5
+                PaddingLeft: =5
+                PaddingRight: =5
+                PaddingTop: =5
+                PressedFill: =RGBA(39, 113, 194, 1)
+                Reset: =true
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        6,
+                       12
+                    )
+                Visible: =If(IsManager>0,true,false)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        100,
+                        ScreenSize.Medium,
+                        200,
+                        250
+                        
+                    )
+                ZIndex: =4
+
+            EMS_icon_add As image:
+                Height: =If(LeaveRequestScreen.Size = 1|| LeaveRequestScreen.Size = 2 ,50,75)
+                Image: =AddNew
+                LayoutMinWidth: =50
+                OnSelect: =Navigate(CreateNewExpense)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,50,ScreenSize.Medium,50,65)
+                ZIndex: =5
+
+        EMS_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        EMS_DataContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            ZIndex: =3
+
+            EMS_RequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =2
+                FillPortions: =3
+                Height: =600
+                LayoutMinHeight: =600
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutOverflowY: =LayoutOverflow.Scroll
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.1
+                    )
+                ZIndex: =1
+
+                EMS_ViewContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Medium,
+                            Parent.Height/9,
+                            Parent.Height/10
+                        )
+                        )
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    LayoutWrap: =true
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+                    EMS_ViewContainerText As groupContainer.horizontalAutoLayoutContainer:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        FillPortions: =0
+                        Height: =Parent.Height
+                        LayoutMinHeight: =100
+                        LayoutMinWidth: =250
+                        LayoutMode: =LayoutMode.Auto
+                        Width: =Parent.Width/2
+                        ZIndex: =2
+
+                        EMS_lbl_Text As label:
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Bold
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Height/1.2,
+                                   Parent.Height
+                                )
+                            PaddingLeft: =15
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    9,
+                                    ScreenSize.Medium,
+                                    10,
+                                    12
+                                    
+                                )
+                            Text: |-
+                                ="Select expense report to view :"
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                   Parent.Width
+                                )
+                            ZIndex: =1
+
+                    EMS_ViewContainerDropDown As groupContainer.horizontalAutoLayoutContainer:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        FillPortions: =0
+                        Height: =Parent.Height
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =100
+                        LayoutMinWidth: =250
+                        LayoutMode: =LayoutMode.Auto
+                        Width: =Parent.Width/2
+                        ZIndex: =3
+
+                        EMS_dd_View As dropdown:
+                            BorderColor: =RGBA(39, 113, 194, 1)
+                            ChevronBackground: =RGBA(39, 113, 194, 1)
+                            Color: =RGBA(39, 113, 194, 1)
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Height/2.5,
+                                    Parent.Height/2
+                                )
+                            HoverColor: =RGBA(39, 113, 194, 1)
+                            Items: |-
+                                =Filter(
+                                    Choices('Expense Requests (Views)'),
+                                    Value = 'Expense Requests (Views)'.'All Expense' || Value = 'Expense Requests (Views)'.'Last Month Expense' || Value = 'Expense Requests (Views)'.'This Month Expense' || Value = 'Expense Requests (Views)'.'This Year Expense'
+                                ).Value
+                            PressedFill: =RGBA(39, 113, 194, 1)
+                            SelectionFill: =RGBA(39, 113, 194, 1)
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    9,
+                                   12
+                                )
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/1.1,
+                                    ScreenSize.Medium,
+                                    Parent.Width/1.5,
+                                    Parent.Width/2
+                                    
+                                )
+                            ZIndex: =7
+
+                EMS_FilterContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.Center
+                    BorderColor: =AppColor.PrimaryColor
+                    BorderThickness: =2
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/9.5,
+                           Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Medium,
+                            Parent.Height/9.5,
+                            Parent.Height/10
+                        )
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            200,
+                            ScreenSize.Medium,
+                            250,
+                            450
+                            
+                        )
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    EMS_gallery_RequestFilter As gallery.galleryHorizontal:
+                        Height: =Parent.Height
+                        Items: |-
+                            =Table(
+                                {Filter: "Draft"},
+                                {Filter: "Submitted"},
+                                {Filter: "Review"},
+                                {Filter: "Approved"},
+                                {Filter: "Rejected"}
+                            )
+                        LayoutMinHeight: =Parent.Height
+                        LayoutMinWidth: =Parent.Width
+                        ShowScrollbar: =false
+                        TemplateSize: =Parent.Width/CountRows(Self.AllItems)-10
+                        Width: =Parent.Width
+                        X: =
+                        Y: =
+                        ZIndex: =9
+
+                        EMS_button_Filter As button:
+                            BorderColor: =RGBA(10, 106, 204, 1)
+                            BorderThickness: =If(RequestSelect=ThisItem.Filter,0,1)
+                            Color: =If(RequestSelect=ThisItem.Filter,RGBA(255, 255, 255, 1),RGBA(10, 106, 204, 1))
+                            DisabledBorderColor: =ColorFade(EMS_button_Filter.BorderColor, 70%)
+                            DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                            DisabledFill: =ColorFade(RGBA(159, 167, 165, 1), 50%)
+                            Fill: =If(RequestSelect = ThisItem.Filter,RGBA(0, 134, 208, 1),RGBA(255, 255, 255, 1))
+                            FocusedBorderColor: =EMS_button_Filter.BorderColor
+                            FontWeight: =FontWeight.Normal
+                            HoverBorderColor: =ColorFade(EMS_button_Filter.BorderColor, 20%)
+                            HoverColor: =EMS_button_Filter.Color
+                            HoverFill: =ColorFade(EMS_button_Filter.Fill, 20%)
+                            OnSelect: =Set(RequestSelect,ThisItem.Filter);
+                            PressedBorderColor: =EMS_button_Filter.Fill
+                            PressedColor: =EMS_button_Filter.Fill
+                            PressedFill: =EMS_button_Filter.Color
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    9,
+                                   12
+                                )
+                            Text: =ThisItem.Filter
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/5.3,
+                                    Parent.Width/5.3
+                                )
+                            Y: =6
+                            ZIndex: =1
+
+                EMS_FilterDataContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height-140
+                    LayoutMinHeight: =0
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    LayoutOverflowX: =LayoutOverflow.Scroll
+                    LayoutOverflowY: =LayoutOverflow.Scroll
+                    Width: =Parent.Width
+                    ZIndex: =3
+
+                    "EMS_gallery_FilterRequest As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        FillPortions: =0
+                        Height: =Parent.Height
+                        Items: |-
+                            =Sort(
+                                If(
+                                    RequestSelect = "Draft",
+                                    Filter(
+                                        'Expense Requests',
+                                        'Expense Request Status' = [@'Expense Request Status'].Draft,
+                                        'Expense Requester'.Email = _myProfile.UserPrincipalName,
+                                        EMS_dd_View.Selected.Value
+                                    ),
+                                    If(
+                                        RequestSelect = "Submitted",
+                                        Filter(
+                                            'Expense Requests',
+                                            'Expense Request Status' = [@'Expense Request Status'].Pending,
+                                            'Expense Requester'.Email = _myProfile.UserPrincipalName,
+                                            EMS_dd_View.Selected.Value
+                                        ),
+                                        If(
+                                            RequestSelect = "Approved",
+                                            Filter(
+                                                'Expense Requests',
+                                                'Expense Request Status' = [@'Expense Request Status'].Approved,
+                                                'Expense Requester'.Email = _myProfile.UserPrincipalName,
+                                                EMS_dd_View.Selected.Value
+                                            ),
+                                            If(
+                                                RequestSelect = "Rejected",
+                                                Filter(
+                                                    'Expense Requests',
+                                                    'Expense Request Status' = [@'Expense Request Status'].Rejected,
+                                                    'Expense Requester'.Email = _myProfile.UserPrincipalName,
+                                                    EMS_dd_View.Selected.Value
+                                                ),
+                                                If(
+                                                    RequestSelect = "Review",
+                                                    Filter(
+                                                        'Expense Requests',
+                                                        'Expense Request Status' = [@'Expense Request Status'].'Approved Reviewer',
+                                                        'Expense Requester'.Email = _myProfile.UserPrincipalName,
+                                                        EMS_dd_View.Selected.Value
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                                'Created On',
+                                SortOrder.Descending
+                            )
+                        Layout: =Layout.Vertical
+                        LayoutMinHeight: =260
+                        LayoutMinWidth: =Parent.LayoutMinWidth
+                        TemplatePadding: =0
+                        TemplateSize: =100
+                        Visible: =CountRows(EMS_gallery_FilterRequest.AllItems) > 0
+                        Width: =Parent.Width
+                        ZIndex: =1
+
+                        EMS_lbl_RequestNumber As label:
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Bold
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    27,
+                                    30
+                                )
+                            OnSelect: =Select(Parent)
+                            PaddingBottom: =0
+                            PaddingLeft: =0
+                            PaddingRight: =0
+                            PaddingTop: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    10,
+                                   13
+                                )
+                            Text: =ThisItem.'Expense Request Number'
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/1.1,
+                                    Parent.Width/3
+                                )
+                            X: =30
+                            Y: =7
+                            ZIndex: =2
+
+                        EMS_rect_Separator As rectangle:
+                            Fill: =AppColor.PrimaryColor
+                            Height: =1
+                            OnSelect: =Select(Parent)
+                            Width: =Parent.TemplateWidth
+                            Y: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Y+100,
+                                     Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Large,
+                                    Parent.Y+100,
+                                    Parent.Y+95
+                                )
+                                )
+                            ZIndex: =5
+
+                        EMS_lbl_Description As label:
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Semibold
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    27,
+                                    30
+                                )
+                            OnSelect: =Select(Parent)
+                            PaddingLeft: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                  10,13
+                                )
+                            Text: |-
+                                ="Description :" & ThisItem.Description
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/2.5
+                                )
+                            X: =30
+                            Y: =37
+                            ZIndex: =7
+
+                        EMS_lbl_ExpenseDate As label:
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Semibold
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    27,
+                                    30
+                                )
+                            OnSelect: =Select(Parent)
+                            PaddingLeft: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                  10,13
+                                )
+                            Text: =Text(DateValue(ThisItem.'Expense Date'),"dd/mmm/yyyy") & " - " & Text(DateValue(ThisItem.'End Date'),"dd/mmm/yyyy")
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width,
+                                    Parent.Width/2.5
+                                )
+                            X: =30
+                            Y: =63
+                            ZIndex: =8
+
+                        EMS_lbl_Amount As label:
+                            Color: =AppColor.PrimaryColor
+                            FontWeight: =FontWeight.Normal
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    27,
+                                    30
+                                )
+                            OnSelect: =Select(Parent)
+                            PaddingBottom: =0
+                            PaddingLeft: =0
+                            PaddingRight: =0
+                            PaddingTop: =0
+                            Size: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                   10,
+                                   13
+                                )
+                            Text: |-
+                                ="₹" & 
+                                If(Sum(Filter('Expense Request Lines',Text('Expense Request Number'.'Expense Request Number') = ThisItem.'Expense Request Number'),'Expense Amount')>0, 
+                                Text(Sum(Filter('Expense Request Lines',Text('Expense Request Number'.'Expense Request Number') = ThisItem.'Expense Request Number'),'Expense Amount')," #,###.00")," 0.00")
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Width/2,
+                                    Parent.Width/8
+                                )
+                            X: |-
+                                =
+                                
+                                
+                                Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.TemplateWidth-Self.Width-10,
+                                    Parent.TemplateWidth-Self.Width-100
+                                )
+                            Y: =30
+                            ZIndex: =11
+
+                        EMS_img_Edit As image:
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Height/6,
+                                   Parent.Height/8
+                                )
+                            Image: =EditData
+                            OnSelect: =Navigate(ExpenseLineScreen,BorderStyle.None);
+                            Visible: =If(RequestSelect = "Approved"|| RequestSelect = "Review",false,true)
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    30,
+                                   40
+                                )
+                            X: =Parent.TemplateWidth-Self.Width-30
+                            Y: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    5,
+                                   12
+                                )
+                            ZIndex: =12
+
+                        EMS_img_Delete As image:
+                            Height: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    Parent.Height/6,
+                                   Parent.Height/8
+                                )
+                            Image: =Delete
+                            OnSelect: |-
+                                =Remove('Expense Request Lines',Filter('Expense Request Lines',('Expense Request Number'.'Expense Request Number') = EMS_gallery_FilterRequest.Selected.'Expense Request Number'));
+                                Remove('Expense Requests',First(Filter('Expense Requests','Expense Request Number'= EMS_gallery_FilterRequest.Selected.'Expense Request Number')));
+                                Refresh('Expense Request Lines');
+                                Refresh('Expense Requests');
+                                Notify("Expense Delete",NotificationType.Success);
+                            Visible: =If(RequestSelect = "Approved" || RequestSelect = "Rejected" || RequestSelect = "Review",false,true)
+                            Width: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    30,
+                                   40
+                                )
+                            X: =Parent.TemplateWidth-Self.Width-70
+                            Y: |-
+                                =Switch(
+                                    App.ActiveScreen.Size,
+                                    ScreenSize.Small,
+                                    5,
+                                   12
+                                )
+                            ZIndex: =13
+
+                    EMS_lbl_NoRequests As label:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(101, 128, 187, 1)
+                        Color: =RGBA(47,41,43,1)
+                        DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                        FocusedBorderColor: =EMS_lbl_NoRequests.BorderColor
+                        Font: =Font.Lato
+                        Height: =70
+                        HoverBorderColor: =EMS_lbl_NoRequests.BorderColor
+                        HoverColor: =EMS_lbl_NoRequests.Color
+                        HoverFill: =EMS_lbl_NoRequests.Fill
+                        LayoutMinHeight: =Parent.Height-500
+                        PressedBorderColor: =EMS_lbl_NoRequests.BorderColor
+                        PressedColor: =EMS_lbl_NoRequests.Color
+                        PressedFill: =EMS_lbl_NoRequests.Fill
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                12,
+                                ScreenSize.Medium,
+                               16,
+                               18
+                            )
+                        Text: ="No " &(RequestSelect)& " Requests"
+                        Visible: =!EMS_gallery_FilterRequest.Visible
+                        Width: =Parent.Width
+                        X: =250
+                        Y: =438
+                        ZIndex: =2
+
+            EMS_TotalAmountContainer As groupContainer.horizontalAutoLayoutContainer:
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =1
+                Height: =Parent.Height/1.2
+                LayoutGap: =5
+                LayoutMinHeight: =400
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width
+                    )
+                ZIndex: =2
+
+                EMS_OpenContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    Y: =1
+                    ZIndex: =1
+
+                    EMS_lbl_Open As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Open :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    EMS_lbl_OpenAmount As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="₹" & If(Sum(Filter('Expense Request Lines',Text('Expense Request Number'.'Expense Request Number') in OpenReports.'Expense Request Number'),'Expense Amount')>0,
+                            Text(Sum(Filter('Expense Request Lines',Text('Expense Request Number'.'Expense Request Number') in OpenReports.'Expense Request Number'),'Expense Amount')," #,###.00")," 0.00")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                EMS_PendingContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    Y: =2
+                    ZIndex: =2
+
+                    EMS_lbl_Pending As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Pending :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    EMS_lbl_PendingAmount As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="₹" & If(Sum(Filter('Expense Request Lines', Text('Expense Request Number'.'Expense Request Number') in PendingReports.'Expense Request Number'),'Expense Amount')>0,
+                            Text(Sum(Filter('Expense Request Lines',Text('Expense Request Number'.'Expense Request Number') in PendingReports.'Expense Request Number'),'Expense Amount')," #,###.00")," 0.00")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                EMS_ApprovedContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height/10
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width,
+                            Parent.Width
+                        )
+                    Y: |
+                        =0
+                    ZIndex: =3
+
+                    EMS_lbl_Approved As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Approved :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2
+                            )
+                        ZIndex: =1
+
+                    EMS_lbl_ApprovedAmount As label:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="₹" & 
+                            If(Sum(Filter('Expense Request Lines',Text('Expense Request Number'.'Expense Request Number') in ApprovedReports.'Expense Request Number'),'Expense Amount')>0,
+                            Text(Sum(Filter('Expense Request Lines',Text('Expense Request Number'.'Expense Request Number') in ApprovedReports.'Expense Request Number'),'Expense Amount')," #,###.00")," 0.00")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+

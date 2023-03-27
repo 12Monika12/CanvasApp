@@ -1,0 +1,667 @@
+"CreateNewExpense As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+
+    CNE_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutJustifyContent: =LayoutJustifyContent.Center
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =1
+
+        CNE_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    Parent.Width/2,
+                    Parent.Width
+                )
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =1
+
+            CNE_lbl_AppTitle As label:
+                Align: =Align.Center
+                AlignInContainer: =AlignInContainer.Start
+                Color: =AppColor.PrimaryColor
+                FillPortions: =10
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                LayoutMinWidth: =200
+                PaddingLeft: =70
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Create New Expense "
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.3,
+                        Parent.Width/1.1
+                    )
+                ZIndex: =2
+
+            CNE_icon_Close As image:
+                AlignInContainer: =AlignInContainer.Start
+                Height: =If(LeaveRequestScreen.Size = 1|| LeaveRequestScreen.Size = 2 ,50,75)
+                Image: =Close
+                LayoutMinWidth: |
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,50,ScreenSize.Medium,50,65)
+                OnSelect: =Navigate(ExpenseManagementScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,50,ScreenSize.Medium,50,65)
+                ZIndex: =3
+
+        CNE_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            BorderColor: =AppColor.PrimaryColor
+            BorderThickness: =2
+            FillPortions: =0
+            Height: =Parent.Height/1.1
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowX: =LayoutOverflow.Scroll
+            LayoutWrap: =true
+            Width: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    Parent.Width,
+                   Parent.Width
+                )
+            ZIndex: =2
+
+            CNE_FromContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                       Parent.Height/10
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width
+                    )
+                ZIndex: =1
+
+                CNE_lbl_From As label:
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Semibold
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    PaddingLeft: =10
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Text: |-
+                        ="From :"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5
+                        )
+                    ZIndex: =3
+
+                CNE_dp_From As datepicker:
+                    BorderColor: =AppColor.PrimaryColor
+                    Color: =AppColor.PrimaryColor
+                    Format: ="dd/mmm/yyyy"
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    IconBackground: =AppColor.PrimaryColor
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2.3,
+                            Parent.Width/3.5
+                        )
+                    ZIndex: =4
+
+            CNE_ToContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                       Parent.Height/10
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width
+                    )
+                ZIndex: =2
+
+                CNE_lbl_To As label:
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Semibold
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    PaddingLeft: =10
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Text: |-
+                        ="To :"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5
+                        )
+                    ZIndex: =3
+
+                CNE_dp_To As datepicker:
+                    BorderColor: =AppColor.PrimaryColor
+                    Color: =AppColor.PrimaryColor
+                    Format: ="dd/mmm/yyyy"
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    IconBackground: =AppColor.PrimaryColor
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2.3,
+                            Parent.Width/3.5
+                        )
+                    ZIndex: =4
+
+            CNE_TitleContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                       Parent.Height/10
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width
+                    )
+                ZIndex: =3
+
+                CNE_lbl_Title As label:
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Semibold
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    PaddingLeft: =10
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Text: |-
+                        ="Title :"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5
+                        )
+                    ZIndex: =1
+
+                CNE_text_Title As text:
+                    BorderColor: =AppColor.PrimaryColor
+                    Color: =AppColor.PrimaryColor
+                    Default: =""
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2.3,
+                            Parent.Width/3.5
+                        )
+                    ZIndex: =2
+
+            CNE_ProjectContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                       Parent.Height/10
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width
+                    )
+                ZIndex: =4
+
+                CNE_lbl_Project As label:
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Semibold
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    PaddingLeft: =10
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Text: |-
+                        ="Project :"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5
+                        )
+                    ZIndex: =1
+
+                CNE_dd_Project As dropdown:
+                    BorderColor: =RGBA(39, 113, 194, 1)
+                    ChevronBackground: =RGBA(39, 113, 194, 1)
+                    Color: =RGBA(39, 113, 194, 1)
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    HoverColor: =RGBA(39, 113, 194, 1)
+                    Items: =Projects
+                    PaddingBottom: =5
+                    PaddingLeft: =5
+                    PaddingRight: =5
+                    PaddingTop: =5
+                    PressedFill: =RGBA(39, 113, 194, 1)
+                    SelectionFill: =RGBA(39, 113, 194, 1)
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2.3,
+                            Parent.Width/3.5
+                        )
+                    ZIndex: =4
+
+            CNE_ReportingContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                       Parent.Height/10
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width
+                    )
+                ZIndex: =5
+
+                CNE_lbl_Reporting As label:
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Semibold
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    PaddingLeft: =15
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Text: |-
+                        ="Reporting Manager :"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5
+                        )
+                    ZIndex: =1
+
+                CNE_text_Reporting As text:
+                    BorderColor: =AppColor.PrimaryColor
+                    Color: =AppColor.PrimaryColor
+                    Default: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                    DisplayMode: =DisplayMode.View
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/3.5,
+                            Parent.Width/5
+                        )
+                    ZIndex: =2
+
+            CNE_DelegateContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                       Parent.Height/10
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width
+                    )
+                ZIndex: =6
+
+                CNE_lbl_Delegate As label:
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Semibold
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    PaddingLeft: =15
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Text: |-
+                        ="Delegate Approver :"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5
+                        )
+                    ZIndex: =1
+
+                CNE_text_Delegate As text:
+                    BorderColor: =AppColor.PrimaryColor
+                    Color: =AppColor.PrimaryColor
+                    Default: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                    DisplayMode: =DisplayMode.View
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            40
+                        )
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            10,
+                           13
+                        )
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/3.5,
+                            Parent.Width/5
+                        )
+                    ZIndex: =2
+
+            CNE_CreateContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8,
+                       Parent.Height/10
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/2,
+                        Parent.Width
+                    )
+                ZIndex: =7
+
+                CNE_btn_Create As button:
+                    Fill: =AppColor.PrimaryColor
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            30,
+                            ScreenSize.Medium,
+                            40,
+                            45
+                            
+                        )
+                    OnSelect: |
+                        =Patch(
+                            'Expense Requests',
+                            Defaults('Expense Requests'),
+                            {
+                                'Expense Requester': LookUp(
+                                    contact,
+                                    'Full Name' = _myProfile.DisplayName
+                                ),
+                                'Expense Date': CNE_dp_From.SelectedDate,
+                                'End Date': CNE_dp_To.SelectedDate,
+                                Description: CNE_text_Title.Text,
+                                'Submitted Date': Today(),
+                                'Project Name': CNE_dd_Project.Selected,
+                                'Expense Approver': LookUp(
+                                    contact,
+                                    'Full Name' = CNE_text_Reporting.Text
+                                ),
+                                'Expense Request Status': 'Expense Request Status'.Draft
+                            }
+                        );
+                        Reset(CNE_dp_From);
+                        Reset(CNE_dp_To);
+                        Reset(CNE_text_Title);
+                        Reset(CNE_dd_Project);
+                        Notify(
+                            "Expense Create",
+                            NotificationType.Success
+                        );
+                        Refresh('Expense Requests');
+                        Navigate(ExpenseLineScreen,BorderStyle.None)
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            9,
+                           12
+                        )
+                    Text: ="Create"
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            250,
+                            ScreenSize.Medium,
+                            300,
+                            370
+                            
+                        )
+                    ZIndex: =1
+

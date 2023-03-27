@@ -1,0 +1,198 @@
+"LoginScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |-
+        =Set(
+            _requestTypeFilter,
+            "Pending"
+        );
+        
+          Set(
+                _requesterBalanceRecord,
+                LookUp(
+                    'Leave Balances',
+                    Employee.Email = _myProfile.UserPrincipalName
+                )
+            );
+            ClearCollect(
+                RequesterLeaveTypeBalance,
+                {
+                    type: "Paid Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Available Paid Leave') > 0,
+                        Value(_requesterBalanceRecord.'Available Paid Leave'),
+                        "0"
+                    )
+                },
+                 {
+                    type: "Sick Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.' Available Sick Leave') > 0,
+                        Value(_requesterBalanceRecord.' Available Sick Leave'),
+                        "0"
+                    )
+                },
+                 {
+                    type: "Holiday Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Available Holiday Leave') > 0,
+                        Value(_requesterBalanceRecord.'Available Holiday Leave'),
+                        "0"
+                    )
+                },
+                {
+                    type: "Birthday Leave",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Available Birthday Leave') > 0,
+                        Value(_requesterBalanceRecord.'Available Birthday Leave'),
+                        "0"
+                    )
+                },
+                {
+                    type: "LWP",
+                    balance: If(
+                       Value(_requesterBalanceRecord.'Leave Without Pay') > 0,
+                        Value(_requesterBalanceRecord.'Leave Without Pay'),
+                        "0"
+                    )
+                }
+            
+        );
+
+    HS_ScreenContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutJustifyContent: =LayoutJustifyContent.Center
+        LayoutMode: =LayoutMode.Auto
+        Width: =Parent.Width
+        ZIndex: =3
+
+        HS_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LoginScreen.Size = 1|| LoginScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =2
+
+            HS_MainLogo As image:
+                FillPortions: =1
+                Height: =If(LoginScreen.Size = 1|| LoginScreen.Size = 2 ,50,75)
+                Image: =Mainlogo
+                PaddingBottom: =If(LoginScreen.Size = 1|| LoginScreen.Size = 2 ,10,20)
+                PaddingLeft: =If(LoginScreen.Size = 1|| LoginScreen.Size = 2 ,10,20)
+                PaddingRight: =If(LoginScreen.Size = 1|| LoginScreen.Size = 2 ,10,20)
+                PaddingTop: =If(LoginScreen.Size = 1|| LoginScreen.Size = 2 ,10,20)
+                Width: =Parent.Width-HS_LogOut.Width
+                ZIndex: =1
+
+            HS_LogOut As image:
+                Height: =If(LoginScreen.Size = 1|| LoginScreen.Size = 2 ,50,75)
+                Image: =Logout
+                OnSelect: =Navigate(HomeScreen,BorderStyle.None)
+                PaddingRight: =10
+                Width: =Switch(LoginScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                X: =HS_MainLogo.Width
+                ZIndex: =2
+
+        HS_MainSectionContainer As groupContainer.verticalAutoLayoutContainer:
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            ZIndex: =3
+
+            HS_Divider As rectangle:
+                Height: =1
+                Width: =Parent.Width
+                Y: =HS_HeaderContainer.Height
+                ZIndex: =1
+
+            "HS_RequestGallery As gallery.'BrowseLayout_Vertical_TwoTextOneImageTwoColumnVariant_ver4.0'":
+                Height: =557
+                Items: =RequestCollection
+                Layout: =Layout.Vertical
+                LayoutMinHeight: =180
+                LayoutMinWidth: =340
+                OnSelect: |-
+                    =//Select Request Type
+                    If(
+                        HS_RequestGallery.Selected.type = "Leave Application",
+                        Navigate(
+                            LeaveApplicationScreen,
+                            ScreenTransition.Fade
+                        ),
+                        HS_RequestGallery.Selected.type = "Extra Working Day",
+                        Navigate(
+                            ExtraWorkingScreen,
+                            ScreenTransition.Fade
+                        ),
+                        HS_RequestGallery.Selected.type = "Night Shift Allowance",
+                        Navigate(
+                            NightShiftScreen,
+                            ScreenTransition.Fade
+                        ),
+                         HS_RequestGallery.Selected.type = "Work From Home",
+                        Navigate(
+                            WorkFromHomeScreen,
+                            ScreenTransition.Fade
+                        ),
+                        HS_RequestGallery.Selected.type = "Expense Report",
+                        Navigate(
+                            ExpenseManagementScreen,
+                            ScreenTransition.Fade
+                        ),
+                        HS_RequestGallery.Selected.type = "Holiday List",
+                        Navigate(
+                            HolidayListScreen,
+                            ScreenTransition.Fade
+                        ),
+                        HS_RequestGallery.Selected.type = "Employee Details",
+                        Navigate(
+                            EmployeeDetailScreen,
+                            ScreenTransition.Fade
+                        ),
+                        HS_RequestGallery.Selected.type = "User Guide",
+                        Download("https://dynatechconsultancy.sharepoint.com/:b:/r/sites/CanvasappDocument/Shared%20Documents/Manual.pdf")
+                    )
+                ShowScrollbar: =false
+                TemplatePadding: =0
+                TemplateSize: =Switch(LoginScreen.Size ,ScreenSize.Small,Min(180, Self.Height - 60),ScreenSize.Medium,Min(180, Self.Height - 60),Min(280, Self.Height - 60))
+                WrapCount: =Switch(HomeScreen.Size ,ScreenSize.Small,2,ScreenSize.Medium,2,HomeScreen.Size)
+                ZIndex: =1
+
+                HS_HoverRect As rectangle:
+                    BorderColor: =RGBA(227, 234, 243, 1)
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =Switch(LoginScreen.Size ,ScreenSize.Small,200,ScreenSize.Medium,200,240)
+                    HoverFill: =Self.BorderColor
+                    OnSelect: =Select(Parent)
+                    PressedFill: =Self.BorderColor
+                    Width: =Switch(LoginScreen.Size ,ScreenSize.Small,220,ScreenSize.Medium,220,270)
+                    X: =(Parent.TemplateWidth / 2.2) - (Self.Height / 2)
+                    Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                    ZIndex: =1
+
+                HS_RequestImage As image:
+                    DisplayMode: =DisplayMode.View
+                    Height: =Switch(LoginScreen.Size ,ScreenSize.Small,100,ScreenSize.Medium,100,160)
+                    Image: =ThisItem.icon
+                    OnSelect: =Select(Parent)
+                    Width: =Switch(LoginScreen.Size ,ScreenSize.Small,100,ScreenSize.Medium,100,160)
+                    X: =(Parent.TemplateWidth / 2) - (Self.Height / 2)
+                    Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2) - 20
+                    ZIndex: =2
+
+                HS_RequestLabel As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 121, 187, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =Switch(HomeScreen.Size ,ScreenSize.Small,14,ScreenSize.Medium,14,18)
+                    Text: =ThisItem.type
+                    Width: =Parent.TemplateWidth
+                    Y: =HS_RequestImage.Height + HS_RequestImage.Y
+                    ZIndex: =3
+

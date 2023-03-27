@@ -1,0 +1,1449 @@
+"WorkFromHomeRequestScreen As screen.'tabletAutoLayout_HeaderMainFooter_ver1.0'":
+    OnVisible: |-
+        =Reset(WFHR_dp_FromDate);
+        Reset(WFHR_dp_ToDate);
+        Reset(WFHR_txt_Description);
+
+    WFHR_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: =LayoutOverflow.Scroll
+        LayoutWrap: |-
+            =If(
+                App.ActiveScreen.Size = ScreenSize.Small,
+                true,
+                false
+            )
+        Width: =Parent.Width
+        ZIndex: =1
+
+        WFHR_HeaderContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            BorderColor: =AppColor.PrimaryColor
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            Width: =Parent.Width
+            ZIndex: =1
+
+            WFHR_icon_Back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        60,
+                        ScreenSize.Medium,
+                        70,
+                        80
+                        
+                    )
+                OnSelect: |-
+                    =Navigate(WorkFromHomeScreen);
+                    Set(IsWFHEdit,false);
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            WFHR_lbl_AppTitle As label:
+                Align: =Align.Center
+                AlignInContainer: =AlignInContainer.Start
+                Color: =AppColor.PrimaryColor
+                FillPortions: =11
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height,
+                        Parent.Height
+                    )
+                LayoutMinWidth: =300
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: =If(IsWFHEdit = true,"Request Work From Home","Request Work From Home")
+                Width: |
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+        WFHR_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        WFHR_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            Height: =Parent.Height
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    350,
+                    ScreenSize.Medium,
+                    480,
+                    500
+                    
+                )
+            LayoutMinWidth: =150
+            LayoutMode: =LayoutMode.Auto
+            LayoutOverflowY: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    LayoutOverflow.Scroll,
+                    ScreenSize.ExtraLarge,
+                    LayoutOverflow.Hide
+                )
+            LayoutWrap: =true
+            Width: =Parent.Width
+            Y: =WFHR_HeaderContainer.Height
+            ZIndex: =3
+
+            WFHR_DataRequestContainer As groupContainer.verticalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderStyle: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        BorderStyle.None,
+                       BorderStyle.Solid
+                    )
+                FillPortions: =2
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/1.5,
+                       Parent.Height
+                    )
+                LayoutGap: =10
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =500
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        300,
+                        ScreenSize.Medium,
+                        400,
+                        500
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                       Parent.Width/1.6
+                    )
+                ZIndex: =1
+
+                WFHR_RequestNumberContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =IsWFHEdit
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =1
+
+                    WFHR_lbl_RequestNumber As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Request Number:"
+                        Width: |-
+                            =If(WFHR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    WFHR_lbl_RequestNumberValue As label:
+                        Color: =AppColor.PrimaryColor
+                        DisplayMode: =DisplayMode.Disabled
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =WFH_gallery_FilterRequest.Selected.'Application Request Number'
+                        Width: =Parent.Width/2.5
+                        ZIndex: =3
+
+                WFHR_FormDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =2
+
+                    WFHR_lbl_FromDate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="From Date:"
+                        Width: |-
+                            =If(WFHR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    WFHR_dp_FromDate As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsWFHEdit = true,WFH_gallery_FilterRequest.Selected.Startdate,Today())
+                        DisplayMode: =If(IsWFHEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                        Format: ="dd/mmm/yyyy"
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnSelect: =
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                WFHR_ToDateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =3
+
+                    WFHR_lbl_ToDate As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="To Date:"
+                        Width: |-
+                            =If(WFHR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    WFHR_dp_ToDate As datepicker:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        DefaultDate: =If(IsWFHEdit = true,WFH_gallery_FilterRequest.Selected.Enddate,Today())
+                        DisplayMode: =If(IsWFHEdit,DisplayMode.Disabled,DisplayMode.Edit)
+                        Format: ="dd/mmm/yyyy"
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        IconBackground: =AppColor.PrimaryColor
+                        OnSelect: =
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                WFHR_LeaveDayContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =4
+
+                    WFHR_lbl_LeaveDay As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Days:"
+                        Width: |-
+                            =If(WFHR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    WFHR_txt_DayCount As text:
+                        Align: =Align.Center
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: |-
+                            =If( WFHR_dp_FromDate.SelectedDate = WFHR_dp_ToDate.SelectedDate,
+                                    Text(
+                                        If(
+                                            [@WFHR_dd_DaysView].SelectedText.Value = "Half Day",
+                                            "0.5",
+                                            1 + (DateDiff(
+                                                WFHR_dp_FromDate.SelectedDate,
+                                                WFHR_dp_ToDate.SelectedDate,
+                                                TimeUnit.Days
+                                            )))
+                                    ),
+                            
+                                WFHR_dp_FromDate.SelectedDate > WFHR_dp_ToDate.SelectedDate,
+                                    "0",
+                                    Text(
+                                        1 + (DateDiff(
+                                            WFHR_dp_FromDate.SelectedDate,
+                                            WFHR_dp_ToDate.SelectedDate,
+                                            TimeUnit.Days
+                                        ))  
+                                    )        
+                                )
+                        DisplayMode: |-
+                            =If(
+                                (Month(WFHR_dp_FromDate.SelectedDate) = Month(Today()) || WFHR_dp_FromDate.SelectedDate > Today()) && (Month(WFHR_dp_ToDate.SelectedDate) = Month(Today()) || WFHR_dp_ToDate.SelectedDate > Today()),
+                                DisplayMode.Edit,
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Visible: =false
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/14,
+                                ScreenSize.Medium,
+                                Parent.Width/14,
+                                ScreenSize.Large,
+                                Parent.Width/15,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/14
+                            )
+                        ZIndex: =2
+
+                    WFHR_lbl_DayCount As label:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        BorderThickness: =2
+                        Color: =RGBA(0, 121, 187, 1)
+                        DisabledBorderColor: =RGBA(153, 153, 153, 1)
+                        DisplayMode: |-
+                            =If(
+                                (Month(WFHR_dp_FromDate.SelectedDate) = Month(Today()) || WFHR_dp_FromDate.SelectedDate > Today()) && (Month(WFHR_dp_ToDate.SelectedDate) = Month(Today()) || WFHR_dp_ToDate.SelectedDate > Today()),
+                                If(IsWFHEdit,DisplayMode.Disabled,DisplayMode.Edit),
+                               DisplayMode.Disabled
+                            )
+                        FocusedBorderThickness: =5
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                7,
+                               13
+                            )
+                        Text: |-
+                            =If(IsWFHEdit = true,WFH_gallery_FilterRequest.Selected.Day,
+                            If( WFHR_dp_FromDate.SelectedDate = WFHR_dp_ToDate.SelectedDate,
+                                    Text(
+                                        If(
+                                            [@WFHR_dd_DaysView].SelectedText.Value = "Half Day",
+                                            "0.5",
+                                            1 + (DateDiff(
+                                                WFHR_dp_FromDate.SelectedDate,
+                                                WFHR_dp_ToDate.SelectedDate,
+                                                TimeUnit.Days
+                                            )))
+                                    ),
+                            
+                                WFHR_dp_FromDate.SelectedDate > WFHR_dp_ToDate.SelectedDate,
+                                    "0",
+                                    Text(
+                                        1 + (DateDiff(
+                                            WFHR_dp_FromDate.SelectedDate,
+                                            WFHR_dp_ToDate.SelectedDate,
+                                            TimeUnit.Days
+                                        ))  
+                                    )        
+                                ))
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/12,
+                                ScreenSize.Medium,
+                                Parent.Width/12,
+                                ScreenSize.Large,
+                                Parent.Width/16,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/16
+                            )
+                        Wrap: =false
+                        ZIndex: =3
+
+                    WFHR_dd_DaysView As dropdown:
+                        BorderColor: =RGBA(0, 134, 208, 1)
+                        ChevronBackground: =RGBA(0, 134, 208, 1)
+                        ChevronHoverBackground: =ColorFade(RGBA(0, 134, 208, 1), -20%)
+                        Color: =RGBA(10, 106, 204, 1)
+                        Default: =If(IsWFHEdit = true && WFH_gallery_FilterRequest.Selected.Day = 0.5,"Half Day","Full Day")
+                        DisplayMode: |-
+                            =If(
+                                (Month(WFHR_dp_FromDate.SelectedDate) = Month(Today()) || WFHR_dp_FromDate.SelectedDate > Today()) && (Month(WFHR_dp_ToDate.SelectedDate) = Month(Today()) || WFHR_dp_ToDate.SelectedDate > Today()),
+                                If(IsWFHEdit,DisplayMode.Disabled,DisplayMode.Edit),
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        Items: =["Full Day","Half Day"]
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        PressedFill: =RGBA(0, 134, 208, 1)
+                        SelectionFill: =RGBA(0, 134, 208, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Visible: =If(Value(WFHR_lbl_DayCount.Text) > 1 , false, true)
+                        Width: |-
+                            =
+                            If(WFHR_dd_HalfDaysView.Visible,
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/4,
+                                ScreenSize.Medium,
+                                Parent.Width/4.2,
+                                ScreenSize.Large,
+                                Parent.Width/4.2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4.2
+                            ),Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                            )
+                        ZIndex: =4
+
+                    WFHR_dd_HalfDaysView As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        ChevronBackground: =RGBA(39, 113, 194, 1)
+                        Color: =AppColor.PrimaryColor
+                        DisplayMode: |-
+                            =If(
+                                (Month(WFHR_dp_FromDate.SelectedDate) = Month(Today()) || WFHR_dp_FromDate.SelectedDate > Today()) && (Month(WFHR_dp_ToDate.SelectedDate) = Month(Today()) || WFHR_dp_ToDate.SelectedDate > Today()),
+                                If(IsWFHEdit,DisplayMode.Disabled,DisplayMode.Edit),
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        Items: =Choices([@'Application Requests'].'Half Day')
+                        OnSelect: =true
+                        PaddingBottom: =5
+                        PaddingLeft: =5
+                        PaddingRight: =5
+                        PaddingTop: =5
+                        SelectionFill: =RGBA(39, 113, 194, 1)
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Visible: =If(WFHR_dd_DaysView.SelectedText.Value="Half Day" && Value(WFHR_lbl_DayCount.Text)<1,true,false)
+                        Width: |-
+                            =If(WFHR_dd_DaysView.SelectedText.Value="Half Day" && Value(WFHR_lbl_DayCount.Text),
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/4,
+                                ScreenSize.Medium,
+                                Parent.Width/4.2,
+                                ScreenSize.Large,
+                                Parent.Width/4.2,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4.2
+                            ),Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.5,
+                                ScreenSize.Medium,
+                                Parent.Width/3.5,
+                                ScreenSize.Large,
+                                Parent.Width/3.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/4
+                            )
+                            )
+                        ZIndex: =5
+
+                WFHR_DescriptionContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/6,
+                           Parent.Height/6
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutGap: =10
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =5
+
+                    WFHR_lbl_Description As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/1.1,
+                                ScreenSize.Medium,
+                                Parent.Height/1.5,
+                                Parent.Height/2
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description :"
+                        Width: |-
+                            =If(WFHR_dd_HalfDaysView.Visible,Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.8-10,
+                                Parent.Width/2.5-10
+                            ),Parent.Width/2.5-10)
+                        ZIndex: =1
+
+                    WFHR_txt_Description As text:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =If(IsWFHEdit = true,WFH_gallery_FilterRequest.Selected.Description,"")
+                        DisplayMode: |-
+                            =If(
+                                (Month(WFHR_dp_FromDate.SelectedDate) = Month(Today()) || WFHR_dp_FromDate.SelectedDate > Today()) && (Month(WFHR_dp_ToDate.SelectedDate) = Month(Today()) || WFHR_dp_ToDate.SelectedDate > Today()),
+                                If(IsWFHEdit,DisplayMode.Disabled,DisplayMode.Edit),
+                               DisplayMode.Disabled
+                            )
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                40,
+                                ScreenSize.Medium,
+                                50,
+                                80
+                                
+                            )
+                        MaxLength: =50
+                        Mode: =TextMode.MultiLine
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                                ScreenSize.Medium,
+                                10,
+                                13
+                                
+                            )
+                        Width: |-
+                            =
+                            Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                ScreenSize.Medium,
+                                Parent.Width/2,
+                                ScreenSize.Large,
+                                Parent.Width/2.5,
+                               ScreenSize.ExtraLarge,
+                                Parent.Width/3
+                            )
+                        ZIndex: =2
+
+                WFHR_MsgContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/5.5,
+                           Parent.Height/5.5
+                        )
+                    LayoutDirection: =LayoutDirection.Vertical
+                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/1,
+                            Parent.Width
+                        )
+                    ZIndex: =6
+
+                    WFHR_lbl_PastMonth_Msg As label:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =AppColor.DeclineColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                25,
+                                ScreenSize.Medium,
+                                30,
+                                30
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =If(
+                                (Month(WFHR_dp_FromDate.SelectedDate) = Month(Today()) || WFHR_dp_FromDate.SelectedDate > Today()) && (Month(WFHR_dp_ToDate.SelectedDate) = Month(Today()) || WFHR_dp_ToDate.SelectedDate > Today()),
+                                " ",
+                                "The date should be in the current month or future month."
+                            )
+                        Visible: |-
+                            =
+                            true
+                        Width: =Parent.Width/1.5
+                        ZIndex: =4
+
+            WFHR_ManagerContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                BorderStyle: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        BorderStyle.None,
+                       BorderStyle.Solid
+                    )
+                Height: |-
+                    =
+                    Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/4,
+                        Parent.Height
+                    )
+                LayoutGap: =
+                LayoutJustifyContent: =LayoutJustifyContent.Center
+                LayoutMinHeight: =250
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        200,
+                        350
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width/1.5,
+                       Parent.Width/1.5
+                    )
+                ZIndex: =2
+
+                WFHR_ReportingContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =1
+                    ZIndex: =1
+
+                    WFHR_lbl_Reporting As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Reporting Manager :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    WFHR_lblReportingValue As label:
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                WFHR_DelegateContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Width: =Parent.Width
+                    Y: =2
+                    ZIndex: =2
+
+                    WFHR_lbl_Delegate As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Delegate Approver :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    WFHR_lbl_DelegateValue As label:
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =_myProfile.DisplayName//Office365Users.Manager(User().Email).DisplayName
+                        Visible: =false
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+                    WFHR_dd_DelegateValue As dropdown:
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Default: =Office365Users.Manager(User().Email).DisplayName
+                        DisplayMode: =If(IsWFHEdit,DisplayMode.View,DisplayMode.Edit)
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                35,
+                                35
+                                
+                            )
+                        Items: =Filter([@contact],'Is Manager' = [@'Is Manager (contact)'].Yes)
+                        OnChange: =true
+                        OnSelect: =true
+                        Reset: =true
+                        Width: =Parent.Width/2.2
+                        ZIndex: =3
+
+                WFHR_StatusContainer As groupContainer.verticalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: |-
+                        =
+                        Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Height/8,
+                           Parent.Height/8
+                        )
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutMinHeight: =100
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    Visible: =IsWFHEdit
+                    Width: =Parent.Width
+                    Y: =1
+                    ZIndex: =3
+
+                    WFHR_lbl_Status As label:
+                        AutoHeight: =true
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =15
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: |-
+                            ="Request Status :"
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2.6,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =1
+
+                    WFHR_lblStatusValue As label:
+                        AutoHeight: =true
+                        BorderColor: =AppColor.PrimaryColor
+                        Color: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                28,
+                                ScreenSize.Medium,
+                                30,
+                                40
+                                
+                            )
+                        PaddingLeft: =12
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               13
+                            )
+                        Text: =WFH_gallery_FilterRequest.Selected.'Application Request Status'
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                               Parent.Width/2.2
+                            )
+                        ZIndex: =2
+
+        WFHR_SubmitContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =Parent.Height/10
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    200,
+                    ScreenSize.Medium,
+                    250,
+                    350
+                    
+                )
+            LayoutMode: =LayoutMode.Auto
+            Width: =Parent.Width
+            Y: =462
+            ZIndex: =4
+
+            WFHR_btn_Cancelled As button:
+                AlignInContainer: =AlignInContainer.Center
+                BorderColor: =RGBA(255, 0, 0, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |-
+                    =Patch(
+                        'Application Requests',
+                        First(
+                            Filter(
+                                'Application Requests',
+                                'Application Request Number' = WFH_gallery_FilterRequest.Selected.'Application Request Number'
+                            )
+                        ),
+                        {'Application Request Status': [@'Application Request Status'].Cancelled}
+                    );
+                    Reset(WFHR_dp_FromDate);Reset(WFHR_dp_ToDate);Reset(WFHR_txt_Description);
+                    Notify(
+                        "Request Cancelled",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Set(
+                        IsWFHEdit,
+                        false
+                    );
+                    Back()
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Cancelled"
+                Visible: =If(IsWFHEdit=true && RequestSelect="Pending",true,false)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            WFHR_btn_Submited As button:
+                DisplayMode: |-
+                    =If(
+                        (Month(WFHR_dp_FromDate.SelectedDate) = Month(Today()) || WFHR_dp_FromDate.SelectedDate > Today()) && (Month(WFHR_dp_ToDate.SelectedDate) = Month(Today()) || WFHR_dp_ToDate.SelectedDate > Today()),
+                        DisplayMode.Edit,
+                       DisplayMode.Disabled
+                    )
+                Fill: =AppColor.PrimaryColor
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        30,
+                        ScreenSize.Medium,
+                        40,
+                        45
+                        
+                    )
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        200,
+                        ScreenSize.Medium,
+                        300,
+                        350
+                        
+                    )
+                OnSelect: |-
+                    =If(
+                        !IsBlank(WFHR_txt_Description.Text),
+                    If(
+                        IsWFHEdit = true,
+                        Patch(
+                            'Application Requests',
+                            First(
+                                Filter(
+                                    'Application Requests',
+                                    'Application Request Number' = WFH_gallery_FilterRequest.Selected.'Application Request Number'
+                                )
+                            ),
+                            {
+                                Startdate: WFHR_dp_FromDate.SelectedDate,
+                                Enddate: WFHR_dp_ToDate.SelectedDate,
+                                Day: Value(WFHR_lbl_DayCount.Text),
+                                'Half Day':WFHR_dd_HalfDaysView.Selected.Value,
+                                Description: WFHR_txt_Description.Text,
+                                'Request Delegate Approver ': LookUp(contact,'Full Name' = WFHR_dd_DelegateValue.SelectedText.Value)
+                            }
+                        ),
+                        Patch(
+                            'Application Requests',
+                            Defaults('Application Requests'),
+                            {
+                                'Application Request Type': LookUp(
+                                    'Application Request Types',
+                                    'Application Request Type Name' = "Work From Home Request"
+                                ),
+                                Startdate: WFHR_dp_FromDate.SelectedDate,
+                                Enddate: WFHR_dp_ToDate.SelectedDate,
+                                Day: Value(WFHR_lbl_DayCount.Text),
+                               'Half Day':WFHR_dd_HalfDaysView.Selected.Value,
+                                Description: WFHR_txt_Description.Text,
+                                'Requested Employee': LookUp(
+                                    contact,
+                                    'Full Name' = _myProfile.DisplayName
+                                ),
+                                'Request Approver': LookUp(
+                                    contact,
+                                    'Full Name' = WFHR_lblReportingValue.Text
+                                ),
+                                'Request Delegate Approver ': LookUp(contact,'Full Name' = WFHR_dd_DelegateValue.SelectedText.Value),
+                                'Leave Balance': LookUp('Leave Balances',Employee.Email = _myProfile.UserPrincipalName && Employee.'Full Name' = _myProfile.DisplayName
+                            ),
+                                'Application Request Status': [@'Application Request Status'].Submitted
+                            }
+                        )
+                    );
+                    Reset(WFHR_dp_FromDate);
+                    Reset(WFHR_dp_ToDate);
+                    Reset(WFHR_txt_Description);
+                    Notify(
+                        "Request Submitted",
+                        NotificationType.Success
+                    );
+                    Refresh('Application Requests');
+                    Set(
+                        IsWFHEdit,
+                        false
+                    );
+                    Back(),   
+                     Notify(
+                            "Description Required",
+                            NotificationType.Error
+                        );)
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: =If(IsWFHEdit = true ,"Save","Submit")
+                Visible: =If(IsWFHEdit=true,false,true)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+

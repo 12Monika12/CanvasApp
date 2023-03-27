@@ -1,0 +1,131 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "dt_projects",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "dt_project",
+    "MaxGetRowsCount": 500,
+    "Name": "Projects",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "dt_chargeable": "Chargeable",
+      "dt_charges_per_hour": "Charges Per Hour",
+      "dt_charges_per_hour_base": "Charges Per Hour (Base)",
+      "dt_devops_url": "DevOps URL",
+      "dt_dt_expense_request_project_name_dt_projec": "Expense Requests",
+      "dt_dt_project_resource_project_name_dt_proje": "Project Resources",
+      "dt_dt_project_task_project_name_dt_project": "Project Tasks",
+      "dt_dt_time_sheet_project_name_dt_project": "Time Sheets",
+      "dt_password": "Password",
+      "dt_project_AsyncOperations": "System Jobs",
+      "dt_project_BulkDeleteFailures": "Bulk Delete Failures",
+      "dt_project_DuplicateBaseRecord": "Duplicate Records (dt_project_DuplicateBaseRecord)",
+      "dt_project_DuplicateMatchingRecord": "Duplicate Records (dt_project_DuplicateMatchingRecord)",
+      "dt_project_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "dt_project_name": "Project Name",
+      "dt_project_number": "Project Number",
+      "dt_project_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "dt_project_ProcessSession": "Process Sessions",
+      "dt_project_SyncErrors": "Sync Errors",
+      "dt_projectid": "Project",
+      "dt_total_hours": "Total Hours",
+      "dt_username": "Username",
+      "exchangerate": "Exchange Rate",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "transactioncurrencyid": "Currency",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Projects",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Projects (Views)",
+    "Name": "_dt_project_views",
+    "RelatedEntityName": "Projects",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "011b91c5-e861-4dfc-81a8-33151f33ee3f": "Project Associated View",
+      "5ff740dc-efad-421c-88ae-e2afed4beef0": "Project Advanced Find View",
+      "761044b7-d2c2-4c27-9b43-e09b309b22d6": "Active Projects",
+      "a7f7ce97-64d1-4152-ba3e-cc1a17dc9dc5": "Inactive Projects",
+      "a8202903-8e82-41ef-a7ce-0aff7cbe0e3e": "Project Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Chargeable (Projects)",
+    "Name": "dt_project_dt_chargeable",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "dt_chargeable",
+        "OptionSetReferenceEntityName": "Projects"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "dt_chargeable",
+    "RelatedEntityName": "Projects",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Projects)",
+    "Name": "dt_project_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Projects"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Projects",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Projects)",
+    "Name": "dt_project_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Projects"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Projects",
+    "Type": "OptionSetInfo"
+  }
+]

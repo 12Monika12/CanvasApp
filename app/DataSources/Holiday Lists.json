@@ -1,0 +1,99 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "dt_holiday_lists",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "dt_holiday_list",
+    "MaxGetRowsCount": 500,
+    "Name": "Holiday Lists",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "dt_date": "Date",
+      "dt_financial_year": "Financial Year",
+      "dt_holiday_list_AsyncOperations": "System Jobs",
+      "dt_holiday_list_BulkDeleteFailures": "Bulk Delete Failures",
+      "dt_holiday_list_DuplicateBaseRecord": "Duplicate Records (dt_holiday_list_DuplicateBaseRecord)",
+      "dt_holiday_list_DuplicateMatchingRecord": "Duplicate Records (dt_holiday_list_DuplicateMatchingRecord)",
+      "dt_holiday_list_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "dt_holiday_list_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "dt_holiday_list_ProcessSession": "Process Sessions",
+      "dt_holiday_list_SyncErrors": "Sync Errors",
+      "dt_holiday_listid": "Holiday List",
+      "dt_holiday_name": "Holiday Name",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Holiday Lists",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Holiday Lists (Views)",
+    "Name": "_dt_holiday_list_views",
+    "RelatedEntityName": "Holiday Lists",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "015965a0-a26b-4873-9ea5-4e1a71240a9d": "Inactive Holiday Lists",
+      "2c180f61-bca3-45d4-8ae3-cf8ca26a88d8": "Holiday List Associated View",
+      "2dad72bc-cfae-4169-9b43-bddc45ab509c": "Holiday List Advanced Find View",
+      "3eefc9e2-b483-4bcc-80ce-f3d87b9fba7c": "Holiday List Lookup View",
+      "c02c14d8-47af-4156-9c46-f3145dc11764": "Active Holiday Lists"
+    }
+  },
+  {
+    "DisplayName": "Status (Holiday Lists)",
+    "Name": "dt_holiday_list_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Holiday Lists"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Holiday Lists",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Holiday Lists)",
+    "Name": "dt_holiday_list_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Holiday Lists"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Holiday Lists",
+    "Type": "OptionSetInfo"
+  }
+]

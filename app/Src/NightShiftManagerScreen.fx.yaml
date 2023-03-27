@@ -1,0 +1,936 @@
+NightShiftManagerScreen As screen:
+    OnVisible: |-
+        =Reset(NSAM_dd_Login);
+        
+        Clear(colNSASelected);
+        Reset(NSAM_cb_SelectAll);
+        
+        ClearCollect(colNSARequestdata,Sort(
+            If(RequestSelect = "Pending",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Submitted,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+            If(RequestSelect = "Approved",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Approved,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+            If(RequestSelect = "Rejected",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Declined,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+            If(RequestSelect = "Cancelled",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Cancelled,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"))))),
+            'Created On',SortOrder.Descending));
+
+    NSAM_MainContainer As groupContainer.verticalAutoLayoutContainer:
+        Height: =Parent.Height
+        LayoutAlignItems: =LayoutAlignItems.Stretch
+        LayoutDirection: =LayoutDirection.Vertical
+        LayoutMode: =LayoutMode.Auto
+        LayoutOverflowY: |-
+            =Switch(
+                App.ActiveScreen.Size,
+                ScreenSize.Small,
+                LayoutOverflow.Scroll,
+                ScreenSize.ExtraLarge,
+                LayoutOverflow.Hide
+            )
+        Width: =Parent.Width
+        ZIndex: =1
+
+        NSAM_HeaderContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            PaddingRight: =10
+            Width: =Parent.Width
+            ZIndex: =1
+
+            NSAM_icon_back As icon.ChevronLeft:
+                Color: =AppColor.PrimaryColor
+                Height: |-
+                    =
+                    If(LeaveApplicationScreen.Size = 1|| LeaveApplicationScreen.Size = 2 ,50,75)
+                Icon: =Icon.ChevronLeft
+                OnSelect: =Navigate(LoginScreen)
+                PaddingLeft: =10
+                PaddingRight: =10
+                Width: |-
+                    =
+                    Switch(LeaveApplicationScreen.Size ,ScreenSize.Small,45,ScreenSize.Medium,45,60)
+                ZIndex: =1
+
+            NSAM_lbl_AppTitle As label:
+                Align: =Align.Center
+                Color: =AppColor.PrimaryColor
+                FillPortions: =7
+                Font: =Font.Georgia
+                FontWeight: =FontWeight.Bold
+                Height: =Parent.Height
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        12,
+                        ScreenSize.Medium,
+                       16,
+                       18
+                    )
+                Text: ="Night Shift Allowance Request"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Width,
+                        Parent.Width/1.2
+                    )
+                ZIndex: =2
+
+            NSAM_dd_Login As dropdown:
+                AlignInContainer: =AlignInContainer.Center
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(39, 113, 194, 1)
+                Color: =RGBA(39, 113, 194, 1)
+                Default: ="Manager"
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/2.5,
+                        Parent.Height/2
+                    )
+                HoverColor: =RGBA(39, 113, 194, 1)
+                Items: |-
+                    =Table(
+                        {
+                            Text: "Manager",
+                            screen: NightShiftManagerScreen
+                        },
+                        {
+                            Text: "Employee",
+                            screen: NightShiftScreen
+                        },
+                         {
+                            Text: "HR",
+                            screen: HRScreen
+                         }
+                        
+                    )
+                OnChange: |+
+                    = Navigate(
+                            NSAM_dd_Login.Selected.screen,
+                            ScreenTransition.Fade
+                        )
+                    
+                PaddingBottom: =5
+                PaddingLeft: =5
+                PaddingRight: =5
+                PaddingTop: =5
+                PressedFill: =RGBA(39, 113, 194, 1)
+                Reset: =true
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        6,
+                       12
+                    )
+                Visible: =If(IsManager>0,true,false)
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        100,
+                        ScreenSize.Medium,
+                        200,
+                        250
+                        
+                    )
+                ZIndex: =4
+
+        NSAM_rect_Divider As rectangle:
+            Height: =1
+            Width: =Parent.Width
+            Y: =88
+            ZIndex: =2
+
+        NSAM_DataContainer As groupContainer.verticalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            LayoutMinHeight: |-
+                =Switch(
+                    App.ActiveScreen.Size,
+                    ScreenSize.Small,
+                    350,
+                    ScreenSize.Medium,
+                    480,
+                    500
+                    
+                )
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            LayoutWrap: =true
+            ZIndex: =4
+
+            NSAM_FilterContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                BorderColor: =AppColor.PrimaryColor
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/9.5,
+                       Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Medium,
+                        Parent.Height/9.5,
+                        Parent.Height/8
+                    )
+                    )
+                LayoutAlignItems: =LayoutAlignItems.Center
+                LayoutMinHeight: =100
+                LayoutMinWidth: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        250,
+                        ScreenSize.Medium,
+                        800,
+                        1100
+                        
+                    )
+                LayoutMode: =LayoutMode.Auto
+                PaddingRight: =10
+                Width: =Parent.Width
+                ZIndex: =1
+
+                NSAM_gallery_RequestFilter As gallery.galleryHorizontal:
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    Height: =Parent.Height
+                    Items: |-
+                        =Table(
+                            {Filter: "Pending"},
+                            {Filter: "Approved"},
+                            {Filter: "Rejected"},
+                            {Filter: "Cancelled"}
+                        )
+                    LayoutMinHeight: =Parent.Height
+                    LayoutMinWidth: =Parent.Width
+                    ShowScrollbar: =false
+                    TemplateSize: =Parent.Width/CountRows(Self.AllItems)-10
+                    Width: =Parent.Width
+                    X: =
+                    Y: =
+                    ZIndex: =13
+
+                    NSAM_FilterButton As button:
+                        BorderColor: =RGBA(10, 106, 204, 1)
+                        BorderThickness: =If(RequestSelect=ThisItem.Filter,0,1)
+                        Color: =If(RequestSelect=ThisItem.Filter,RGBA(255, 255, 255, 1),RGBA(10, 106, 204, 1))
+                        DisabledBorderColor: =ColorFade(NSAM_FilterButton.BorderColor, 70%)
+                        DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                        DisabledFill: =ColorFade(RGBA(159, 167, 165, 1), 50%)
+                        Fill: =If(RequestSelect = ThisItem.Filter,RGBA(0, 134, 208, 1),RGBA(255, 255, 255, 1))
+                        FocusedBorderColor: =NSAM_FilterButton.BorderColor
+                        FontWeight: =FontWeight.Normal
+                        HoverBorderColor: =ColorFade(NSAM_FilterButton.BorderColor, 20%)
+                        HoverColor: =NSAM_FilterButton.Color
+                        HoverFill: =ColorFade(NSAM_FilterButton.Fill, 20%)
+                        OnSelect: |
+                            =Set(
+                                RequestSelect,
+                                ThisItem.Filter
+                            );
+                            Clear(colNSASelected);
+                            Reset(NSAM_cb_SelectAll);
+                            ClearCollect(
+                                colNSARequestdata,
+                                Sort(
+                                    If(
+                                        RequestSelect = "Pending",
+                                        Filter(
+                                            'Application Requests',
+                                            'Application Request Status' = [@'Application Request Status'].Submitted,
+                                            'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                            NSAM_dd_View.Selected.Value,
+                                            'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                        ),
+                                        If(
+                                            RequestSelect = "Approved",
+                                            Filter(
+                                                'Application Requests',
+                                                'Application Request Status' = [@'Application Request Status'].Approved,
+                                                'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                                NSAM_dd_View.Selected.Value,
+                                                'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                            ),
+                                            If(
+                                                RequestSelect = "Rejected",
+                                                Filter(
+                                                    'Application Requests',
+                                                    'Application Request Status' = [@'Application Request Status'].Declined,
+                                                    'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                                    NSAM_dd_View.Selected.Value,
+                                                    'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                                ),
+                                                If(
+                                                    RequestSelect = "Cancelled",
+                                                    Filter(
+                                                        'Application Requests',
+                                                        'Application Request Status' = [@'Application Request Status'].Cancelled,
+                                                        'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                                        NSAM_dd_View.Selected.Value,
+                                                        'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    'Created On',
+                                    SortOrder.Descending
+                                )
+                            );
+                        PressedBorderColor: =NSAM_FilterButton.Fill
+                        PressedColor: =NSAM_FilterButton.Fill
+                        PressedFill: =NSAM_FilterButton.Color
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Text: =ThisItem.Filter
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/4.5,
+                                Parent.Width/4.5
+                            )
+                        Y: =6
+                        ZIndex: =1
+
+            NSAM_SelectViewContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.Center
+                BorderColor: =AppColor.PrimaryColor
+                BorderThickness: =1
+                FillPortions: =0
+                Height: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        Parent.Height/8.5,
+                       Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Medium,
+                        Parent.Height/8.5,
+                        Parent.Height/8.5
+                    )
+                    )
+                LayoutGap: =5
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                PaddingLeft: =10
+                Width: =Parent.Width
+                ZIndex: =3
+
+                NSAM_cb_SelectAll As checkbox:
+                    AlignInContainer: =AlignInContainer.Center
+                    BorderColor: =RGBA(39, 113, 194, 1)
+                    BorderStyle: =BorderStyle.None
+                    CheckboxBorderColor: =RGBA(39, 113, 194, 1)
+                    CheckboxSize: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                           25,
+                           40
+                        )
+                    CheckmarkFill: =RGBA(39, 113, 194, 1)
+                    Color: =AppColor.PrimaryColor
+                    FontWeight: =FontWeight.Bold
+                    HoverColor: =RGBA(39, 113, 194, 1)
+                    OnCheck: =Collect(colNSASelected,colNSARequestdata)
+                    OnUncheck: =Remove(colNSASelected,colNSARequestdata)
+                    PaddingLeft: =17
+                    PressedColor: =RGBA(39, 113, 194, 1)
+                    Reset: =ResetCheckbox2
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            9,
+                            ScreenSize.Medium,
+                            10,
+                            12
+                            
+                        )
+                    Text: ="Select All"
+                    Visible: =If(RequestSelect = "Approved" || RequestSelect = "Rejected" || RequestSelect = "Cancelled",false,true) &&NSAM_gallery_FilterRequest.Visible
+                    Width: =Parent.Width/3
+                    ZIndex: =1
+
+                NSAM_dd_View As dropdown:
+                    AlignInContainer: =AlignInContainer.Center
+                    BorderColor: =RGBA(39, 113, 194, 1)
+                    ChevronBackground: =RGBA(39, 113, 194, 1)
+                    Color: =RGBA(39, 113, 194, 1)
+                    Height: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            25,
+                            35
+                        )
+                    HoverColor: =RGBA(39, 113, 194, 1)
+                    Items: |-
+                        =Filter(
+                            Choices('Application Requests (Views)'),
+                            Value = 'Application Requests (Views)'.'All Application' || Value = 'Application Requests (Views)'.'Last Month Application' || Value = 'Application Requests (Views)'.'This Month Application' || Value = 'Application Requests (Views)'.'This Year Application'
+                        ).Value
+                    OnChange: |
+                        =Clear(colNSASelected);
+                        Reset(NSAM_cb_SelectAll);
+                        ClearCollect(
+                            colNSARequestdata,
+                            Sort(
+                                If(
+                                    RequestSelect = "Pending",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status' = [@'Application Request Status'].Submitted,
+                                        'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                        NSAM_dd_View.Selected.Value,
+                                        'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                    ),
+                                    If(
+                                        RequestSelect = "Approved",
+                                        Filter(
+                                            'Application Requests',
+                                            'Application Request Status' = [@'Application Request Status'].Approved,
+                                            'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                            NSAM_dd_View.Selected.Value,
+                                            'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                        ),
+                                        If(
+                                            RequestSelect = "Rejected",
+                                            Filter(
+                                                'Application Requests',
+                                                'Application Request Status' = [@'Application Request Status'].Declined,
+                                                'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                                NSAM_dd_View.Selected.Value,
+                                                'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                            ),
+                                            If(
+                                                RequestSelect = "Cancelled",
+                                                Filter(
+                                                    'Application Requests',
+                                                    'Application Request Status' = [@'Application Request Status'].Cancelled,
+                                                    'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                                    NSAM_dd_View.Selected.Value,
+                                                    'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                                'Created On',
+                                SortOrder.Descending
+                            )
+                        );
+                    PressedFill: =RGBA(39, 113, 194, 1)
+                    SelectionFill: =RGBA(39, 113, 194, 1)
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            9,
+                           12
+                        )
+                    Visible: =If(RequestSelect = "Pending",false,true)
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5.5
+                        )
+                    ZIndex: =3
+
+                NSAM_SearchContainer As groupContainer.horizontalAutoLayoutContainer:
+                    AlignInContainer: =AlignInContainer.Center
+                    Height: =Parent.Height
+                    LayoutAlignItems: =LayoutAlignItems.Center
+                    LayoutJustifyContent: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            LayoutJustifyContent.Start,
+                            LayoutJustifyContent.End
+                        )
+                    LayoutMinHeight: =0
+                    LayoutMinWidth: =250
+                    LayoutMode: =LayoutMode.Auto
+                    PaddingRight: =30
+                    Width: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            Parent.Width/2,
+                            Parent.Width/5.5
+                        )
+                    ZIndex: =4
+
+                    NSAM_txt_RequestName As text:
+                        BorderColor: =AppColor.PrimaryColor
+                        Clear: =true
+                        Color: =AppColor.PrimaryColor
+                        Default: =""
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Height/2.5,
+                                Parent.Height/2
+                            )
+                        HintText: ="Name"
+                        PaddingLeft: =5
+                        Reset: =true
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Visible: =If(RequestSelect = "Approved",true,false)
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/2,
+                                Parent.Width/5.5
+                            )
+                        ZIndex: =1
+
+            NSAM_RequestContainer As groupContainer.horizontalAutoLayoutContainer:
+                AlignInContainer: =AlignInContainer.SetByContainer
+                Height: |
+                    =Parent.Height/1.3
+                LayoutDirection: =LayoutDirection.Vertical
+                LayoutMinHeight: =100
+                LayoutMinWidth: =250
+                LayoutMode: =LayoutMode.Auto
+                LayoutWrap: =true
+                Width: =Parent.Width
+                ZIndex: =4
+
+                "NSAM_gallery_FilterRequest As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height
+                    Items: |
+                        =Filter(colNSARequestdata, NSAM_txt_RequestName.Text in 'Requested Employee'.'Full Name')
+                    Layout: =Layout.Vertical
+                    LayoutMinHeight: =260
+                    LayoutMinWidth: =Parent.LayoutMinWidth
+                    TemplatePadding: =0
+                    TemplateSize: =Min(100, Self.Height - 60)
+                    Visible: =CountRows(NSAM_gallery_FilterRequest.AllItems) > 0
+                    Width: =Parent.Width
+                    ZIndex: =1
+
+                    NSAM_lbl_RequestNumber As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Bold
+                        Height: |
+                            =25
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =If(Len(Text(ThisItem.'Application Request Number' & " | " & ThisItem.'Requested Employee'.'Full Name'))>30,Left(Text(ThisItem.'Application Request Number' & " | " & ThisItem.'Requested Employee'.'Full Name'),30),Text(ThisItem.'Application Request Number' & " | " & ThisItem.'Requested Employee'.'Full Name'))
+                        VerticalAlign: =VerticalAlign.Top
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =60
+                        Y: =13
+                        ZIndex: =2
+
+                    NSAM_rect_Separator As rectangle:
+                        Fill: =AppColor.PrimaryColor
+                        Height: =1
+                        OnSelect: =Select(Parent)
+                        Width: =Parent.TemplateWidth
+                        Y: =92.84615384615384
+                        ZIndex: =5
+
+                    NSAM_lbl_Decription As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |
+                            =25
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description : " & ThisItem.Description
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =60
+                        Y: =39
+                        ZIndex: =7
+
+                    NSAM_lbl_Date As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: |
+                            =25
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Text(DateValue(ThisItem.Startdate),"dd/mmm/yyyy") & " - " & Text(DateValue(ThisItem.Enddate),"dd/mmm/yyyy")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =60
+                        Y: =65
+                        ZIndex: =8
+
+                    NSAM_icon_Next As icon.ChevronRight:
+                        Color: =AppColor.PrimaryColor
+                        Height: =40
+                        Icon: =Icon.ChevronRight
+                        OnSelect: =Navigate(NSARequestDetailScreen)
+                        Visible: =If(RequestSelect="Pending",true,false)
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width/12,
+                                ScreenSize.Medium,
+                                Parent.Width/16,
+                                Parent.Width/20
+                                
+                            )
+                        X: =Parent.TemplateWidth-Self.Width-25
+                        Y: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               20
+                            )
+                        ZIndex: =9
+
+                    NSAM_cb_Select As checkbox:
+                        BorderColor: =RGBA(39, 113, 194, 1)
+                        BorderStyle: =BorderStyle.None
+                        CheckboxBorderColor: =RGBA(39, 113, 194, 1)
+                        CheckboxSize: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                               25,
+                               40
+                            )
+                        CheckmarkFill: =RGBA(39, 113, 194, 1)
+                        Color: =RGBA(39, 113, 194, 1)
+                        Default: =ThisItem in colNSASelected
+                        Height: =45
+                        HoverColor: =RGBA(39, 113, 194, 1)
+                        OnCheck: =Collect(colNSASelected,ThisItem)
+                        OnSelect: =Select(Parent)
+                        OnUncheck: =Remove(colNSASelected,ThisItem)
+                        PressedColor: =RGBA(39, 113, 194, 1)
+                        Size: =0
+                        Text: =""
+                        Visible: =If(RequestSelect = "Approved" || RequestSelect = "Rejected" || RequestSelect = "Cancelled",false,true)
+                        Width: =40
+                        X: =17
+                        Y: =25
+                        ZIndex: =10
+
+                    NSAM_btn_cancelled As button:
+                        DisplayMode: =
+                        Fill: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                40,
+                                45
+                                
+                            )
+                        OnSelect: |-
+                            =Patch('Application Requests',
+                                First(
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Number' = NSAM_gallery_FilterRequest.Selected.'Application Request Number'
+                                    )
+                                ),
+                                {
+                                    'Application Request Status': [@'Application Request Status'].Cancelled
+                                }
+                            );
+                            Notify("Request Cancelled",NotificationType.Success);
+                            Refresh('Application Requests');
+                            Clear(colNSARequestdata);
+                            Reset(NSAM_txt_RequestName);
+                            
+                            ClearCollect(colNSARequestdata,Sort(
+                                If(RequestSelect = "Pending",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Submitted,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+                                If(RequestSelect = "Approved",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Approved,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+                                If(RequestSelect = "Rejected",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Declined,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+                                If(RequestSelect = "Cancelled",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Cancelled,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"))))),
+                                'Created On',SortOrder.Descending));
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Text: ="Cancel Request"
+                        Visible: =If(RequestSelect = "Approved",true,false)
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                               Parent.Width/4,
+                               Parent.Width/5
+                            )
+                        X: =Parent.Width - NSAM_btn_cancelled.Width - 30
+                        Y: =40
+                        ZIndex: =11
+
+                NSAM_lbl_NoRequests As label:
+                    Align: =Align.Center
+                    BorderColor: =RGBA(101, 128, 187, 1)
+                    Color: =RGBA(47,41,43,1)
+                    DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
+                    FocusedBorderColor: =NSAM_lbl_NoRequests.BorderColor
+                    Font: =Font.Lato
+                    Height: =70
+                    HoverBorderColor: =NSAM_lbl_NoRequests.BorderColor
+                    HoverColor: =NSAM_lbl_NoRequests.Color
+                    HoverFill: =NSAM_lbl_NoRequests.Fill
+                    LayoutMinHeight: =Parent.Height-500
+                    PressedBorderColor: =NSAM_lbl_NoRequests.BorderColor
+                    PressedColor: =NSAM_lbl_NoRequests.Color
+                    PressedFill: =NSAM_lbl_NoRequests.Fill
+                    Size: |-
+                        =Switch(
+                            App.ActiveScreen.Size,
+                            ScreenSize.Small,
+                            12,
+                            ScreenSize.Medium,
+                           16,
+                           18
+                        )
+                    Text: ="No " &(RequestSelect)& " Requests"
+                    Visible: =!NSAM_gallery_FilterRequest.Visible
+                    Width: =Parent.Width
+                    X: =250
+                    Y: =438
+                    ZIndex: =2
+
+        NSAM_ApproveContainer As groupContainer.horizontalAutoLayoutContainer:
+            AlignInContainer: =AlignInContainer.SetByContainer
+            FillPortions: =0
+            Height: =75
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutGap: =50
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            LayoutMinHeight: =100
+            LayoutMinWidth: =250
+            LayoutMode: =LayoutMode.Auto
+            Visible: =CountRows(colNSASelected)>0
+            Width: =Parent.Width
+            ZIndex: =5
+
+            NSAM_btn_Declined As button:
+                Fill: =AppColor.DeclineColor
+                HoverFill: =ColorFade(RGBA(255, 0, 0, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf(
+                        colNSASelected,
+                        true, // If any tasks selected by checkbox as we have created this collection on Oncheck of Check box//
+                        { // Below the bold letter are the SharePoint Column name which we want to update. //
+                            'Application Request Status': [@'Application Request Status'].Declined
+                        }
+                    );
+                    
+                    ClearCollect(
+                        coldatatoPatch, // Created a temporary collection //
+                        ShowColumns(  // The column names which need to be patch are listed //
+                            colNSASelected,
+                            "dt_application_requestid",
+                            "dt_application_request_status"
+                        )
+                    );
+                    Patch('Application Requests',  // Sharepoint List//
+                        coldatatoPatch // Temporary collection//
+                    );
+                    
+                    Clear(colNSASelected);  //Clear the collection of tasks selected b checkbox//
+                    
+                    ClearCollect(colNSARequestdata,Sort(
+                        If(RequestSelect = "Pending",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Submitted,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+                        If(RequestSelect = "Approved",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Approved,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+                        If(RequestSelect = "Rejected",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Declined,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"),
+                        If(RequestSelect = "Cancelled",Filter('Application Requests','Application Request Status' = [@'Application Request Status'].Cancelled,'Request Approver'.Email= _myProfile.UserPrincipalName,NSAM_dd_View.Selected.Value,'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"))))),
+                        'Created On',SortOrder.Descending));
+                        
+                    Set(
+                        ResetCheckbox2,
+                        true
+                    ); // Reset the checkbox value in Select All set the Reset property ResetCheckbox2
+                    
+                    Notify("Request Rejected",NotificationType.Success);
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Decline"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =1
+
+            NSAM_btn_Approved As button:
+                Fill: =AppColor.ApproveColor
+                HoverFill: =ColorFade(RGBA(54, 176, 75, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        colNSASelected,
+                        true,// If any tasks selected by checkbox as we have created this collection on Oncheck of Check box//
+                        {// Below the bold letter are the SharePoint Column name which we want to update. //
+                    'Application Request Status': [@'Application Request Status'].Approved}
+                    );
+                    ClearCollect(
+                        coldatatoPatch,// Created a temporary collection //
+                        ShowColumns(// The column names which need to be patch are listed //
+                            colNSASelected,
+                            "dt_application_requestid",
+                            "dt_application_request_status"
+                        )
+                    );
+                    Patch(
+                        'Application Requests',// Sharepoint List//
+                        coldatatoPatch// Temporary collection//
+                    );
+                    Clear(colNSASelected);
+                    //Clear the collection of tasks selected b checkbox//
+                    ClearCollect(
+                        colNSARequestdata,
+                        Sort(
+                            If(
+                                RequestSelect = "Pending",
+                                Filter(
+                                    'Application Requests',
+                                    'Application Request Status' = [@'Application Request Status'].Submitted,
+                                    'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                    NSAM_dd_View.Selected.Value,
+                                    'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                ),
+                                If(
+                                    RequestSelect = "Approved",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status' = [@'Application Request Status'].Approved,
+                                        'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                        NSAM_dd_View.Selected.Value,
+                                        'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                    ),
+                                    If(
+                                        RequestSelect = "Rejected",
+                                        Filter(
+                                            'Application Requests',
+                                            'Application Request Status' = [@'Application Request Status'].Declined,
+                                            'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                            NSAM_dd_View.Selected.Value,
+                                            'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                        ),
+                                        If(
+                                            RequestSelect = "Cancelled",
+                                            Filter(
+                                                'Application Requests',
+                                                'Application Request Status' = [@'Application Request Status'].Cancelled,
+                                                'Request Approver'.Email = _myProfile.UserPrincipalName,
+                                                NSAM_dd_View.Selected.Value,
+                                                'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            'Created On',
+                            SortOrder.Descending
+                        )
+                    );
+                    Set(
+                        ResetCheckbox2,
+                        true
+                    );
+                    // Reset the checkbox value in Select All set the Reset property ResetCheckbox2
+                    Notify(
+                        "Request Approved",
+                        NotificationType.Success
+                    );
+                Size: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                        9,
+                       12
+                    )
+                Text: ="Approve"
+                Width: |-
+                    =Switch(
+                        App.ActiveScreen.Size,
+                        ScreenSize.Small,
+                       Parent.Width/3,
+                       Parent.Width/5
+                    )
+                ZIndex: =2
+
