@@ -615,7 +615,9 @@
                             
                         )
                     OnSelect: |
-                        =Patch(
+                        =If(
+                            !IsBlank(CLRS_txt_Description.Text),
+                        Patch(
                             'Expense Requests',
                             Defaults('Expense Requests'),
                             {
@@ -645,6 +647,13 @@
                         );
                         Refresh('Expense Requests');
                         Navigate(ExpenseLineScreen,BorderStyle.None)
+                            ,
+                            Notify(
+                                "Title Required",
+                                NotificationType.Error
+                            );
+                            
+                        )
                     Size: |-
                         =Switch(
                             App.ActiveScreen.Size,
