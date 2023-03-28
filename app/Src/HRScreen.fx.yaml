@@ -267,19 +267,19 @@ HRScreen As screen:
                     Y: =
                     ZIndex: =13
 
-                    LRBS_FilterButton_2 As button:
+                    HRS_FilterButton As button:
                         BorderColor: =RGBA(10, 106, 204, 1)
                         BorderThickness: =If(_requestTypeFilter=ThisItem.Filter,0,1)
                         Color: =If(_requestTypeFilter=ThisItem.Filter,RGBA(255, 255, 255, 1),RGBA(10, 106, 204, 1))
-                        DisabledBorderColor: =ColorFade(LRBS_FilterButton_2.BorderColor, 70%)
+                        DisabledBorderColor: =ColorFade(HRS_FilterButton.BorderColor, 70%)
                         DisabledColor: =ColorFade(RGBA(47, 41, 43, 1), 70%)
                         DisabledFill: =ColorFade(RGBA(159, 167, 165, 1), 50%)
                         Fill: =If(_requestTypeFilter = ThisItem.Filter,RGBA(0, 134, 208, 1),RGBA(255, 255, 255, 1))
-                        FocusedBorderColor: =LRBS_FilterButton_2.BorderColor
+                        FocusedBorderColor: =HRS_FilterButton.BorderColor
                         FontWeight: =FontWeight.Normal
-                        HoverBorderColor: =ColorFade(LRBS_FilterButton_2.BorderColor, 20%)
-                        HoverColor: =LRBS_FilterButton_2.Color
-                        HoverFill: =ColorFade(LRBS_FilterButton_2.Fill, 20%)
+                        HoverBorderColor: =ColorFade(HRS_FilterButton.BorderColor, 20%)
+                        HoverColor: =HRS_FilterButton.Color
+                        HoverFill: =ColorFade(HRS_FilterButton.Fill, 20%)
                         OnSelect: |-
                             =Set(
                                 _requestTypeFilter,
@@ -306,9 +306,9 @@ HRScreen As screen:
                                     SortOrder.Descending
                                 )
                             )
-                        PressedBorderColor: =LRBS_FilterButton_2.Fill
-                        PressedColor: =LRBS_FilterButton_2.Fill
-                        PressedFill: =LRBS_FilterButton_2.Color
+                        PressedBorderColor: =HRS_FilterButton.Fill
+                        PressedColor: =HRS_FilterButton.Fill
+                        PressedFill: =HRS_FilterButton.Color
                         Size: |-
                             =Switch(
                                 App.ActiveScreen.Size,
