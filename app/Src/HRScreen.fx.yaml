@@ -25,7 +25,28 @@ HRScreen As screen:
                 'Created On',
                 SortOrder.Descending
             )
-        )
+        );
+        ClearCollect(
+            ColHRRequestBulk,
+            Sort(
+                If(
+                    _requestTypeFilter = "Night Shift Request",
+                    Filter(
+                        'Application Requests',
+                        'Application Request Status'=[@'Application Request Status'].Approved,
+                         'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                    ),
+                    _requestTypeFilter = "Work From Home Request",
+                     Filter(
+                        'Application Requests',
+                        'Application Request Status'=[@'Application Request Status'].Approved,
+                         'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                    )
+                ),
+                'Created On',
+                SortOrder.Descending
+            )
+        );
 
     HRS_MainContainer As groupContainer.verticalAutoLayoutContainer:
         Height: =Parent.Height
@@ -259,7 +280,28 @@ HRScreen As screen:
                                 'Created On',
                                 SortOrder.Descending
                             )
-                        )
+                        );
+                        ClearCollect(
+                            ColHRRequestBulk,
+                            Sort(
+                                If(
+                                     _requestTypeFilter = "Night Shift Request",
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Status'=[@'Application Request Status'].Approved,
+                                         'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                    ),
+                                    _requestTypeFilter = "Work From Home Request",
+                                     Filter(
+                                        'Application Requests',
+                                        'Application Request Status'=[@'Application Request Status'].Approved,
+                                         'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                                    )
+                                ),
+                                'Created On',
+                                SortOrder.Descending
+                            )
+                        );
                     ShowScrollbar: =false
                     TemplateSize: =Parent.Width/CountRows(Self.AllItems)-10
                     Width: =Parent.Width
@@ -305,7 +347,28 @@ HRScreen As screen:
                                     'Created On',
                                     SortOrder.Descending
                                 )
-                            )
+                            );
+                            ClearCollect(
+                                ColHRRequestBulk,
+                                Sort(
+                                    If(
+                                         _requestTypeFilter = "Night Shift Request",
+                                        Filter(
+                                            'Application Requests',
+                                            'Application Request Status'=[@'Application Request Status'].Approved,
+                                             'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                        ),
+                                        _requestTypeFilter = "Work From Home Request",
+                                         Filter(
+                                            'Application Requests',
+                                            'Application Request Status'=[@'Application Request Status'].Approved,
+                                             'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                                        )
+                                    ),
+                                    'Created On',
+                                    SortOrder.Descending
+                                )
+                            );
                         PressedBorderColor: =HRS_FilterButton.Fill
                         PressedColor: =HRS_FilterButton.Fill
                         PressedFill: =HRS_FilterButton.Color
@@ -422,12 +485,14 @@ HRScreen As screen:
                     Height: =Parent.Height
                     Items: |-
                         =//Search(ColLeaveRequest,HRS_txt_RequestNum.Text,"dt_application_request_number")
-                        Filter(ColHRRequest, HRS_txt_RequestNum.Text in 'Application Request'.'Application Request Number')
+                        
+                        If(HRS_gallery_RequestFilter.Selected.Filter ="Leave Request" || HRS_gallery_RequestFilter.Selected.Filter ="Extra Working Request",   Filter(ColHRRequest, HRS_txt_RequestNum.Text in 'Application Request'.'Application Request Number'))
                     Layout: =Layout.Vertical
                     LayoutMinHeight: =260
                     LayoutMinWidth: =Parent.LayoutMinWidth
                     TemplatePadding: =0
                     TemplateSize: =Min(100, Self.Height - 60)
+                    Visible: =If(HRS_gallery_RequestFilter.Selected.Filter ="Leave Request" || HRS_gallery_RequestFilter.Selected.Filter ="Extra Working Request",true)
                     Width: =Parent.Width
                     ZIndex: =1
 
@@ -448,11 +513,18 @@ HRScreen As screen:
                                13
                             )
                         Text: |-
-                            =If(
+                            =
+                                If(
                                 Len(Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_requested_employee.'Full Name'))>30,
                             
                             Left(Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_application_request.'Application Request Number'   & " | " & ThisItem.dt_requested_employee.'Full Name'),30),
                             Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_application_request.'Application Request Number' & " | " & ThisItem.dt_requested_employee.'Full Name'))
+                            
+                            /*If(
+                                Len(Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_requested_employee.'Full Name'))>30,
+                            
+                            Left(Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_application_request.'Application Request Number'   & " | " & ThisItem.dt_requested_employee.'Full Name'),30),
+                            Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_application_request.'Application Request Number' & " | " & ThisItem.dt_requested_employee.'Full Name'))*/
                         VerticalAlign: =VerticalAlign.Top
                         Width: |-
                             =Switch(
@@ -593,6 +665,198 @@ HRScreen As screen:
                                Parent.Width/5
                             )
                         X: =Parent.Width - HRS_btn_cancelled.Width - 30
+                        Y: =25
+                        ZIndex: =10
+
+                "HRS_gallery_FilterRequest_Bulk As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                    AlignInContainer: =AlignInContainer.SetByContainer
+                    FillPortions: =0
+                    Height: =Parent.Height
+                    Items: |-
+                        =//Search(ColLeaveRequest,HRS_txt_RequestNum.Text,"dt_application_request_number")
+                        
+                        If(
+                        HRS_gallery_RequestFilter.Selected.Filter ="Night Shift Request" || HRS_gallery_RequestFilter.Selected.Filter ="Work From Home Request",   Filter(ColHRRequestBulk, HRS_txt_RequestNum.Text in 'Application Request Number')
+                        )
+                    Layout: =Layout.Vertical
+                    LayoutMinHeight: =260
+                    LayoutMinWidth: =Parent.LayoutMinWidth
+                    TemplatePadding: =0
+                    TemplateSize: =Min(100, Self.Height - 60)
+                    Visible: |-
+                        =If(
+                        			HRS_gallery_RequestFilter.Selected.Filter ="Night Shift Request" || HRS_gallery_RequestFilter.Selected.Filter ="Work From Home Request",true)
+                    Width: =Parent.Width
+                    ZIndex: =2
+
+                    HRS_lbl_ReqNum_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Bold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            =
+                                If(
+                                Len(Text(ThisItem.'Application Request Number' & " | " & ThisItem.dt_requested_employee.'Full Name'))>30,
+                            
+                            Left(Text(ThisItem.'Application Request Number' & " | "  & ThisItem.dt_requested_employee.'Full Name'),30),
+                            Text(ThisItem.'Application Request Number' & " | " & ThisItem.dt_requested_employee.'Full Name'))
+                            
+                            /*If(
+                                Len(Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_requested_employee.'Full Name'))>30,
+                            
+                            Left(Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_application_request.'Application Request Number'   & " | " & ThisItem.dt_requested_employee.'Full Name'),30),
+                            Text(ThisItem.dt_application_transaction_number & " | " & ThisItem.dt_application_request.'Application Request Number' & " | " & ThisItem.dt_requested_employee.'Full Name'))*/
+                        VerticalAlign: =VerticalAlign.Top
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =15
+                        Y: =10
+                        ZIndex: =2
+
+                    HRS_rect_Separator_1 As rectangle:
+                        Fill: =AppColor.PrimaryColor
+                        Height: =1
+                        OnSelect: =Select(Parent)
+                        Width: =Parent.TemplateWidth
+                        Y: =92.84615384615384
+                        ZIndex: =5
+
+                    HRS_lbl_Description_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: |-
+                            ="Description : " & ThisItem.dt_description
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =15
+                        Y: =35
+                        ZIndex: =7
+
+                    HRS_lbl_Date_1 As label:
+                        Color: =AppColor.PrimaryColor
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                10,
+                               13
+                            )
+                        Text: =Text(DateValue(ThisItem.dt_start_date),"dd/mmm/yyyy") & " - " & Text(DateValue(ThisItem.dt_end_date),"dd/mmm/yyyy")
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                Parent.Width,
+                                Parent.Width/2
+                            )
+                        X: =15
+                        Y: =65
+                        ZIndex: =8
+
+                    HRS_btn_cancelled_1 As button:
+                        DisplayMode: =
+                        Fill: =AppColor.PrimaryColor
+                        Height: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                30,
+                                ScreenSize.Medium,
+                                40,
+                                45
+                                
+                            )
+                        OnSelect: |-
+                            =Patch(
+                              'Application Requests',
+                                First(
+                                    Filter(
+                                        'Application Requests',
+                                        'Application Request Number' = HRS_gallery_FilterRequest_Bulk.Selected.'Application Request Number'
+                                    )
+                                ),
+                                {'Application Request Status': [@'Application Request Status'].Cancelled}
+                            );
+                            Notify(
+                                "Request Cancelled",
+                                NotificationType.Success
+                            );
+                            Refresh('Application Requests');
+                            Reset(HRS_txt_RequestNum);
+                            ClearCollect(
+                                ColHRRequestBulk,
+                                Sort(
+                                    If(
+                                         _requestTypeFilter = "Night Shift Request",
+                                        Filter(
+                                            'Application Requests',
+                                            'Application Request Status'=[@'Application Request Status'].Approved,
+                                             'Application Request Type'.'Application Request Type Name' = "Night Shift Allowance Request"
+                                        ),
+                                        _requestTypeFilter = "Work From Home Request",
+                                         Filter(
+                                            'Application Requests',
+                                            'Application Request Status'=[@'Application Request Status'].Approved,
+                                             'Application Request Type'.'Application Request Type Name' = "Work From Home Request"
+                                        )
+                                    ),
+                                    'Created On',
+                                    SortOrder.Descending
+                                )
+                            )
+                        Size: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                                9,
+                               12
+                            )
+                        Text: ="Cancel Request"
+                        Visible: =If(RequestSelect = "Cancelled",false,true)
+                        Width: |-
+                            =Switch(
+                                App.ActiveScreen.Size,
+                                ScreenSize.Small,
+                               Parent.Width/4,
+                               Parent.Width/5
+                            )
+                        X: =Parent.Width - HRS_btn_cancelled_1.Width - 30
                         Y: =25
                         ZIndex: =10
 

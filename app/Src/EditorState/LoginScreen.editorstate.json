@@ -480,7 +480,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "HS_HoverRect",
-      "ParentIndex": 2,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -1750,7 +1750,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "HS_RequestImage",
-      "ParentIndex": 1,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
