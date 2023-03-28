@@ -1211,7 +1211,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "NSA_dd_Login",
-      "ParentIndex": 3,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -3764,7 +3764,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "NSA_icon_add",
-      "ParentIndex": 2,
+      "ParentIndex": 3,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -4332,7 +4332,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "NSA_img_Edit",
-      "ParentIndex": 2,
+      "ParentIndex": 3,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -4641,7 +4641,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "NSA_lbl_Approved",
-      "ParentIndex": 1,
+      "ParentIndex": 0,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -4990,7 +4990,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "NSA_lbl_ApprovedValue",
-      "ParentIndex": 0,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -7043,7 +7043,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "%TemplateBrowseGalleryTitle.ID%",
       "Name": "NSA_lbl_RequestNumber",
-      "ParentIndex": 1,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -9858,7 +9858,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "NSAM_icon_Next_1",
-      "ParentIndex": 3,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {

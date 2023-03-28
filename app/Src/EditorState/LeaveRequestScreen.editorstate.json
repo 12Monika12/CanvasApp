@@ -265,7 +265,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "%FooterContainer.ID%",
       "Name": "LRS_ApproveContainer",
-      "ParentIndex": 1,
+      "ParentIndex": 3,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -818,7 +818,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_btn_cancelled",
-      "ParentIndex": 4,
+      "ParentIndex": 5,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -1482,7 +1482,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_cb_Select",
-      "ParentIndex": 1,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -1917,7 +1917,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_cb_SelectAll",
-      "ParentIndex": 2,
+      "ParentIndex": 0,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -2250,7 +2250,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "%MainSectionContainer.ID%",
       "Name": "LRS_DataContainer",
-      "ParentIndex": 3,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -3051,7 +3051,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_dd_View",
-      "ParentIndex": 0,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -5207,7 +5207,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_icon_Next",
-      "ParentIndex": 5,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -6175,7 +6175,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_lbl_Decription",
-      "ParentIndex": 3,
+      "ParentIndex": 4,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -6794,7 +6794,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "%TemplateBrowseGalleryTitle.ID%",
       "Name": "LRS_lbl_RequestNumber",
-      "ParentIndex": 2,
+      "ParentIndex": 3,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -7233,7 +7233,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_rect_Divider",
-      "ParentIndex": 2,
+      "ParentIndex": 1,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
@@ -7804,7 +7804,7 @@
       "LayoutName": "",
       "MetaDataIDKey": "",
       "Name": "LRS_SearchContainer",
-      "ParentIndex": 1,
+      "ParentIndex": 2,
       "PersistMetaDataIDKey": false,
       "Properties": [
         {
